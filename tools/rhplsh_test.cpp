@@ -22,7 +22,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /**
+<<<<<<< HEAD
  * @file rhplsh-test.cpp
+=======
+ * @file rhplsh-run.cpp
+>>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3
  *
  * @brief Example of using Random Hyperplane LSH index for L2 distance.
  */

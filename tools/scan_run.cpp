@@ -23,7 +23,11 @@
 
 
 /**
+<<<<<<< HEAD
  * @file scan-test.cpp
+=======
+ * @file scan-run.cpp
+>>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3
  *
  * @brief Linear scan dataset and construct benchmark.
  */

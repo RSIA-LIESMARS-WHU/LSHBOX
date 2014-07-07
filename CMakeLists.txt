@@ -4,6 +4,10 @@ PROJECT(LSHBOX)
 
 MESSAGE(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3
 IF(MINGW)
     SET(SAVE_CLASS mingw)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -30,4 +34,8 @@ INCLUDE_DIRECTORIES(
 
 ADD_SUBDIRECTORY(tools)
 #ADD_SUBDIRECTORY(matlab)
+<<<<<<< HEAD
 #ADD_SUBDIRECTORY(python)
+=======
+#ADD_SUBDIRECTORY(python)
+>>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3

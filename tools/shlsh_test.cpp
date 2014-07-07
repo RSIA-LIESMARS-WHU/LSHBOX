@@ -22,7 +22,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /**
+<<<<<<< HEAD
  * @file shlsh-test.cpp
+=======
+ * @file shlsh-run.cpp
+>>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3
  *
  * @brief Example of using Spectral Hashing LSH index for L2 distance.
  */
