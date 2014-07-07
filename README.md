@@ -1,5 +1,6 @@
-LSHBOX-0.1 - A Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
-===========================================================================================
+LSHBOX-0.1
+==========
+##A Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
 
 ###Chapter 1 - Introduce
 
@@ -431,4 +432,4 @@ struct Parameter
 
 According to the test, Iterative Quantization performance very good and is superior to other schemes, it can get better query accuracy with minimum cost.
 
-####Please don't hesitate to contact me [tanggefu@gmail.com] if you have any questions.
+####Please don't hesitate to contact me [xzf@whu.edu.cn/tanggefu@gmail.com] if you have any questions.
