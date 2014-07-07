@@ -6,9 +6,7 @@ LSHBOX-0.6
 
 Locality-Sensitive Hashing (LSH) is an efficient method for large scale image retrieval, and it achieves great performance in approximate nearest neighborhood searching.
 
-LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithm, in addition, it can be integrated into Python and Matlab languages.
-
-The following LSH algrithms have been implemented in LSHBOX, they are:
+LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithm, in addition, it can be integrated into Python and Matlab languages.The following LSH algrithms have been implemented in LSHBOX, they are:
 
 #####Spectral Hashing (SH)
 #####Iterative Quantization (ITQ)
@@ -17,7 +15,7 @@ The following LSH algrithms have been implemented in LSHBOX, they are:
 #####LSH Based on Thresholding
 #####LSH Based on p-Stable Distributions
 
-We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next months. We hope that there are more people that join in the test or contribute more algrithms.
+We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
 Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
 
