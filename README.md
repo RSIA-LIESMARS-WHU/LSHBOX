@@ -1,6 +1,6 @@
 LSHBOX-0.1
 ==========
-##A Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
+##A Toolbox of Approximate Nearest Neighborhood and Locality-Sensitive Hashing
 
 ###Chapter 1 - Introduce
 
