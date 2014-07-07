@@ -17,6 +17,10 @@ LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithm, in
 
 We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
+There are two sets for compilation and performance tests, they are:
+######[LSHBOX-3rdparty](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty): 3rdparty of LSHBOX, it is for compilation
+######[LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): datasets for performance tests
+
 #####Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
 
 ###Chapter 2 - Compilation
