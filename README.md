@@ -17,7 +17,7 @@ LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithm, in
 
 We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
-Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
+#####Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
 
 ###Chapter 2 - Compilation
 
