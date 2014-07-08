@@ -27,7 +27,7 @@ We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the ne
 
 LSHBOX is written by C++. And it also can be easily used in many contexts through the Python and MATLAB bindings provided with this toolbox.
 
-LSHBOX is simple and easy to use. If you want integrate LSHBOX with you application, it don't need compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.
+LSHBOX is simple and easy to use. If you want to integrate LSHBOX into you application, it don't need compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.
 
 If you want to test or contribute, you can use CMAKE to build some tools for the purpose.
 
