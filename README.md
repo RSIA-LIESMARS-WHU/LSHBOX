@@ -15,21 +15,21 @@ LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithms, i
 * LSH Based on Thresholding
 * LSH Based on p-Stable Distributions
 
-We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
-
 There are two repositories for compilation and performance tests, they are:
 * [LSHBOX-3rdparty](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty): 3rdparty of LSHBOX, it is for compilation
 * [LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): datasets for performance tests
+
+We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
 #####Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
 
 ###Chapter 2 - Compilation
 
-LSHBOX is written in the C++ programming language. And it also can be easily used in many contexts through the Python and MATLAB bindings provided with the library.
+LSHBOX is written by C++. And it also can be easily used in many contexts through the Python and MATLAB bindings provided with this toolbox.
 
-In order to make LSHBOX simple and easy to use, the library don't need to compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.
+LSHBOX is simple and easy to use. If you want integrate LSHBOX with you application, it don't need compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.
 
-You can use CMAKE to build some tools for the test of this library.
+If you want to test or contribute, you can use CMAKE to build some tools for the purpose.
 
 In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file "CMakeLists.txt", and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document "./python/README".
 
