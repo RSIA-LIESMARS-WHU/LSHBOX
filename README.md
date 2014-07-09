@@ -1,6 +1,6 @@
 LSHBOX-0.6
 ==========
-##An Open Source C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
+##A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
 
 ###Chapter 1 - Introduce
 
