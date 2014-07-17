@@ -34,14 +34,14 @@ If you want to test or contribute, you can use CMAKE to build some tools for the
 In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file "CMakeLists.txt", and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document "./python/README".
 During compilation, create a new directory named "build" in the main directory, then choose a appropriate compiler and switch to the "build" directory, finally, execute the following command according to your machine:
 
-#####Windows
+* Windows
 
 ```cpp
 cmake -DCMAKE_BUILD_TYPE=Release .. -G"NMake Makefiles"
 nmake
 ```
 
-#####Linux
+* Linux
 
 ```cpp
 cmake ..
