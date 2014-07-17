@@ -1,4 +1,4 @@
-LSHBOX-0.6
+LSHBOX-0.8
 ==========
 ##A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval
 
