@@ -19,7 +19,7 @@ There are two repositories for compilation and performance tests, they are:
 * [LSHBOX-3rdparty](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty): 3rdparty of LSHBOX, it is for compilation
 * [LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): datasets for performance tests
 
-We tested LSHBOX in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
+Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
 #####Please feel free to contact us [xiaozf@gmail.com or tanggefu@gmail.com] if you have any questions.
 
