@@ -10,7 +10,7 @@ param_itq.I = 50;
 disp('First time, need to constructing index') % About 10s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
-toc; 
+toc;
 disp('Second time, no need to re-indexing') % About 2s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
