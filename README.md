@@ -29,7 +29,7 @@ LSHBOX is written by C++. And it also can be easily used in many contexts throug
 
 LSHBOX is simple and easy to use. If you want to integrate LSHBOX into you application, it don't need compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.
 
-If you want to test or contribute, [CMAKE](http://www.cmake.org), a cross-platform, open-source build system, is usded to build some tools for the purpose. CMake can be downloaded from [CMake' website](http://www.cmake.org/cmake/resources/software.html/)
+If you want to test or contribute, [CMAKE](http://www.cmake.org), a cross-platform, open-source build system, is usded to build some tools for the purpose. CMake can be downloaded from [CMake' website](http://www.cmake.org/cmake/resources/software.html)
 
 In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file "CMakeLists.txt", and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document "./python/README".
 
