@@ -1,7 +1,7 @@
 Compile pylshbox
 ================
 
-If you want to compile this part by yourself, please delete the comment of the last line in file "CMakeLists.txt" in the first directory of this project, and you will find the compiling progress of this part must rely on Boost::python.
+If you want to compile this part by yourself, please delete the comment of the last line in file `CMakeLists.txt` in the first directory of this project, and you will find the compiling progress of this part must rely on Boost::python.
 
 If the Boost library installed on your machine, you can use cmake to compile. Otherwise, you have two choices:
 
