@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="lshbox : A c++ toolbox of locality-sensitive hashing (LSH), provides several popular LSH algorithms, also support python and matlab." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>lshbox</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX">View on GitHub</a>
+
+          <h1 id="project_title">lshbox</h1>
+          <h2 id="project_tagline">A c++ toolbox of locality-sensitive hashing (LSH), provides several popular LSH algorithms, also support python and matlab.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a name="chapter-1---introduce" class="anchor" href="#chapter-1---introduce"><span class="octicon octicon-link"></span></a>Chapter 1 - Introduce</h3>
+
+<p>Locality-Sensitive Hashing (LSH) is an efficient method for large scale image retrieval, and it achieves great performance in approximate nearest neighborhood searching.</p>
+
+<p>LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithms, in addition, it can be integrated into Python and MATLAB languages. The following LSH algrithms have been implemented in LSHBOX, they are:</p>
+
+<ul>
+<li>
+<a href="http://www.cs.huji.ac.il/%7Eyweiss/SpectralHashing/">Spectral Hashing</a> (SH)</li>
+<li>
+<a href="http://www.unc.edu/%7Eyunchao/itq.htm">Iterative Quantization</a> (ITQ)</li>
+<li>Random Hyperplane Hashing</li>
+<li>LSH Based on Random Bits Sampling</li>
+<li>LSH Based on Thresholding</li>
+<li>LSH Based on p-Stable Distributions</li>
+</ul><p>There are two repositories for compilation and performance tests, they are:</p>
+
+<ul>
+<li>
+<a href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty">LSHBOX-3rdparty</a>: 3rdparty of LSHBOX, it is for compilation</li>
+<li>
+<a href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data">LSHBOX-sample datasets</a>: datasets for performance tests</li>
+</ul><p>Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.</p>
+
+<p>Please feel free to contact us [<a href="mailto:xiaozf@gmail.com">xiaozf@gmail.com</a> or <a href="mailto:tanggefu@gmail.com">tanggefu@gmail.com</a>] if you have any questions.</p>
+
+<h3>
+<a name="chapter-2---compilation" class="anchor" href="#chapter-2---compilation"><span class="octicon octicon-link"></span></a>Chapter 2 - Compilation</h3>
+
+<p>LSHBOX is written by C++. And it also can be easily used in many contexts through the Python and MATLAB bindings provided with this toolbox.</p>
+
+<p>LSHBOX is simple and easy to use. If you want to integrate LSHBOX into you application, it don't need compile. You only need to add the include directory or modify the program search path, then you can use this library directly in C, C++, Python or MATLAB.</p>
+
+<p>If you want to test or contribute, <a href="http://www.cmake.org">CMAKE</a>, a cross-platform, open-source build system, is usded to build some tools for the purpose. CMake can be downloaded from <a href="http://www.cmake.org/cmake/resources/software.html">CMake' website</a></p>
+
+<p>In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file <code>CMakeLists.txt</code>, and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document <code>./python/README</code>.</p>
+
+<p>During compilation, create a new directory named <code>build</code> in the main directory, then choose a appropriate compiler and switch to the <code>build</code> directory, finally, execute the following command according to your machine:</p>
+
+<ul>
+<li>Windows</li>
+</ul><div class="highlight highlight-cpp"><pre><span class="n">cmake</span> <span class="o">-</span><span class="n">DCMAKE_BUILD_TYPE</span><span class="o">=</span><span class="n">Release</span> <span class="p">..</span> <span class="o">-</span><span class="n">G</span><span class="s">"NMake Makefiles"</span>
+<span class="n">nmake</span>
+</pre></div>
+
+<ul>
+<li>Linux</li>
+</ul><div class="highlight highlight-cpp"><pre><span class="n">cmake</span> <span class="p">..</span>
+<span class="n">make</span>
+</pre></div>
+
+<h3>
+<a name="chapter-3---usage" class="anchor" href="#chapter-3---usage"><span class="octicon octicon-link"></span></a>Chapter 3 - Usage</h3>
+
+<p>This chapter contains small examples of how to use the LSHBOX library from different programming languages (C++, Python and MATLAB).</p>
+
+<h5>
+<a name="for-c" class="anchor" href="#for-c"><span class="octicon octicon-link"></span></a>For C++</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cm">/**</span>
+<span class="cm"> * @file itqlsh_test.cpp</span>
+<span class="cm"> *</span>
+<span class="cm"> * @brief Example of using Iterative Quantization for L2 distance.</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;lshbox.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="k">typedef</span> <span class="kt">float</span> <span class="n">DATATYPE</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"LOADING DATA ..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">timer</span> <span class="n">timer</span><span class="p">;</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="s">"audio.data"</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"LOAD TIME: "</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"s."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"CONSTRUCTING INDEX ..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"itq.lsh"</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">use_index</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">itqLsh</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;</span> <span class="n">mylsh</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">use_index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mylsh</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">lshbox</span><span class="o">::</span><span class="n">itqLsh</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;::</span><span class="n">Parameter</span> <span class="n">param</span><span class="p">;</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">M</span> <span class="o">=</span> <span class="mi">521</span><span class="p">;</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">L</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">getDim</span><span class="p">();</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">N</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">S</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">I</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+        <span class="n">mylsh</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+        <span class="n">mylsh</span><span class="p">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">mylsh</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"CONSTRUCTING TIME: "</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"s."</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">"LOADING BENCHMARK ..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;::</span><span class="n">Accessor</span> <span class="n">accessor</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">Metric</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;</span> <span class="n">metric</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">getDim</span><span class="p">(),</span> <span class="n">L1_DIST</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">Q</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">lshbox</span><span class="o">::</span><span class="n">Scanner</span><span class="o">&lt;</span><span class="n">lshbox</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;::</span><span class="n">Accessor</span><span class="o">&gt;</span> <span class="n">scanner</span><span class="p">(</span>
+        <span class="n">accessor</span><span class="p">,</span>
+        <span class="n">metric</span><span class="p">,</span>
+        <span class="n">K</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span>
+    <span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"LOADING TIME: "</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"s."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"RUNING QUERY ..."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">I</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">Q</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"----- QUERY "</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>  <span class="o">&lt;&lt;</span> <span class="s">" -----"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">scanner</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">mylsh</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">scanner</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">float</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">scanner</span><span class="p">.</span><span class="n">topk</span><span class="p">().</span><span class="n">getTopk</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">result</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Frequency : "</span> <span class="o">&lt;&lt;</span> <span class="n">scanner</span><span class="p">.</span><span class="n">cnt</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>You can get the sample dataset <code>audio.data</code> from <a href="http://www.cs.princeton.edu/cass/audio.tar.gz">http://www.cs.princeton.edu/cass/audio.tar.gz</a>, if the link is invalid, you can also get it from <a href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data">LSHBOX-sample-data</a>.</p>
+
+<h5>
+<a name="for-python" class="anchor" href="#for-python"><span class="octicon octicon-link"></span></a>For Python</h5>
+
+<div class="highlight highlight-python"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c"># pylshbox_example.py</span>
+<span class="kn">import</span> <span class="nn">pylshbox</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="c"># prepare test data</span>
+<span class="n">float_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">192</span><span class="p">)</span>
+<span class="n">float_query</span> <span class="o">=</span> <span class="n">float_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="n">unsigned_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="n">float_mat</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">unsigned_query</span> <span class="o">=</span> <span class="n">unsigned_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="c"># Test rbsLsh</span>
+<span class="n">rbs_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">rbslsh</span><span class="p">()</span>
+<span class="n">rbs_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">unsigned_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">rbs_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">unsigned_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test rhpLsh</span>
+<span class="n">rhp_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">rhplsh</span><span class="p">()</span>
+<span class="n">rhp_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">rhp_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test thLsh</span>
+<span class="n">th_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">thlsh</span><span class="p">()</span>
+<span class="n">th_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">th_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test psdlsh with param.T = 1</span>
+<span class="n">psdL1_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">psdlsh</span><span class="p">()</span>
+<span class="n">psdL1_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">psdL1_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test psdlsh with param.T = 2</span>
+<span class="n">psdL2_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">psdlsh</span><span class="p">()</span>
+<span class="n">psdL2_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">psdL2_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test shLsh</span>
+<span class="n">sh_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">shlsh</span><span class="p">()</span>
+<span class="n">sh_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sh_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Test itqLsh</span>
+<span class="n">itq_mat</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">itqlsh</span><span class="p">()</span>
+<span class="n">itq_mat</span><span class="o">.</span><span class="n">init_mat</span><span class="p">(</span><span class="n">float_mat</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s">''</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">itq_mat</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">dists</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+<h5>
+<a name="for-matlab" class="anchor" href="#for-matlab"><span class="octicon octicon-link"></span></a>For MATLAB</h5>
+
+<div class="highlight highlight-matlab"><pre><span class="c">% lshbox_example.m</span>
+<span class="c">% prepare test data</span>
+<span class="n">dataset</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">100000</span><span class="p">);</span>
+<span class="n">testset</span> <span class="p">=</span> <span class="n">dataset</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">);</span>
+<span class="c">% Test rhplsh</span>
+<span class="n">param_rhp</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_rhp</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_rhp</span><span class="p">.</span><span class="n">N</span> <span class="p">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">rhplsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_rhp</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">% Test thlsh</span>
+<span class="n">param_th</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_th</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_th</span><span class="p">.</span><span class="n">N</span> <span class="p">=</span> <span class="mi">12</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">thlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_th</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">% Test psdlsh with param_psdL1.T = 1</span>
+<span class="n">param_psdL1</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_psdL1</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_psdL1</span><span class="p">.</span><span class="n">T</span> <span class="p">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">param_psdL1</span><span class="p">.</span><span class="n">W</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">psdlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_psdL1</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">% Test psdlsh with param_psdL2.T = 2</span>
+<span class="n">param_psdL2</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_psdL2</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_psdL2</span><span class="p">.</span><span class="n">T</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">param_psdL2</span><span class="p">.</span><span class="n">W</span> <span class="p">=</span> <span class="mf">0.5</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">psdlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_psdL2</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">% Test shlsh</span>
+<span class="n">param_sh</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_sh</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_sh</span><span class="p">.</span><span class="n">N</span> <span class="p">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="n">param_sh</span><span class="p">.</span><span class="n">S</span> <span class="p">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">shlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_sh</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">% Test itqlsh</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">N</span> <span class="p">=</span> <span class="mi">8</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">S</span> <span class="p">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">I</span> <span class="p">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">itqlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_itq</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+<p>Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.</p>
+
+<h5>
+<a name="for-python-1" class="anchor" href="#for-python-1"><span class="octicon octicon-link"></span></a>For Python</h5>
+
+<div class="highlight highlight-python"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c"># pylshbox_example2.py</span>
+<span class="kn">import</span> <span class="nn">pylshbox</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="c"># prepare test data</span>
+<span class="n">float_file</span> <span class="o">=</span> <span class="s">'audio.data'</span>
+<span class="n">float_query</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">192</span><span class="p">)</span>
+<span class="c"># Test itqLsh</span>
+<span class="c"># First time, need to constructing index. About 1.5s.</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">itq_file</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">itqlsh</span><span class="p">()</span>
+<span class="n">itq_file</span><span class="o">.</span><span class="n">init_file</span><span class="p">(</span><span class="n">float_file</span><span class="p">,</span> <span class="s">'pyitq.lsh'</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">itq_file</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'Elapsed time is </span><span class="si">%f</span><span class="s"> seconds.'</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="c"># Second time, no need to re-indexing. About 0.05s.</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">itq_file2</span> <span class="o">=</span> <span class="n">pylshbox</span><span class="o">.</span><span class="n">itqlsh</span><span class="p">()</span>
+<span class="n">itq_file2</span><span class="o">.</span><span class="n">init_file</span><span class="p">(</span><span class="n">float_file</span><span class="p">,</span> <span class="s">'pyitq.lsh'</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">itq_file2</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">float_query</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'Elapsed time is </span><span class="si">%f</span><span class="s"> seconds.'</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</pre></div>
+
+<h5>
+<a name="for-matlab-1" class="anchor" href="#for-matlab-1"><span class="octicon octicon-link"></span></a>For MATLAB</h5>
+
+<div class="highlight highlight-matlab"><pre><span class="c">% lshbox_example2.m</span>
+<span class="c">% prepare test data</span>
+<span class="n">dataset</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">500000</span><span class="p">);</span>
+<span class="n">testset</span> <span class="p">=</span> <span class="n">dataset</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">);</span>
+<span class="c">% Test itqlsh</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">M</span> <span class="p">=</span> <span class="mi">521</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">L</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">N</span> <span class="p">=</span> <span class="mi">8</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">S</span> <span class="p">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">param_itq</span><span class="p">.</span><span class="n">I</span> <span class="p">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="c">% First time, need to constructing index. About 10s.</span>
+<span class="n">tic</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">itqlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_itq</span><span class="p">,</span> <span class="s">'itq.lsh'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="n">toc</span><span class="p">;</span>
+<span class="c">% Second time, no need to re-indexing. About 2s.</span>
+<span class="n">tic</span><span class="p">;</span>
+<span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="n">dists</span><span class="p">]</span> <span class="p">=</span> <span class="n">itqlsh</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">testset</span><span class="p">,</span> <span class="n">param_itq</span><span class="p">,</span> <span class="s">'itq.lsh'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="n">toc</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="chapter-4---algorithm" class="anchor" href="#chapter-4---algorithm"><span class="octicon octicon-link"></span></a>Chapter 4 - Algorithm</h3>
+
+<p>LSHBOX is based on many approximate nearest neighbor schemes, and the following is a brief description of each algorithm and its parameters.</p>
+
+<h4>
+<a name="41---locality-sensitive-hashing-scheme-based-on-random-bits-sampling" class="anchor" href="#41---locality-sensitive-hashing-scheme-based-on-random-bits-sampling"><span class="octicon octicon-link"></span></a>4.1 - Locality-Sensitive Hashing Scheme Based on Random Bits Sampling</h4>
+
+<h5>
+<a name="reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>P. Indyk and R. Motwani. Approximate Nearest Neighbor - Towards Removing the Curse of Dimensionality. In Proceedings of the 30th Symposium on Theory of Computing, 1998, pp. 604-613.
+
+A. Gionis, P. Indyk, and R. Motwani. Similarity search in high dimensions via hashing. Proceedings of the 25th International Conference on Very Large Data Bases (VLDB), 1999.
+</code></pre>
+
+<h5>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Binary code bytes</span>
+    <span class="kt">unsigned</span> <span class="n">N</span><span class="p">;</span>
+    <span class="c1">/// The Difference between upper and lower bound of each dimension</span>
+    <span class="kt">unsigned</span> <span class="n">C</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation" class="anchor" href="#implementation"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/rbslsh.h&gt;</span>
+</pre></div>
+
+<p>According to the second assumption in the paper, all coordinates of points in P are positive integer. Although we can convert all coordinates to integers by multiplying them by a suitably large number and rounding to the nearest integer, but I think it is very fussy, What's more, it often gets criticized for using too much memory when in a larger range of data. Therefore, it is recommended to use other algorithm.</p>
+
+<h4>
+<a name="42---locality-sensitive-hashing-scheme-based-on-random-hyperplane" class="anchor" href="#42---locality-sensitive-hashing-scheme-based-on-random-hyperplane"><span class="octicon octicon-link"></span></a>4.2 - Locality-Sensitive Hashing Scheme Based on Random Hyperplane</h4>
+
+<h5>
+<a name="reference-1" class="anchor" href="#reference-1"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Charikar, M. S. 2002. Similarity estimation techniques from rounding algorithms. In Proceedings of the Thiry-Fourth Annual ACM Symposium on theory of Computing (Montreal, Quebec, Canada, May 19 - 21, 2002). STOC '02. ACM, New York, NY, 380-388. DOI= http://doi.acm.org/10.1145/509907.509965
+</code></pre>
+
+<h5>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Binary code bytes</span>
+    <span class="kt">unsigned</span> <span class="n">N</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation-1" class="anchor" href="#implementation-1"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/rhplsh.h&gt;</span>
+</pre></div>
+
+<h4>
+<a name="43---locality-sensitive-hashing-scheme-based-on-thresholding" class="anchor" href="#43---locality-sensitive-hashing-scheme-based-on-thresholding"><span class="octicon octicon-link"></span></a>4.3 - Locality-Sensitive Hashing Scheme Based on Thresholding</h4>
+
+<h5>
+<a name="reference-2" class="anchor" href="#reference-2"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Zhe Wang, Wei Dong, William Josephson, Qin Lv, Moses Charikar, Kai Li. Sizing Sketches: A Rank-Based Analysis for Similarity Search. In Proceedings of the 2007 ACM SIGMETRICS International Conference on Measurement and Modeling of Computer Systems . San Diego, CA, USA. June 2007.
+
+Qin Lv, Moses Charikar, Kai Li. Image Similarity Search with Compact Data Structures. In Proceedings of ACM 13th Conference on Information and Knowledge Management (CIKM), Washington D.C., USA. November 2004.
+</code></pre>
+
+<h5>
+<a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Binary code bytes</span>
+    <span class="kt">unsigned</span> <span class="n">N</span><span class="p">;</span>
+    <span class="c1">/// Upper bound of each dimension</span>
+    <span class="kt">float</span> <span class="n">Max</span><span class="p">;</span>
+    <span class="c1">/// Lower bound of each dimension</span>
+    <span class="kt">float</span> <span class="n">Min</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation-2" class="anchor" href="#implementation-2"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/thlsh.h&gt;</span>
+</pre></div>
+
+<h4>
+<a name="44---locality-sensitive-hashing-scheme-based-on-p-stable-distributions" class="anchor" href="#44---locality-sensitive-hashing-scheme-based-on-p-stable-distributions"><span class="octicon octicon-link"></span></a>4.4 - Locality-Sensitive Hashing Scheme Based on p-Stable Distributions</h4>
+
+<h5>
+<a name="reference-3" class="anchor" href="#reference-3"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Mayur Datar , Nicole Immorlica , Piotr Indyk , Vahab S. Mirrokni, Locality-sensitive hashing scheme based on p-stable distributions, Proceedings of the twentieth annual symposium on Computational geometry, June 08-11, 2004, Brooklyn, New York, USA.
+</code></pre>
+
+<h5>
+<a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Index mode, you can choose 1(CAUCHY) or 2(GAUSSIAN)</span>
+    <span class="kt">unsigned</span> <span class="n">T</span><span class="p">;</span>
+    <span class="c1">/// Window size</span>
+    <span class="kt">float</span> <span class="n">W</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation-3" class="anchor" href="#implementation-3"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/psdlsh.h&gt;</span>
+</pre></div>
+
+<h4>
+<a name="45---spectral-hashing" class="anchor" href="#45---spectral-hashing"><span class="octicon octicon-link"></span></a>4.5 - Spectral Hashing</h4>
+
+<h5>
+<a name="reference-4" class="anchor" href="#reference-4"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Y. Weiss, A. Torralba, R. Fergus. Spectral Hashing. Advances in Neural Information Processing Systems, 2008.
+</code></pre>
+
+<h5>
+<a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Binary code bytes</span>
+    <span class="kt">unsigned</span> <span class="n">N</span><span class="p">;</span>
+    <span class="c1">/// Size of vectors in train</span>
+    <span class="kt">unsigned</span> <span class="n">S</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation-4" class="anchor" href="#implementation-4"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/shlsh.h&gt;</span>
+</pre></div>
+
+<h4>
+<a name="46---iterative-quantization" class="anchor" href="#46---iterative-quantization"><span class="octicon octicon-link"></span></a>4.6 - Iterative Quantization</h4>
+
+<h5>
+<a name="reference-5" class="anchor" href="#reference-5"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
+</code></pre>
+
+<h5>
+<a name="parameters-5" class="anchor" href="#parameters-5"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="k">struct</span> <span class="n">Parameter</span>
+<span class="p">{</span>
+    <span class="c1">/// Hash table size</span>
+    <span class="kt">unsigned</span> <span class="n">M</span><span class="p">;</span>
+    <span class="c1">/// Number of hash tables</span>
+    <span class="kt">unsigned</span> <span class="n">L</span><span class="p">;</span>
+    <span class="c1">/// Dimension of the vector</span>
+    <span class="kt">unsigned</span> <span class="n">D</span><span class="p">;</span>
+    <span class="c1">/// Binary code bytes</span>
+    <span class="kt">unsigned</span> <span class="n">N</span><span class="p">;</span>
+    <span class="c1">/// Size of vectors in train</span>
+    <span class="kt">unsigned</span> <span class="n">S</span><span class="p">;</span>
+    <span class="c1">/// Training iterations</span>
+    <span class="kt">unsigned</span> <span class="n">I</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+<h5>
+<a name="implementation-5" class="anchor" href="#implementation-5"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="cp">#include &lt;lshbox/itqlsh.h&gt;</span>
+</pre></div>
+
+<p>According to the test, Iterative Quantization performance very good and is superior to other schemes, it can get better query accuracy with minimum cost.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">lshbox maintained by <a href="https://github.com/RSIA-LIESMARS-WHU">RSIA-LIESMARS-WHU</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
