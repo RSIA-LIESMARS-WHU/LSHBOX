@@ -1,13 +1,13 @@
 <map id="include/lshbox.h" name="include/lshbox.h">
-<area shape="rect" id="node2" href="$basis_8h.html" title="A set of basic tools. " alt="" coords="5,80,112,107"/>
-<area shape="rect" id="node6" href="$matrix_8h.html" title="Dataset management class. " alt="" coords="926,80,1037,107"/>
-<area shape="rect" id="node10" href="$metric_8h.html" title="Common distance measures. " alt="" coords="2526,80,2637,107"/>
-<area shape="rect" id="node11" href="$topk_8h.html" title="Top&#45;K data structures. " alt="" coords="802,80,902,107"/>
-<area shape="rect" id="node13" href="$eval_8h.html" title="A set of classes for evaluation. " alt="" coords="1061,80,1158,107"/>
-<area shape="rect" id="node19" href="$rbslsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Random Bits Sampling. " alt="" coords="137,80,247,107"/>
-<area shape="rect" id="node21" href="$rhplsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Random Hyperplane. " alt="" coords="271,80,382,107"/>
-<area shape="rect" id="node22" href="$thlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Thresholding. " alt="" coords="406,80,509,107"/>
-<area shape="rect" id="node23" href="$psdlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on p&#45;Stable Distributions. " alt="" coords="533,80,646,107"/>
-<area shape="rect" id="node24" href="$shlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Spectral Hashing. " alt="" coords="671,80,777,107"/>
-<area shape="rect" id="node26" href="$itqlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Iterative Quantization. " alt="" coords="2395,80,2501,107"/>
+<area shape="rect" id="node2" href="$basis_8h.html" title="A set of basic tools. " alt="" coords="58,80,165,107"/>
+<area shape="rect" id="node6" href="$matrix_8h.html" title="Dataset management class. " alt="" coords="189,80,300,107"/>
+<area shape="rect" id="node10" href="$metric_8h.html" title="Common distance measures. " alt="" coords="324,80,435,107"/>
+<area shape="rect" id="node12" href="$topk_8h.html" title="Top&#45;K data structures. " alt="" coords="580,80,680,107"/>
+<area shape="rect" id="node14" href="$eval_8h.html" title="A set of classes for evaluation. " alt="" coords="459,80,556,107"/>
+<area shape="rect" id="node19" href="$rbslsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Random Bits Sampling. " alt="" coords="841,80,952,107"/>
+<area shape="rect" id="node21" href="$rhplsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Random Hyperplane. " alt="" coords="976,80,1087,107"/>
+<area shape="rect" id="node22" href="$thlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Thresholding. " alt="" coords="1111,80,1213,107"/>
+<area shape="rect" id="node23" href="$psdlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on p&#45;Stable Distributions. " alt="" coords="704,80,817,107"/>
+<area shape="rect" id="node24" href="$shlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Spectral Hashing. " alt="" coords="1369,80,1475,107"/>
+<area shape="rect" id="node26" href="$itqlsh_8h.html" title="Locality&#45;Sensitive Hashing Scheme Based on Iterative Quantization. " alt="" coords="1238,80,1345,107"/>
 </map>

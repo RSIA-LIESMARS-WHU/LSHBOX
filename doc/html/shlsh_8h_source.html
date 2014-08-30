@@ -16,10 +16,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="lsh.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="lshbox.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">LSHBOX
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">0.8</span>
    </div>
   </td>
  </tr>
@@ -88,9 +88,9 @@
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classlshbox_1_1sh_lsh.html#a69853ad58d75e8bed2a7e7be15ecd9ea">pcsAll</a>.resize(<a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a1aec8c145844ee4de4995a9127591f81">L</a>);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="classlshbox_1_1sh_lsh.html#aef5fb081af24954be95c01c76a6e184c">minsAll</a>.resize(<a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a1aec8c145844ee4de4995a9127591f81">L</a>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="classlshbox_1_1sh_lsh.html#ad75c7cc9d79cfe8fe6af48b1e5b7b818">omegasAll</a>.resize(<a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a1aec8c145844ee4de4995a9127591f81">L</a>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::mt19937 rng(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>(std::time(0)));</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::uniform_int&lt;unsigned&gt; usArray(0, <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a46db556d9f15205d535803b1d3637162">M</a> - 1);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> iter = <a class="code" href="classlshbox_1_1sh_lsh.html#abd97ed14ad0042e00a50959b0a65718a">rndArray</a>.begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#abd97ed14ad0042e00a50959b0a65718a">rndArray</a>.end(); ++iter)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::mt19937 rng(<span class="keywordtype">unsigned</span>(std::time(0)));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::uniform_int_distribution&lt;unsigned&gt; usArray(0, <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a46db556d9f15205d535803b1d3637162">M</a> - 1);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;std::vector&lt;unsigned&gt; &gt;::iterator iter = <a class="code" href="classlshbox_1_1sh_lsh.html#abd97ed14ad0042e00a50959b0a65718a">rndArray</a>.begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#abd97ed14ad0042e00a50959b0a65718a">rndArray</a>.end(); ++iter)</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i != <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a78d6eaf1636482a27da7047fd73c78c3">N</a>; ++i)</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            {</div>
@@ -101,8 +101,8 @@
 <div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classlshbox_1_1sh_lsh.html#acc27881308721eb376813f8053f8913a">   99</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlshbox_1_1sh_lsh.html#acc27881308721eb376813f8053f8913a">train</a>(<a class="code" href="classlshbox_1_1_matrix.html">Matrix&lt;DATATYPE&gt;</a> &amp;data)</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    {</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordtype">int</span> npca = <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a78d6eaf1636482a27da7047fd73c78c3">N</a>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        std::mt19937 rng(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>(std::time(0)));</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        std::uniform_int&lt;unsigned&gt; usBits(0, data.<a class="code" href="classlshbox_1_1_matrix.html#a4f8dbb76319fe40792867d6ca51ef447">getSize</a>() - 1);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        std::mt19937 rng(<span class="keywordtype">unsigned</span>(std::time(0)));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        std::uniform_int_distribution&lt;unsigned&gt; usBits(0, data.<a class="code" href="classlshbox_1_1_matrix.html#a4f8dbb76319fe40792867d6ca51ef447">getSize</a>() - 1);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> k = 0; k != <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a1aec8c145844ee4de4995a9127591f81">L</a>; ++k)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            std::vector&lt;unsigned&gt; seqs;</div>
@@ -266,7 +266,7 @@
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordtype">unsigned</span> hashVal = sum % <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a46db556d9f15205d535803b1d3637162">M</a>;</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k].find(hashVal) != <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k].end())</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">auto</span> iter = <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k][hashVal].begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k][hashVal].end(); ++iter)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                <span class="keywordflow">for</span> (std::vector&lt;unsigned&gt;::iterator iter = <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k][hashVal].begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[k][hashVal].end(); ++iter)</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                {</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                    scanner(*iter);</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                }</div>
@@ -328,7 +328,7 @@
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            out.write((<span class="keywordtype">char</span> *)&amp;<a class="code" href="classlshbox_1_1sh_lsh.html#abd97ed14ad0042e00a50959b0a65718a">rndArray</a>[i][0], <span class="keyword">sizeof</span>(<span class="keywordtype">unsigned</span>) * <a class="code" href="classlshbox_1_1sh_lsh.html#a42b271a1ff77ae7c55512530b9593ba6">param</a>.<a class="code" href="structlshbox_1_1sh_lsh_1_1_parameter.html#a78d6eaf1636482a27da7047fd73c78c3">N</a>);</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            <span class="keywordtype">unsigned</span> count = unsigned(<a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[i].size());</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;            out.write((<span class="keywordtype">char</span> *)&amp;count, <span class="keyword">sizeof</span>(<span class="keywordtype">unsigned</span>));</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span> iter = <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[i].begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[i].end(); ++iter)</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">for</span> (std::map&lt;<span class="keywordtype">unsigned</span>, std::vector&lt;unsigned&gt; &gt;::iterator iter = <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[i].begin(); iter != <a class="code" href="classlshbox_1_1sh_lsh.html#af409ec2a5bbea23b44e3816d54176fa8">tables</a>[i].end(); ++iter)</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            {</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                <span class="keywordtype">unsigned</span> target = iter-&gt;first;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                out.write((<span class="keywordtype">char</span> *)&amp;target, <span class="keyword">sizeof</span>(<span class="keywordtype">unsigned</span>));</div>
@@ -385,7 +385,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 1 2014 21:07:16 for LSHBOX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Aug 29 2014 22:26:00 for LSHBOX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
