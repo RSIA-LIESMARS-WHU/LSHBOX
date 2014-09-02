@@ -22,11 +22,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /**
-<<<<<<< HEAD
- * @file rbslsh_test.cpp
-=======
  * @file rbslsh-run.cpp
->>>>>>> cbb8186ebe04484c150f66ae8eb93fad702533d3
  *
  * @brief Example of using Random Bits Sampling LSH index for L2 distance.
  */

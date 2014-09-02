@@ -23,7 +23,7 @@
 
 /**
  * @file shlsh_test.cpp
- * 
+ *
  * @brief Example of using Spectral Hashing LSH index for L2 distance.
  */
 #include <lshbox.h>
