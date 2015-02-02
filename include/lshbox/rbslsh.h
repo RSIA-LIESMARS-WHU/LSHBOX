@@ -120,8 +120,9 @@ public:
             {
                 if ((*it % param.C) <= unsigned(domin[*it / param.C]))
                 {
-                    sum += rndArray[i][seq++];
+                    sum += rndArray[i][seq];
                 }
+                ++seq;
             }
             unsigned hashVal = sum % param.M;
             tables[i][hashVal].push_back(key);
@@ -140,10 +141,13 @@ public:
         {
             unsigned sum(0), seq(0);
             for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
+            {
                 if ((*it % param.C) <= unsigned(domin[*it / param.C]))
                 {
-                    sum += rndArray[i][seq++];
+                    sum += rndArray[i][seq];
                 }
+                ++seq;
+            }
             unsigned hashVal = sum % param.M;
             if (tables[i].find(hashVal) != tables[i].end())
             {
