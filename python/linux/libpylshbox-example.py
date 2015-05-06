@@ -4,7 +4,7 @@
 import libpylshbox
 import numpy
 print 'prepare test data'
-float_mat = numpy.random.rand(10000, 192)
+float_mat = numpy.random.rand(100000, 192)
 float_query = float_mat[1,:]
 unsigned_mat = numpy.int32(float_mat*5)
 unsigned_query = unsigned_mat[1,:]
