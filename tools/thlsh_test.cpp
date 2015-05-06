@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
 		param.M = 521;
 		param.L = 5;
 		param.D = data.getDim();
-		param.N = 12; // ¶þ½øÖÆ×Ö½ÚÊý
+		param.N = 12;
 		param.Max = std::numeric_limits<float>::max();
 		param.Min = - std::numeric_limits<float>::max();
         for (unsigned i = 0; i != data.getSize(); ++i)
@@ -104,7 +104,7 @@ int main(int argc, char const *argv[])
         cost << float(scanner.cnt())/float(data.getSize());
         ++pd;
     }
-    std::cout << "QUERY TIME: " << timer.elapsed() << "s." << std::endl;
+    std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
     std::cout << "RECALL: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "COST  : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
     /*

@@ -88,7 +88,7 @@ int main(int argc, char const *argv[])
 		cost << float(scanner.cnt())/float(data.getSize());
 		++pd;
 	}
-	std::cout << "QUERY TIME: " << timer.elapsed() << "s." << std::endl;
+    std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
 	std::cout << "RECALL: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
 	std::cout << "COST  : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
     /*

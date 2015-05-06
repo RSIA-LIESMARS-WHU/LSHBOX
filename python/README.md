@@ -7,4 +7,4 @@ If the Boost library installed on your machine, you can use cmake to compile. Ot
 
 A. Install the Boost library (link: http://www.boost.org/), and than to complete the compilation.
 
-B. Download the part of Boost library that need to use (link: https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty), extracting file `3rdparty.7z` and put the file `3rdparty` in the first directory of this project, than, you should replace the content of `CMakeLists.txt` with `CMakeLists2.txt`, finally, to complete the compilation.
+B. Download the part of Boost library that need to use (link: https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty), extracting file `3rdparty.zip` and put the file `3rdparty` in the first directory of this project, than, you should replace the content of `CMakeLists.txt` with `CMakeLists2.txt`, finally, to complete the compilation.

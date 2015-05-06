@@ -735,7 +735,11 @@ private:
 };
 }
 
-BOOST_PYTHON_MODULE(pylshbox)
+#ifdef WIN32
+    BOOST_PYTHON_MODULE(pylshbox)
+#else
+    BOOST_PYTHON_MODULE(libpylshbox)
+#endif
 {
     using namespace boost::python;
     class_<lshbox::pyRbsLsh>("rbslsh", "Locality-Sensitive Hashing Scheme Based on Random Bits Sampling.")

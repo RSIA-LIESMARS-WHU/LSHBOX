@@ -10,14 +10,7 @@ INCLUDE_DIRECTORIES(
 
 ADD_DEFINITIONS("-DLIBLINE_BUILD")
 
-IF(MINGW)
-    ADD_LIBRARY(
-        pylshbox
-        SHARED
-        boostpy_ms.cpp
-        pylshbox.cpp
-    )
-ELSEIF(WIN32)
+IF(WIN32)
     ADD_LIBRARY(
         pylshbox
         SHARED
@@ -38,11 +31,20 @@ TARGET_LINK_LIBRARIES(
     ${PYTHON_LIBRARIES}
 )
 
-SET_TARGET_PROPERTIES(
-    pylshbox
-    PROPERTIES
-    SUFFIX
-    ".pyd"
-)
+IF(WIN32)
+    SET_TARGET_PROPERTIES(
+        pylshbox
+        PROPERTIES
+        SUFFIX
+        ".pyd"
+    )
+ELSE()
+    SET_TARGET_PROPERTIES(
+        pylshbox
+        PROPERTIES
+        SUFFIX
+        ".so"
+    )
+ENDIF()
 
-SET(LIBRARY_OUTPUT_PATH ${LSHBOX_BINARY_DIR}/pyd/${SAVE_CLASS})
+SET(LIBRARY_OUTPUT_PATH ${LSHBOX_BINARY_DIR}/py_module/${SAVE_CLASS})
