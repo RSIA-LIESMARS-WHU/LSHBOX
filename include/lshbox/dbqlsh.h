@@ -43,13 +43,12 @@ namespace lshbox
  *
  * For more information on Double-Bit Quantization based LSH, see the following reference.
  *
+ *     Kong W, Li W.Double-Bit Quantization for Hashing.In AAAI,2012.
+ *
  *     Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean
  *     approach to learning binary codes for large-scale image retrieval[J].
  *     Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013,
  *     35(12): 2916-2929.
- *
- *     Kong W, Li W.Double-Bit Quantization for Hashing.In AAAI,2012.
- *
  */
 template <typename DATATYPE = float>
 class dbqLsh
@@ -190,8 +189,9 @@ public:
 			++pd;
 		}
 	}
-
-	//Projection for the source vector
+    /**
+	 * Projection for the source vector
+	 */
 	void DataProjectoin()
 	{
 		for (unsigned k = 0; k != param.L; ++k)
@@ -251,9 +251,7 @@ public:
 			}
 		}
 	}
-
-
-	/*
+	/**
 	 * Allocating the thresholding-position for each projection dimension
 	 */
 	void Thresholds()
@@ -319,8 +317,8 @@ public:
 		std::cout << "The Left Thresholding-Matrix: A(" << param.L << "," << param.N << ")" << std::endl << A << std::endl << std::endl;
 		std::cout << "The Right Thresholding-Matrix: B(" << param.L << "," << param.N << ")" << std::endl << B << std::endl << std::endl;
 	}
-
-	/** Insert a vector to the index.
+	/** 
+	 *Insert a vector to the index.
 	 *
 	 * @param key Number of hash tables
 	 */
@@ -348,7 +346,6 @@ public:
 			tables[key][halVal].push_back(a);
 		}
 	}
-
 	/**
 	 * Query the approximate nearest neighborhoods.
 	 *

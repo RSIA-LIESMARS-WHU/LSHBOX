@@ -218,6 +218,12 @@ param_itq.N = 8;
 param_itq.S = 100;
 param_itq.I = 50;
 [indices, dists] = itqlsh(dataset, testset, param_itq, '', 2, 10)
+% Test dbqlsh
+param_dbq.M = 521;
+param_dbq.L = 5;
+param_dbq.N = 4;
+param_dbq.I = 5;
+[indices, dists] = dbqlsh(dataset, testset, param_itq, '', 2, 10)
 ```
 
 Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.
@@ -478,4 +484,38 @@ struct Parameter
 #include <lshbox/itqlsh.h>
 ```
 
-According to the test, Iterative Quantization performance very good and is superior to other schemes, it can get better query accuracy with minimum cost.
+###4.7 - Double-Bit Quantization Hashing
+
+#####Reference
+
+```
+Kong W, Li W.Double-Bit Quantization for Hashing.In AAAI,2012.
+
+Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
+```
+
+#####Parameters
+
+```cpp
+struct Parameter
+{
+	/// Hash table size
+	unsigned M;
+	/// Number of hash tables
+	unsigned L;
+	/// Dimension of the vector
+	unsigned D;
+	/// Number of projection dimensions,corresponding to 2*N binary code bytes for each vector
+	unsigned N;
+	/// Training iterations
+	unsigned I;
+};
+```
+
+#####Implementation
+
+```cpp
+#include <lshbox/dbqlsh.h>
+```
+
+According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes.Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better querry accuracy.
