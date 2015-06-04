@@ -49,8 +49,8 @@ int main(int argc, char const *argv[])
     else
     {
         lshbox::dbqLsh<DATATYPE>::Parameter param;
-        param.M =3;
-        param.L =1;
+        param.M =521;
+        param.L =5;
         param.D = data.getDim();
         param.N =4;
         param.I =5;
@@ -68,34 +68,28 @@ int main(int argc, char const *argv[])
     lshbox::Benchmark bench;
     std::string benchmark("audio.ben");
     bench.load(benchmark);
-	unsigned K =180;//unsigned K = bench.getK();
+    unsigned K = bench.getK();
     lshbox::Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
         accessor,
         metric,
         K,
         std::numeric_limits<float>::max()
     );
-
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
-
     timer.restart();
-    lshbox::Stat cost, recall,precision;
+    lshbox::Stat cost, recall;
     lshbox::progress_display pd(bench.getQ());
     for (unsigned i = 0; i != bench.getQ(); ++i)
     {
         scanner.reset(data[bench.getQuery(i)]);
         mylsh.query(data[bench.getQuery(i)], scanner);
         recall << bench.getAnswer(i).recall(scanner.topk());
-
-		precision << bench.getAnswer(i).precision(scanner.topk());
-
         cost << float(scanner.cnt()) / float(data.getSize());
         ++pd;
     }
     std::cout << "QUERY TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RECALL: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
-	std::cout << "PRECISION: " << precision.getAvg()<< " +/- " << precision.getStd() << std::endl;
     std::cout << "COST  : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
 	system("pause");
     /*
