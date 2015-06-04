@@ -518,4 +518,4 @@ struct Parameter
 #include <lshbox/dbqlsh.h>
 ```
 
-According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes.Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better querry accuracy.
+According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes. Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better query accuracy.
