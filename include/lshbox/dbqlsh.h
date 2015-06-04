@@ -43,7 +43,7 @@ namespace lshbox
  *
  * For more information on Double-Bit Quantization based LSH, see the following reference.
  *
- *     Kong W, Li W.Double-Bit Quantization for Hashing.In AAAI,2012.
+ *     Kong W, Li W. Double-Bit Quantization for Hashing. In AAAI, 2012.
  *
  *     Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean
  *     approach to learning binary codes for large-scale image retrieval[J].
@@ -62,7 +62,7 @@ public:
 		unsigned L;
 		/// Dimension of the vector, it can be obtained from the instance of Matrix
 		unsigned D;
-		/// Number of projection dimensions,corresponding to 2*N binary code bytes for each vector
+		/// Number of projection dimensions, corresponding to 2*N binary code bytes for each vector
 		unsigned N;
 		/// Training iterations
 		unsigned I;
