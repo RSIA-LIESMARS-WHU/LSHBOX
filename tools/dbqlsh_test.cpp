@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-/// Copyright (C) 2015 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>. 
+/// Copyright (C) 2015 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>.
 /// All Rights Reserved.
 ///
 /// This file is part of LSHBOX.
@@ -31,13 +31,13 @@
 #include<lshbox.h>
 int main(int argc, char const *argv[])
 {
-	std::cout <<"Example of Using Double-Bit Quantization for Hashing"<<std::endl<<std::endl;
-	typedef float DATATYPE;
-	std::cout<<"LOADING DATA..."<<std::endl;
-	lshbox::timer timer;
-	lshbox::Matrix <DATATYPE> data("audio.data");
-	std::cout<<"LOAD TIME:"<<timer.elapsed ()<<"s."<<std::endl;
-	std::cout << "CONSTRUCTING INDEX ..." << std::endl;
+    std::cout << "Example of Using Double-Bit Quantization for Hashing" << std::endl << std::endl;
+    typedef float DATATYPE;
+    std::cout << "LOADING DATA..." << std::endl;
+    lshbox::timer timer;
+    lshbox::Matrix <DATATYPE> data("audio.data");
+    std::cout << "LOAD TIME:" << timer.elapsed () << "s." << std::endl;
+    std::cout << "CONSTRUCTING INDEX ..." << std::endl;
     timer.restart();
     std::string file = "dbq.lsh";
     bool use_index = false;
@@ -49,11 +49,11 @@ int main(int argc, char const *argv[])
     else
     {
         lshbox::dbqLsh<DATATYPE>::Parameter param;
-        param.M =521;
-        param.L =5;
+        param.M = 521;
+        param.L = 5;
         param.D = data.getDim();
-        param.N =4;
-        param.I =5;
+        param.N = 4;
+        param.I = 5;
         mylsh.reset(param);
         mylsh.train(data);
     }
@@ -91,7 +91,7 @@ int main(int argc, char const *argv[])
     std::cout << "QUERY TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RECALL: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "COST  : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
-	system("pause");
+    system("pause");
     /*
     for (int i=0; i != 100; ++i)
     {
