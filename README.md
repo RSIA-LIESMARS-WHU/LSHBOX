@@ -489,7 +489,7 @@ struct Parameter
 #####Reference
 
 ```
-Kong W, Li W.Double-Bit Quantization for Hashing.In AAAI,2012.
+Kong W, Li W. Double-Bit Quantization for Hashing. In AAAI, 2012.
 
 Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
 ```
