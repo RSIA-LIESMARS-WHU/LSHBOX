@@ -9,6 +9,7 @@ SET(TOOLS
     psdlsh_test
     shlsh_test
     itqlsh_test
+    dbqlsh_test
 )
 
 FOREACH(TOOL ${TOOLS})
