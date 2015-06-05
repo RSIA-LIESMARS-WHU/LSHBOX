@@ -1,9 +1,14 @@
-LSHBOX-0.8
+LSHBOX-0.9
 ==========
 ###*A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.*
 -----------------------------------------------------------------------------------------------------------------
 
-###Chapter 1 - Introduce
+####Change Log
+```
+A new LSH method, Double-Bit Quantization Hashing (DBQ), is added into LSHBOX-0.9. We implement DBQ by C++ but also provid MATLAB interface. And the python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
+```
+
+###Chapter 1 - Introduction
 
 Locality-Sensitive Hashing (LSH) is an efficient method for large scale image retrieval, and it achieves great performance in approximate nearest neighborhood searching.
 
