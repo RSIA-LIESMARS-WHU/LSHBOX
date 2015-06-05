@@ -5,7 +5,7 @@ LSHBOX-0.9
 
 ####Change Log
 
-A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
+A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
 
 ###Chapter 1 - Introduction
 
