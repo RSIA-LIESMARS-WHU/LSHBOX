@@ -31,14 +31,29 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a id="chapter-1---introduce" class="anchor" href="#chapter-1---introduce" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chapter 1 - Introduce</h3>
+        <h1>
+<a id="lshbox-09" class="anchor" href="#lshbox-09" aria-hidden="true"><span class="octicon octicon-link"></span></a>LSHBOX-0.9</h1>
+
+<h3>
+<a id="a-c-toolbox-of-locality-sensitive-hashing-for-large-scale-image-retrieval-also-support-python-and-matlab" class="anchor" href="#a-c-toolbox-of-locality-sensitive-hashing-for-large-scale-image-retrieval-also-support-python-and-matlab" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.</em>
+</h3>
+
+<hr>
+
+<h4>
+<a id="change-log" class="anchor" href="#change-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>Change Log</h4>
+
+<p>A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.</p>
+
+<h3>
+<a id="chapter-1---introduction" class="anchor" href="#chapter-1---introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chapter 1 - Introduction</h3>
 
 <p>Locality-Sensitive Hashing (LSH) is an efficient method for large scale image retrieval, and it achieves great performance in approximate nearest neighborhood searching.</p>
 
 <p>LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithms, in addition, it can be integrated into Python and MATLAB languages. The following LSH algrithms have been implemented in LSHBOX, they are:</p>
 
 <ul>
+<li>Double-Bit Quantization Hashing</li>
 <li>
 <a href="http://www.cs.huji.ac.il/%7Eyweiss/SpectralHashing/">Spectral Hashing</a> (SH)</li>
 <li>
@@ -58,9 +73,10 @@
 <a href="https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data">LSHBOX-sample datasets</a>: datasets for performance tests</li>
 </ul>
 
-<p>Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit, Mac and Linux test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.</p>
+<p>Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit and with g++ in Linux, Mac test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.</p>
 
-<p>Please feel free to contact us [<a href="mailto:tanggefu@gmail.com">tanggefu@gmail.com</a> or <a href="mailto:xiaozf@gmail.com">xiaozf@gmail.com</a>] if you have any questions.</p>
+<h5>
+<a id="please-feel-free-to-contact-us-tanggefuqqcom-20288lysinacn-or-xiaozfgmailcom-if-you-have-any-questions" class="anchor" href="#please-feel-free-to-contact-us-tanggefuqqcom-20288lysinacn-or-xiaozfgmailcom-if-you-have-any-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Please feel free to contact us [<a href="mailto:tanggefu@qq.com">tanggefu@qq.com</a>, <a href="mailto:20288ly@sina.cn">20288ly@sina.cn</a> or <a href="mailto:xiaozf@gmail.com">xiaozf@gmail.com</a>] if you have any questions.</h5>
 
 <h3>
 <a id="chapter-2---compilation" class="anchor" href="#chapter-2---compilation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chapter 2 - Compilation</h3>
@@ -167,6 +183,8 @@ make</pre></div>
 <h5>
 <a id="for-python" class="anchor" href="#for-python" aria-hidden="true"><span class="octicon octicon-link"></span></a>For Python</h5>
 
+<p>(NOTE: In Windows, the py module name is pylshbox, but in linux, it will be libpylshbox.)</p>
+
 <div class="highlight highlight-python"><pre><span class="pl-c">#!/usr/bin/env python</span>
 <span class="pl-c"># -*- coding: utf-8 -*-</span>
 <span class="pl-c"># pylshbox_example.py</span>
@@ -254,7 +272,13 @@ param_itq.L = <span class="pl-c1">5</span>;
 param_itq.N = <span class="pl-c1">8</span>;
 param_itq.S = <span class="pl-c1">100</span>;
 param_itq.I = <span class="pl-c1">50</span>;
-[indices, dists] = itqlsh(<span class="pl-c1">dataset</span>, testset, param_itq, <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>, <span class="pl-c1">2</span>, <span class="pl-c1">10</span>)</pre></div>
+[indices, dists] = itqlsh(<span class="pl-c1">dataset</span>, testset, param_itq, <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>, <span class="pl-c1">2</span>, <span class="pl-c1">10</span>)
+<span class="pl-c">% Test dbqlsh</span>
+param_dbq.M = <span class="pl-c1">521</span>;
+param_dbq.L = <span class="pl-c1">5</span>;
+param_dbq.N = <span class="pl-c1">4</span>;
+param_dbq.I = <span class="pl-c1">5</span>;
+[indices, dists] = dbqlsh(<span class="pl-c1">dataset</span>, testset, param_itq, <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>, <span class="pl-c1">2</span>, <span class="pl-c1">10</span>)</pre></div>
 
 <p>Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.</p>
 
@@ -505,7 +529,40 @@ Qin Lv, Moses Charikar, Kai Li. Image Similarity Search with Compact Data Struct
 
 <div class="highlight highlight-cpp"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>lshbox/itqlsh.h<span class="pl-pds">&gt;</span></span></pre></div>
 
-<p>According to the test, Iterative Quantization performance very good and is superior to other schemes, it can get better query accuracy with minimum cost.</p>
+<h3>
+<a id="47---double-bit-quantization-hashing" class="anchor" href="#47---double-bit-quantization-hashing" aria-hidden="true"><span class="octicon octicon-link"></span></a>4.7 - Double-Bit Quantization Hashing</h3>
+
+<h5>
+<a id="reference-6" class="anchor" href="#reference-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reference</h5>
+
+<pre><code>Kong W, Li W. Double-Bit Quantization for Hashing. In AAAI, 2012.
+
+Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
+</code></pre>
+
+<h5>
+<a id="parameters-6" class="anchor" href="#parameters-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h5>
+
+<div class="highlight highlight-cpp"><pre><span class="pl-k">struct</span> <span class="pl-en">Parameter</span>
+{
+    <span class="pl-c">/// Hash table size</span>
+    <span class="pl-k">unsigned</span> M;
+    <span class="pl-c">/// Number of hash tables</span>
+    <span class="pl-k">unsigned</span> L;
+    <span class="pl-c">/// Dimension of the vector</span>
+    <span class="pl-k">unsigned</span> D;
+    <span class="pl-c">/// Number of projection dimensions,corresponding to 2*N binary code bytes for each vector</span>
+    <span class="pl-k">unsigned</span> N;
+    <span class="pl-c">/// Training iterations</span>
+    <span class="pl-k">unsigned</span> I;
+};</pre></div>
+
+<h5>
+<a id="implementation-6" class="anchor" href="#implementation-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementation</h5>
+
+<div class="highlight highlight-cpp"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>lshbox/dbqlsh.h<span class="pl-pds">&gt;</span></span></pre></div>
+
+<p>According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes. Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better query accuracy.</p>
       </section>
     </div>
 
