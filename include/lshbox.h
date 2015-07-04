@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
-/// Copyright (C) 2014 Gefu Tang <tanggefu@gmail.com>. All Rights Reserved.
+/// Copyright (C) 2015 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>.
+/// All Rights Reserved.
 ///
 /// This file is part of LSHBOX.
 ///
@@ -17,7 +18,7 @@
 /// with LSHBOX. If not, see <http://www.gnu.org/licenses/>.
 ///
 /// @version 0.1
-/// @author Gefu Tang & Zhifeng Xiao
+/// @author Gefu Tang , Yang Long & Zhifeng Xiao
 /// @date 2014.6.30
 //////////////////////////////////////////////////////////////////////////////
 
@@ -40,3 +41,4 @@
 #include <lshbox/shlsh.h>
 #include <lshbox/itqlsh.h>
 #include <lshbox/dbqlsh.h>
+#include <lshbox/kdbqlsh.h>

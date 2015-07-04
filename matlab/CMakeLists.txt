@@ -7,6 +7,7 @@ SET(MEX_NAME_SET
     shlsh_search
     itqlsh_search
     dbqlsh_search
+    kdbqlsh_search
 )
 
 IF(WIN32)
