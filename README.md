@@ -3,7 +3,11 @@ LSHBOX-0.9
 ###*A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.*
 -----------------------------------------------------------------------------------------------------------------
 
-####Change Log
+####Change Log (2015.07.04)
+
+A new LSH method, K-means Based Double-Bit Quantization for Hashing (KDBQ), was added into LSHBOX-0.9 on July 4th, 2015. We implement KDBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
+
+####Change Log (2015.06.04)
 
 A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
 
@@ -13,7 +17,8 @@ Locality-Sensitive Hashing (LSH) is an efficient method for large scale image re
 
 LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithms, in addition, it can be integrated into Python and MATLAB languages. The following LSH algrithms have been implemented in LSHBOX, they are:
 
-* Double-Bit Quantization Hashing
+* K-means Based Double-Bit Quantization Hashing(KDBQ)
+* Double-Bit Quantization Hashing(DBQ)
 * [Spectral Hashing](http://www.cs.huji.ac.il/~yweiss/SpectralHashing/) (SH)
 * [Iterative Quantization](http://www.unc.edu/~yunchao/itq.htm) (ITQ)
 * Random Hyperplane Hashing
@@ -223,6 +228,12 @@ param_itq.S = 100;
 param_itq.I = 50;
 [indices, dists] = itqlsh(dataset, testset, param_itq, '', 2, 10)
 % Test dbqlsh
+param_dbq.M = 521;
+param_dbq.L = 5;
+param_dbq.N = 4;
+param_dbq.I = 5;
+[indices, dists] = dbqlsh(dataset, testset, param_itq, '', 2, 10)
+% Test kdbqlsh
 param_dbq.M = 521;
 param_dbq.L = 5;
 param_dbq.N = 4;
@@ -520,6 +531,38 @@ struct Parameter
 
 ```cpp
 #include <lshbox/dbqlsh.h>
+```
+
+###4.8 - K-means Based Double-Bit Quantization Hashing
+
+#####Reference
+
+```
+Zhu, H. K-means based double-bit quantization for hashing.Computational Intelligence for Multimedia, Signal and Vision Processing (CIMSIVP),2014 IEEE Symposium on (pp.1-5). IEEE.
+```
+
+#####Parameters
+
+```cpp
+struct Parameter
+{
+	/// Hash table size
+	unsigned M;
+	/// Number of hash tables
+	unsigned L;
+	/// Dimension of the vector
+	unsigned D;
+	/// Number of projection dimensions,corresponding to 2*N binary code bytes for each vector
+	unsigned N;
+	/// Training iterations
+	unsigned I;
+};
+```
+
+#####Implementation
+
+```cpp
+#include <lshbox/kdbqlsh.h>
 ```
 
 According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes. Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better query accuracy.

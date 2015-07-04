@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
     else
     {
         lshbox::kdbqLsh<DATATYPE>::Parameter param;
-        param.M = 512 ;
+        param.M = 521 ;
         param.L = 5;
         param.D = data.getDim();
         param.N = 4;
