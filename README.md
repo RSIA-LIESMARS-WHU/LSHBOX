@@ -234,11 +234,11 @@ param_dbq.N = 4;
 param_dbq.I = 5;
 [indices, dists] = dbqlsh(dataset, testset, param_itq, '', 2, 10)
 % Test kdbqlsh
-param_dbq.M = 521;
-param_dbq.L = 5;
-param_dbq.N = 4;
-param_dbq.I = 5;
-[indices, dists] = dbqlsh(dataset, testset, param_itq, '', 2, 10)
+param_kdbq.M = 521;
+param_kdbq.L = 5;
+param_kdbq.N = 4;
+param_kdbq.I = 5;
+[indices, dists] = kdbqlsh(dataset, testset, param_itq, '', 2, 10)
 ```
 
 Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.

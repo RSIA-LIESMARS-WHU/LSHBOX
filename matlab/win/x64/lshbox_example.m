@@ -44,3 +44,9 @@ param_dbq.L = 5;
 param_dbq.N = 4;
 param_dbq.I = 5;
 [indices, dists] = dbqlsh(dataset, testset, param_dbq, '', 2, 10)
+disp('Test kdbqlsh, Press any key to continue.')
+param_kdbq.M = 521;
+param_kdbq.L = 5;
+param_kdbq.N = 4;
+param_kdbq.I = 50;
+[indices, dists] = kdbqlsh(dataset, testset, param_dbq, '', 2, 10)
