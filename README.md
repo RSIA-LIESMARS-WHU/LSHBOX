@@ -3,11 +3,13 @@ LSHBOX-0.9
 ###*A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.*
 -----------------------------------------------------------------------------------------------------------------
 
-####Change Log (2015.07.04)
+####Change Log
+
+* 2015.07.04
 
 A new LSH method, K-means Based Double-Bit Quantization for Hashing (KDBQ), was added into LSHBOX-0.9 on July 4th, 2015. We implement KDBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
 
-####Change Log (2015.06.04)
+* 2015.06.04
 
 A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
 
