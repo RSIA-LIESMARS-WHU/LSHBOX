@@ -119,7 +119,7 @@ int main(int argc, char const *argv[])
     );
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
-    for (int I = 0; i != Q; ++i)
+    for (int i = 0; i != Q; ++i)
     {
         std::cout << "----- QUERY " << i+1  << " -----" << std::endl;
         scanner.reset(data[i]);
