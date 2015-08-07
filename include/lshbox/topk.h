@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-/// Copyright (C) 2014 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>. 
+/// Copyright (C) 2014 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>.
 /// All Rights Reserved.
 ///
 /// This file is part of LSHBOX.
@@ -119,9 +119,9 @@ public:
                 }
             }
         }
-        return float(matched + 1) / float(heapv.size()+ 1);
+        return float(matched + 1) / float(heapv.size() + 1);
     }
-	/**
+    /**
      * Calculate the precision vale with another heap.
      */
     float precision(const Topk &topk) const
@@ -138,7 +138,7 @@ public:
                 }
             }
         }
-        return float(matched + 1) / float( topk.getTopk().size()+ 1);
+        return float(matched + 1) / float( topk.getTopk().size() + 1);
     }
 };
 

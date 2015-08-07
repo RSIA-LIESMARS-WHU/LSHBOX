@@ -293,7 +293,7 @@ public:
                 unsigned length;
                 in.read((char *)&length, sizeof(unsigned));
                 tables[i][target].resize(length);
-                in.read((char *)&(tables[i][target][0]), sizeof(unsigned) * length);
+                in.read((char *) & (tables[i][target][0]), sizeof(unsigned) * length);
             }
             pcsAll[i].resize(param.N);
             omegasAll[i].resize(param.N);
@@ -331,7 +331,7 @@ public:
                 out.write((char *)&target, sizeof(unsigned));
                 unsigned length = unsigned(iter->second.size());
                 out.write((char *)&length, sizeof(unsigned));
-                out.write((char *)&((iter->second)[0]), sizeof(unsigned) * length);
+                out.write((char *) & ((iter->second)[0]), sizeof(unsigned) * length);
             }
             for (unsigned j = 0; j != param.N; ++j)
             {

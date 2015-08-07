@@ -37,22 +37,22 @@ int main(int argc, char const *argv[])
     std::cout << "LOAD TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "CONSTRUCTING INDEX ..." << std::endl;
     timer.restart();
-	std::string file = "th.lsh";
-	bool use_index = false;
-	lshbox::thLsh<DATATYPE> mylsh;
-	if (use_index)
-	{
-		mylsh.load(file);
-	}
-	else
-	{
-		lshbox::thLsh<DATATYPE>::Parameter param;
-		param.M = 521;
-		param.L = 5;
-		param.D = data.getDim();
-		param.N = 12;
-		param.Max = std::numeric_limits<float>::max();
-		param.Min = - std::numeric_limits<float>::max();
+    std::string file = "th.lsh";
+    bool use_index = false;
+    lshbox::thLsh<DATATYPE> mylsh;
+    if (use_index)
+    {
+        mylsh.load(file);
+    }
+    else
+    {
+        lshbox::thLsh<DATATYPE>::Parameter param;
+        param.M = 521;
+        param.L = 5;
+        param.D = data.getDim();
+        param.N = 12;
+        param.Max = std::numeric_limits<float>::max();
+        param.Min = - std::numeric_limits<float>::max();
         for (unsigned i = 0; i != data.getSize(); ++i)
         {
             for (unsigned j = 0; j != data.getDim(); ++j)
@@ -67,14 +67,14 @@ int main(int argc, char const *argv[])
                 }
             }
         }
-		mylsh.reset(param);
-		lshbox::progress_display pd(data.getSize());
-		for (unsigned i = 0; i != data.getSize(); ++i)
-		{
-			mylsh.insert(i, data[i]);
-			++pd;
-		}
-	}
+        mylsh.reset(param);
+        lshbox::progress_display pd(data.getSize());
+        for (unsigned i = 0; i != data.getSize(); ++i)
+        {
+            mylsh.insert(i, data[i]);
+            ++pd;
+        }
+    }
     mylsh.save(file);
     std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "LOADING BENCHMARK ..." << std::endl;
@@ -101,7 +101,7 @@ int main(int argc, char const *argv[])
         scanner.reset(data[bench.getQuery(i)]);
         mylsh.query(data[bench.getQuery(i)], scanner);
         recall << bench.getAnswer(i).recall(scanner.topk());
-        cost << float(scanner.cnt())/float(data.getSize());
+        cost << float(scanner.cnt()) / float(data.getSize());
         ++pd;
     }
     std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
