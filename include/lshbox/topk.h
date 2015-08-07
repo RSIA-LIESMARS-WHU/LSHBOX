@@ -17,7 +17,7 @@
 /// You should have received a copy of the GNU General Public License along
 /// with LSHBOX. If not, see <http://www.gnu.org/licenses/>.
 ///
-/// @version 0.1
+/// @version 0.9
 /// @author Gefu Tang, Yang Long &  Zhifeng Xiao
 /// @date 2015.5.18
 //////////////////////////////////////////////////////////////////////////////
