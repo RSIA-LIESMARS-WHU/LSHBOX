@@ -88,11 +88,11 @@ public:
      */
     void push(unsigned key, float dist)
     {
-        if (dist < heapv[K - 1].second)//比较是为了得到最近距离
+        if (dist < heapv[K - 1].second)
         {
-            heapv.pop_back();//删除heapv最后一个元素
-            heapv.push_back(std::make_pair(key, dist));//向heapv添加元素
-            std::sort(heapv.begin(), heapv.end(), ascend);//将heapv中pair类型元素以升序排序
+            heapv.pop_back();
+            heapv.push_back(std::make_pair(key, dist));
+            std::sort(heapv.begin(), heapv.end(), ascend);
         }
     }
     /**
@@ -100,7 +100,7 @@ public:
      */
     float getMin() const
     {
-        return heapv[K - 1].second;//返回pair中距离参数
+        return heapv[K - 1].second;
     }
     /**
      * Calculate the recall vale with another heap.
