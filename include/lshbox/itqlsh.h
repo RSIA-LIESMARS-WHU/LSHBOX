@@ -126,9 +126,10 @@ public:
                 }
             }
             Eigen::MatrixXf centered = tmp.rowwise() - tmp.colwise().mean();
-            Eigen::MatrixXf cov = (centered.adjoint() * centered) / float(tmp.rows() - 1);
+            Eigen::MatrixXf cov = (centered.transpose() * centered) / float(tmp.rows() - 1);
             Eigen::SelfAdjointEigenSolver<Eigen::MatrixXf> eig(cov);
-            Eigen::MatrixXf mat_c = tmp * eig.eigenvectors().rightCols(npca);
+            Eigen::MatrixXf mat_pca = eig.eigenvectors().rightCols(npca);
+            Eigen::MatrixXf mat_c = tmp * mat_pca;
             Eigen::MatrixXf R(npca, npca);
             for (unsigned i = 0; i != R.rows(); ++i)
             {
@@ -157,8 +158,8 @@ public:
                         }
                     }
                 }
-                Eigen::JacobiSVD<Eigen::MatrixXf> svd_tmp(UX.adjoint() * mat_c, Eigen::ComputeThinU | Eigen::ComputeThinV);
-                R = svd_tmp.matrixV() * svd_tmp.matrixU().adjoint();
+                Eigen::JacobiSVD<Eigen::MatrixXf> svd_tmp(UX.transpose() * mat_c, Eigen::ComputeThinU | Eigen::ComputeThinV);
+                R = svd_tmp.matrixV() * svd_tmp.matrixU().transpose();
             }
             omegasAll[k].resize(npca);
             for (unsigned i = 0; i != omegasAll[k].size(); ++i)
@@ -175,7 +176,7 @@ public:
                 pcsAll[k][i].resize(param.D);
                 for (unsigned j = 0; j != pcsAll[k][i].size(); ++j)
                 {
-                    pcsAll[k][i][j] = eig.eigenvectors().rightCols(npca).adjoint()(i, j);
+                    pcsAll[k][i][j] = mat_pca(j, i);
                 }
             }
         }
