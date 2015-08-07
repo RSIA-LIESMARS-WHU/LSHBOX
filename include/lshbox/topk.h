@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
-/// Copyright (C) 2014 Gefu Tang <tanggefu@gmail.com>. All Rights Reserved.
+/// Copyright (C) 2014 Gefu Tang <tanggefu@gmail.com> & Yang Long <20288ly@sina.cn>. 
+/// All Rights Reserved.
 ///
 /// This file is part of LSHBOX.
 ///
@@ -17,8 +18,8 @@
 /// with LSHBOX. If not, see <http://www.gnu.org/licenses/>.
 ///
 /// @version 0.1
-/// @author Gefu Tang & Zhifeng Xiao
-/// @date 2014.6.30
+/// @author Gefu Tang, Yang Long &  Zhifeng Xiao
+/// @date 2015.5.18
 //////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -87,11 +88,11 @@ public:
      */
     void push(unsigned key, float dist)
     {
-        if (dist < heapv[K - 1].second)
+        if (dist < heapv[K - 1].second)//比较是为了得到最近距离
         {
-            heapv.pop_back();
-            heapv.push_back(std::make_pair(key, dist));
-            std::sort(heapv.begin(), heapv.end(), ascend);
+            heapv.pop_back();//删除heapv最后一个元素
+            heapv.push_back(std::make_pair(key, dist));//向heapv添加元素
+            std::sort(heapv.begin(), heapv.end(), ascend);//将heapv中pair类型元素以升序排序
         }
     }
     /**
@@ -99,7 +100,7 @@ public:
      */
     float getMin() const
     {
-        return heapv[K - 1].second;
+        return heapv[K - 1].second;//返回pair中距离参数
     }
     /**
      * Calculate the recall vale with another heap.
@@ -118,9 +119,31 @@ public:
                 }
             }
         }
-        return float(matched + 1) / float(K + 1);
+        return float(matched + 1) / float(heapv.size()+ 1);
+    }
+	/**
+     * Calculate the precision vale with another heap.
+     */
+    float precision(const Topk &topk) const
+    {
+        unsigned matched = 0;
+        for (auto i = heapv.begin(); i != heapv.end(); ++i)
+        {
+            for (auto j = topk.getTopk().begin(); j != topk.getTopk().end(); ++j)
+            {
+                if (i->first == j ->first)
+                {
+                    matched++;
+                    break;
+                }
+            }
+        }
+        return float(matched + 1) / float( topk.getTopk().size()+ 1);
     }
 };
+
+
+
 /**
  * Top-K scanner.
  *
