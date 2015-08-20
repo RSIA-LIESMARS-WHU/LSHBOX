@@ -99,7 +99,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     double *dists = mxGetPr(plhs[1]);
     lshbox::matDbqLsh mylsh;
     mylsh.init(data_set, dim, size, index, unsigned(params[2]),
-        unsigned(params[3]), unsigned(params[4]), unsigned(params[5]));
+               unsigned(params[3]), unsigned(params[4]), unsigned(params[5]));
     mylsh.query(query_set, query_size, indices, dists,
-        unsigned(params[0]), unsigned(params[1]));
+                unsigned(params[0]), unsigned(params[1]));
 }

@@ -28,79 +28,79 @@ namespace lshbox
 class matkdbqLsh
 {
 public:
-	typedef double DATATYPE;
-	void init(
-	    DATATYPE *source,
-	    unsigned dim,
-	    unsigned size,
-	    const std::string &index,
-	    unsigned M = 521,
-	    unsigned L = 5,
-	    unsigned N = 4,
-	    unsigned I = 5)
-	{
-		data.load(source, size, dim);
-		std::ifstream is(index.c_str(), std::ios_base::binary);
-		if (is)
-		{
-			lsh.load(index);
-		}
-		else
-		{
-			kdbqLsh<DATATYPE>::Parameter param;
-			param.M = M;
-			param.L = L;
-			param.D = data.getDim();
-			param.N = N;
-			param.I = I;
-			lsh.reset(param);
-			lsh.train(data);
-			lsh.save(index);
-		}
-	}
-	void query(DATATYPE *quy, unsigned size, DATATYPE *indices, DATATYPE *dists, unsigned type, unsigned K)
-	{
-		Matrix<DATATYPE>::Accessor accessor(data);
-		Metric<DATATYPE> metric(data.getDim(), type);
-		Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
-		    accessor,
-		    metric,
-		    K,
-		    std::numeric_limits<float>::max()
-		);
-		for (unsigned i = 0; i != size; ++i)
-		{
-			scanner.reset(quy + i * data.getDim());
-			lsh.query(quy + i * data.getDim(), scanner);
-			std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
-			for (unsigned j = 0; j != tmp.size(); ++j)
-			{
-				indices[i * K + j] = tmp[j].first;
-				dists[i * K + j] = tmp[j].second;
-			}
-		}
-	}
+    typedef double DATATYPE;
+    void init(
+        DATATYPE *source,
+        unsigned dim,
+        unsigned size,
+        const std::string &index,
+        unsigned M = 521,
+        unsigned L = 5,
+        unsigned N = 4,
+        unsigned I = 5)
+    {
+        data.load(source, size, dim);
+        std::ifstream is(index.c_str(), std::ios_base::binary);
+        if (is)
+        {
+            lsh.load(index);
+        }
+        else
+        {
+            kdbqLsh<DATATYPE>::Parameter param;
+            param.M = M;
+            param.L = L;
+            param.D = data.getDim();
+            param.N = N;
+            param.I = I;
+            lsh.reset(param);
+            lsh.train(data);
+            lsh.save(index);
+        }
+    }
+    void query(DATATYPE *quy, unsigned size, DATATYPE *indices, DATATYPE *dists, unsigned type, unsigned K)
+    {
+        Matrix<DATATYPE>::Accessor accessor(data);
+        Metric<DATATYPE> metric(data.getDim(), type);
+        Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
+            accessor,
+            metric,
+            K,
+            std::numeric_limits<float>::max()
+        );
+        for (unsigned i = 0; i != size; ++i)
+        {
+            scanner.reset(quy + i * data.getDim());
+            lsh.query(quy + i * data.getDim(), scanner);
+            std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+            for (unsigned j = 0; j != tmp.size(); ++j)
+            {
+                indices[i * K + j] = tmp[j].first;
+                dists[i * K + j] = tmp[j].second;
+            }
+        }
+    }
 private:
-	Matrix<DATATYPE> data;
-	kdbqLsh<DATATYPE> lsh;
+    Matrix<DATATYPE> data;
+    kdbqLsh<DATATYPE> lsh;
 };
 }
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-	double *data_set = mxGetPr(prhs[0]);
-	unsigned dim = mxGetM(prhs[0]);
-	unsigned size = mxGetN(prhs[0]);
-	double *query_set = mxGetPr(prhs[1]);
-	unsigned query_size = mxGetN(prhs[1]);
-	double *params = mxGetPr(prhs[2]);
-	std::string index = mxArrayToString(prhs[3]);
-	plhs[0] = mxCreateDoubleMatrix(int(params[1]), mxGetN(prhs[1]), mxREAL);
-	plhs[1] = mxCreateDoubleMatrix(int(params[1]), mxGetN(prhs[1]), mxREAL);
-	double *indices = mxGetPr(plhs[0]);
-	double *dists = mxGetPr(plhs[1]);
-	lshbox::matkdbqLsh mylsh;
-	mylsh.init(data_set, dim, size, index, unsigned(params[2]),
-	           unsigned(params[3]), unsigned(params[4]), unsigned(params[5]));
-	mylsh.query(query_set, query_size, indices, dists,
-	            unsigned(params[0]), unsigned(params[1]));
+    double *data_set = mxGetPr(prhs[0]);
+    unsigned dim = mxGetM(prhs[0]);
+    unsigned size = mxGetN(prhs[0]);
+    double *query_set = mxGetPr(prhs[1]);
+    unsigned query_size = mxGetN(prhs[1]);
+    double *params = mxGetPr(prhs[2]);
+    std::string index = mxArrayToString(prhs[3]);
+    plhs[0] = mxCreateDoubleMatrix(int(params[1]), mxGetN(prhs[1]), mxREAL);
+    plhs[1] = mxCreateDoubleMatrix(int(params[1]), mxGetN(prhs[1]), mxREAL);
+    double *indices = mxGetPr(plhs[0]);
+    double *dists = mxGetPr(plhs[1]);
+    lshbox::matkdbqLsh mylsh;
+    mylsh.init(data_set, dim, size, index, unsigned(params[2]),
+               unsigned(params[3]), unsigned(params[4]), unsigned(params[5]));
+    mylsh.query(query_set, query_size, indices, dists,
+                unsigned(params[0]), unsigned(params[1]));
 }
