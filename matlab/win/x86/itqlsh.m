@@ -10,4 +10,8 @@ if nargin < 6
 end
 params = [P, K, params.M, params.L, params.N, params.S, params.I];
 [indices, dists] = itqlsh_search(data, testset, params, index);
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> origin/master
