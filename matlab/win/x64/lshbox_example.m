@@ -49,4 +49,4 @@ param_kdbq.M = 521;
 param_kdbq.L = 5;
 param_kdbq.N = 4;
 param_kdbq.I = 50;
-[indices, dists] = kdbqlsh(dataset, testset, param_dbq, '', 2, 10)
+[indices, dists] = kdbqlsh(dataset, testset, param_kdbq, '', 2, 10)
