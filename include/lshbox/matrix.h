@@ -30,6 +30,7 @@
 #include <fstream>
 #include <vector>
 #include <assert.h>
+#include <string.h>
 namespace lshbox
 {
 /**
@@ -61,15 +62,6 @@ public:
             delete [] dims;
         }
         dims = new T[dim * N];
-    }
-    void free(void)
-    {
-        dim = N = 0;
-        if (dims != NULL)
-        {
-            delete [] dims;
-        }
-        dims = NULL;
     }
     Matrix(): dim(0), N(0), dims(NULL) {}
     Matrix(int _dim, int _N): dims(NULL)
@@ -112,6 +104,13 @@ public:
         return N;
     }
     /**
+     * Get the data.
+     */
+    T * getData() const
+    {
+        return dims;
+    }
+    /**
      * Load the Matrix from a binary file.
      */
     void load(const std::string &path)
@@ -119,10 +118,10 @@ public:
         std::ifstream is(path.c_str(), std::ios::binary);
         unsigned header[3];
         assert(sizeof header == 3 * 4);
-        is.read((char *)header, sizeof header);
+        is.read((char *)header, sizeof(header));
         reset(header[2], header[1]);
-        size_t sz = sizeof(T) * dim * N;
-        is.read((char *)dims, sz);
+        is.read((char *)dims, sizeof(T) * dim * N);
+		is.close();
     }
     /**
      * Load the Matrix from std::vector<T>.
@@ -134,10 +133,7 @@ public:
     void load(std::vector<T> &vec, int _N, int _dim)
     {
         reset(_dim, _N);
-        for (unsigned i = 0; i != vec.size(); ++i)
-        {
-            dims[i] = vec[i];
-        }
+        memcpy(dims, (void*)&vec[0], sizeof(T) * dim * N);
     }
     /**
      * Load the Matrix from T*.
@@ -149,10 +145,7 @@ public:
     void load(T *source, int _N, int _dim)
     {
         reset(_dim, _N);
-        for (unsigned i = 0; i != _N * _dim; ++i)
-        {
-            dims[i] = source[i];
-        }
+        memcpy(dims, source, sizeof(T) * dim * N);
     }
     /**
      * Save the Matrix as a binary file.
@@ -160,19 +153,30 @@ public:
     void save(const std::string &path)
     {
         std::ofstream os(path.c_str(), std::ios::binary);
-        save(os);
         unsigned header[3];
         header[0] = sizeof(T);
         header[1] = N;
         header[2] = dim;
         os.write((char *)header, sizeof header);
-        size_t sz = sizeof(T) * dim * N;
-        os.write((char *)dims, sz);
+        os.write((char *)dims, sizeof(T) * dim * N);
+		os.close();
     }
     Matrix(const std::string &path): dims(NULL)
     {
         load(path);
     }
+	Matrix(const Matrix& M): dims(NULL)
+	{
+		reset(M.getDim(), M.getSize());
+		memcpy(dims, M.getData(), sizeof(T) * dim * N);
+	}
+	Matrix& operator = (const Matrix& M)
+	{
+        dims = NULL;
+		reset(M.getDim(), M.getSize());
+		memcpy(dims, M.getData(), sizeof(T) * dim * N);
+		return *this;
+	}
     /**
      * An accessor class to be used with LSH index.
      */

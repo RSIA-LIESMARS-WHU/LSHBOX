@@ -7,7 +7,7 @@ LSHBOX-0.9
 
 * 2015.07.04
 
-A new LSH method, K-means Based Double-Bit Quantization for Hashing (KDBQ), was added into LSHBOX-0.9 on July 4th, 2015. We implement KDBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
+A new LSH method, K-means Based Double-Bit Quantization for Hashing (KDBQ), was added into LSHBOX-0.9 on July 4th, 2015. We implement KDBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to KDBQ have been updated synchronously.
 
 * 2015.06.04
 
