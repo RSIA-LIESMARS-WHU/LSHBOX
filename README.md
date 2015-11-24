@@ -44,7 +44,7 @@ LSHBOX is simple and easy to use. If you want to integrate LSHBOX into you appli
 
 If you want to test or contribute, [CMAKE](http://www.cmake.org), a cross-platform, open-source build system, is usded to build some tools for the purpose. CMake can be downloaded from [CMake' website](http://www.cmake.org/cmake/resources/software.html).
 
-In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file `CMakeLists.txt`, and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document `./python/README`.
+In some cases, if you want or need to compile it by yourself with Python and MATLAB, please delete the comment of the last two lines in file `CMakeLists.txt`, and you will find the compiling progress of python must rely on Boost library or some part of this library. For more detailed information, you can view the document [`./python/README`](https://github.com/RSIA-LIESMARS-WHU/LSHBOX/blob/master/python/README.md).
 
 During compilation, create a new directory named `build` in the main directory, then choose a appropriate compiler and switch to the `build` directory, finally, execute the following command according to your machine:
 
