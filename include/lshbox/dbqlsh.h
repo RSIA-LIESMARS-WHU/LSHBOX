@@ -318,7 +318,7 @@ public:
         std::cout << "The Right Thresholding-Matrix: B(" << param.L << "," << param.N << ")" << std::endl << B << std::endl << std::endl;
     }
     /**
-     *Insert a vector to the index.
+     * Insert a vector to the index.
      *
      * @param key Number of hash tables
      */
@@ -485,6 +485,5 @@ private:
     Eigen::MatrixXf A;
     Eigen::MatrixXf B;
     Eigen::MatrixXf X;
-
 };
 }

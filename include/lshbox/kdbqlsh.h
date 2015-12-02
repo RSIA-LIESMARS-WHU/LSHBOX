@@ -177,7 +177,6 @@ public:
                 }
             }
         }
-
         std::cout << std::endl;
         std::cout << "Data Projection..." << std::endl;
         DataProjectoin();
@@ -189,8 +188,9 @@ public:
             ++pd;
         }
     }
-
-    //Projection for the source vector
+    /**
+     * Projection for the source vector
+     */
     void DataProjectoin()
     {
         for (unsigned k = 0; k != param.L; ++k)
@@ -232,9 +232,8 @@ public:
         std::cout << "The Third Clustering Center-Matrix: u2(" << param.L << ","
                   << param.N << ")" << std::endl << u2 << std::endl << std::endl;
     }
-
-    /*
-     *K-means clustering
+    /**
+     * K-means clustering
      */
     void Cluster(unsigned k, Eigen::MatrixXf prjMatrix)
     {
@@ -315,8 +314,8 @@ public:
             }
         }
     }
-
-    /** Insert a vector to the index.
+    /**
+     * Insert a vector to the index.
      *
      * @param key Number of hash tables
      */
@@ -341,7 +340,6 @@ public:
             tables[key][halVal].push_back(a);
         }
     }
-
     /**
      * Query the approximate nearest neighborhoods.
      *
@@ -495,6 +493,5 @@ private:
     std::vector<std::vector<std::vector<std::vector<std::pair<float, unsigned> > > > > S;
     Eigen::MatrixXf u0, u1, u2;
     Eigen::MatrixXf X;
-
 };
 }

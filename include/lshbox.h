@@ -18,7 +18,7 @@
 /// with LSHBOX. If not, see <http://www.gnu.org/licenses/>.
 ///
 /// @version 0.1
-/// @author Gefu Tang , Yang Long & Zhifeng Xiao
+/// @author Gefu Tang, Yang Long & Zhifeng Xiao
 /// @date 2014.6.30
 //////////////////////////////////////////////////////////////////////////////
 
