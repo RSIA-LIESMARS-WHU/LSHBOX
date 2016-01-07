@@ -501,7 +501,7 @@ struct Parameter
 #include <lshbox/itqlsh.h>
 ```
 
-###4.7 - Double-Bit Quantization Hashing
+####4.7 - Double-Bit Quantization Hashing
 
 #####Reference
 
@@ -535,7 +535,7 @@ struct Parameter
 #include <lshbox/dbqlsh.h>
 ```
 
-###4.8 - K-means Based Double-Bit Quantization Hashing
+####4.8 - K-means Based Double-Bit Quantization Hashing
 
 #####Reference
 
