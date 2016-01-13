@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 {
     std::cout << "Example of Using K-means Double-Bit Quantization for Hashing" << std::endl << std::endl;
     typedef float DATATYPE;
-    std::cout << "LOADING DATA..." << std::endl;
+    std::cout << "LOADING DATA ..." << std::endl;
     lshbox::timer timer;
     lshbox::Matrix <DATATYPE> data("audio.data");
     std::cout << "LOAD TIME:" << timer.elapsed () << "s." << std::endl;

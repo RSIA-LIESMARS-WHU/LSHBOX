@@ -204,7 +204,7 @@ if(NOT MSVC)
 
   option(EIGEN_TEST_NEON "Enable/Disable Neon in tests/examples" OFF)
   if(EIGEN_TEST_NEON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=neon -mcpu=cortex-a"8)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=neon -mcpu=cortex-a8")
     message(STATUS "Enabling NEON in tests/examples")
   endif()
 
@@ -301,7 +301,7 @@ if(EIGEN_INCLUDE_INSTALL_DIR)
   )
 else()
   set(INCLUDE_INSTALL_DIR
-    "${CMAKE_INSTALL_PREFIX}/include/eigen3"
+    "include/eigen3"
     CACHE INTERNAL
     "The directory where we install the header files (internal)"
   )
@@ -404,7 +404,7 @@ if(cmake_generator_tolower MATCHES "makefile")
   message(STATUS "make install  | Install to ${CMAKE_INSTALL_PREFIX}. To change that:")
   message(STATUS "              |     cmake . -DCMAKE_INSTALL_PREFIX=yourpath")
   message(STATUS "              |   Eigen headers will then be installed to:")
-  message(STATUS "              |     ${INCLUDE_INSTALL_DIR}")
+  message(STATUS "              |     ${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR}")
   message(STATUS "              |   To install Eigen headers to a separate location, do:")
   message(STATUS "              |     cmake . -DEIGEN_INCLUDE_INSTALL_DIR=yourpath")
   message(STATUS "make doc      | Generate the API documentation, requires Doxygen & LaTeX")

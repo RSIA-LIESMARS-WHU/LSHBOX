@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 {
     unsigned K = 100, Q = 1000, seed = 2;
     lshbox::timer timer;
+
     // create benchmark of unsigned.data
     std::cout << "CREATE BENCHMARK OF UNSIGNED.DATA ..." << std::endl;
     timer.restart();
@@ -57,32 +58,31 @@ int main(int argc, char *argv[])
     }
     bench_unsigned.save(unsigned_query_file);
     std::cout << "MEAN QUERY TIME: " << timer.elapsed() / Q << "s." << std::endl;
-    // create benchmark of audio.data
-    /*
-    std::cout << "CREATE BENCHMARK OF AUDIO.DATA ..." << std::endl;
-    timer.restart();
-    std::string audio_file = "audio.data";
-    std::string audio_query_file = "audio.ben";
-    lshbox::Matrix<float> data_audio(audio_file);
-    lshbox::Benchmark bench_audio;
-    bench_audio.init(Q, K, data_audio.getSize(), seed);
-    lshbox::Metric<float> metric_audio(data_audio.getDim(), L1_DIST);
-    lshbox::progress_display pd_audio(Q);
-    for (unsigned i = 0; i != Q; ++i)
-    {
-        unsigned q = bench_audio.getQuery(i);
-        lshbox::Topk &topk = bench_audio.getAnswer(i);
-        for (unsigned j = 0; j != data_audio.getSize(); ++j)
-        {
-            if (q == j)
-            {
-                continue;
-            }
-            topk.push(j, metric_audio.dist(data_audio[q], data_audio[j]));
-        }
-        ++pd_audio;
-    }
-    bench_audio.save(audio_query_file);
-    std::cout << "MEAN QUERY TIME: " << timer.elapsed() / Q << "s." << std::endl;
-    */
+
+    // // create benchmark of audio.data
+    // std::cout << "CREATE BENCHMARK OF AUDIO.DATA ..." << std::endl;
+    // timer.restart();
+    // std::string audio_file = "audio.data";
+    // std::string audio_query_file = "audio.ben";
+    // lshbox::Matrix<float> data_audio(audio_file);
+    // lshbox::Benchmark bench_audio;
+    // bench_audio.init(Q, K, data_audio.getSize(), seed);
+    // lshbox::Metric<float> metric_audio(data_audio.getDim(), L1_DIST);
+    // lshbox::progress_display pd_audio(Q);
+    // for (unsigned i = 0; i != Q; ++i)
+    // {
+    //     unsigned q = bench_audio.getQuery(i);
+    //     lshbox::Topk &topk = bench_audio.getAnswer(i);
+    //     for (unsigned j = 0; j != data_audio.getSize(); ++j)
+    //     {
+    //         if (q == j)
+    //         {
+    //             continue;
+    //         }
+    //         topk.push(j, metric_audio.dist(data_audio[q], data_audio[j]));
+    //     }
+    //     ++pd_audio;
+    // }
+    // bench_audio.save(audio_query_file);
+    // std::cout << "MEAN QUERY TIME: " << timer.elapsed() / Q << "s." << std::endl;
 }

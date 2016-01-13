@@ -113,10 +113,7 @@ public:
         X.resize(data.getSize(), data.getDim());
         for (unsigned i = 0; i != X.rows(); ++i)
         {
-            for (unsigned j = 0; j != X.cols(); ++j)
-            {
-                X(i, j) = float(data[i][j]);
-            }
+            X.row(i) = Eigen::Map<Eigen::VectorXf>(data[i], data.getDim());
         }
         Eigen::MatrixXf cov = X.transpose() * X;
         Eigen::SelfAdjointEigenSolver<Eigen::MatrixXf> eig(cov);
@@ -125,7 +122,7 @@ public:
         std::cout << std::endl;
         for (unsigned k = 0; k != param.L; ++k)
         {
-            std::cout << "Computing the " << k + 1 << "th Hash Table Rotation-Matrix..." << std::endl;
+            std::cout << "Computing the " << k + 1 << "th Hash Table Rotation-Matrix ..." << std::endl;
             Eigen::MatrixXf R(npca, npca);
             for (unsigned i = 0; i != R.rows(); ++i)
             {
@@ -177,11 +174,11 @@ public:
             }
         }
         std::cout << std::endl;
-        std::cout << "Data Projectoin..." << std::endl;
+        std::cout << "Data Projectoin ..." << std::endl;
         DataProjectoin();
-        std::cout << "Thresholding..." << std::endl;
+        std::cout << "Thresholding ..." << std::endl;
         Thresholds();
-        std::cout << "Bits Allocating..." << std::endl;
+        std::cout << "Bits Allocating ..." << std::endl;
         progress_display pd(param.L);
         for (unsigned k = 0; k != param.L; ++k)
         {

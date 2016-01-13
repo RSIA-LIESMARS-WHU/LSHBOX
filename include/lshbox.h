@@ -29,16 +29,17 @@
  *
  * You only need to include this file to use the most functionalities of LSHBOX.
  */
+#pragma once
 #include <lshbox/basis.h>
 #include <lshbox/matrix.h>
 #include <lshbox/metric.h>
 #include <lshbox/topk.h>
 #include <lshbox/eval.h>
-#include <lshbox/rbslsh.h>
-#include <lshbox/rhplsh.h>
-#include <lshbox/thlsh.h>
-#include <lshbox/psdlsh.h>
-#include <lshbox/shlsh.h>
-#include <lshbox/itqlsh.h>
-#include <lshbox/dbqlsh.h>
-#include <lshbox/kdbqlsh.h>
+#include <lshbox/lsh/rbslsh.h>
+#include <lshbox/lsh/rhplsh.h>
+#include <lshbox/lsh/thlsh.h>
+#include <lshbox/lsh/psdlsh.h>
+#include <lshbox/lsh/shlsh.h>
+#include <lshbox/lsh/itqlsh.h>
+#include <lshbox/lsh/dbqlsh.h>
+#include <lshbox/lsh/kdbqlsh.h>
