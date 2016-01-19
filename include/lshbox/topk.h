@@ -34,17 +34,15 @@
 namespace lshbox
 {
 /**
- * Top-K heap.
+ * Max Heap.
  *
- * At this point topk should contain the nearest k query keys and distances.
+ * This is a max heap for TopK.
  */
-
 template <typename Comparable>
 class MaxHeap
 {
 public:
     explicit MaxHeap(int capacity = 100): array(capacity + 1), currentSize(0) {}
-
     explicit MaxHeap(const std::vector<Comparable> &items): array(items.size() + 10), currentSize(items.size())
     {
         for (int i = 0; i < items.size(); ++i)
@@ -53,12 +51,16 @@ public:
         }
         buildHeap();
     }
-
+    /**
+     * check if the heap is empty.
+     */
     bool isEmpty() const
     {
         return currentSize == 0;
     }
-
+    /**
+     * get the max value.
+     */
     const Comparable & findMax() const
     {
         if (isEmpty())
@@ -67,7 +69,10 @@ public:
         }
         return array[1];
     }
-
+    /**
+     * inser a value.
+     * @param x the insert value.
+     */
     void insert(const Comparable & x)
     {
         if (currentSize == array.size() - 1)
@@ -81,7 +86,9 @@ public:
         }
         array[hole] = x;
     }
-
+    /**
+     * delete the max value.
+     */
     void deleteMax()
     {
         if (isEmpty())
@@ -91,23 +98,30 @@ public:
         array[1] = array[currentSize--];
         percolateDown(1);
     }
-
-    void deleteMax(Comparable & minItem)
+    /**
+     * delete the max value.
+     * @param minItem the max value.
+     */
+    void deleteMax(Comparable &maxItem)
     {
         if (isEmpty())
         {
             std::cout << "UnderflowException() ..." << std::endl;
         }
-        minItem = array[1];
+        maxItem = array[1];
         array[1] = array[currentSize--];
         percolateDown(1);
     }
-
+    /**
+     * make the heap empty.
+     */
     void makeEmpty()
     {
         currentSize = 0;
     }
-
+    /**
+     * the size of max heap.
+     */
     int size()
     {
         return currentSize;
@@ -116,7 +130,9 @@ public:
 private:
     int currentSize;
     std::vector<Comparable> array;
-
+    /**
+     * build heap.
+     */
     void buildHeap()
     {
         for (int i = currentSize / 2; i > 0; --i)
@@ -124,7 +140,10 @@ private:
             percolateDown(i);
         }
     }
-
+    /**
+     * percolate down the binary heap.
+     * @param hole the index.
+     */
     void percolateDown(int hole)
     {
         int child;
@@ -133,16 +152,27 @@ private:
         {
             child = hole * 2;
             if (child != currentSize && array[child + 1] > array[child])
+            {
                 child++;
+            }
             if (array[child] > tmp)
+            {
                 array[hole] = array[child];
+            }
             else
+            {
                 break;
+            }
         }
         array[hole] = tmp;
     }
 };
 
+/**
+ * Top-K heap.
+ *
+ * At this point topk should contain the nearest k query keys and distances.
+ */
 class Topk
 {
 private:
@@ -151,11 +181,20 @@ private:
     std::vector<std::pair<float, unsigned> > tops;
 public:
     Topk(): K(0) {}
+    /**
+     * reset K value.
+     * @param _K the K value in TopK.
+     */
     void reset(int _K)
     {
         K = _K;
         tops.resize(0);
     }
+    /**
+     * push a value into the maxHeap.
+     * @param key  the key.
+     * @param dist the distance.
+     */
     void push(unsigned key, float dist)
     {
         std::pair<float, unsigned> item(dist, key);
@@ -169,23 +208,29 @@ public:
             heap.insert(item);
         }
     }
+    /**
+     * generate TopK.
+     */
     void genTopk()
     {
         unsigned total = heap.size();
-        for (unsigned i = 0; i != total; ++i) {
+        for (unsigned i = 0; i != total; ++i)
+        {
             std::pair<float, unsigned> top;
             heap.deleteMax(top);
             tops.push_back(top);
         }
         std::reverse(tops.begin(), tops.end());
     }
+    /**
+     * Get the std::vector<std::pair<float, unsigned> > instance which contains the nearest keys and distances.
+     */
     const std::vector<std::pair<float, unsigned> > &getTopk() const
     {
         return tops;
     }
     /**
-     * Get the std::vector<std::pair<unsigned, float> > instance which contains
-     * the nearest keys and distances.
+     * Get the std::vector<std::pair<float, unsigned> > instance which contains the nearest keys and distances.
      */
     std::vector<std::pair<float, unsigned> > &getTopk()
     {
@@ -193,6 +238,7 @@ public:
     }
     /**
      * Calculate the recall vale with another heap.
+     * @param  topk another TopK.
      */
     const float recall(const Topk &topk) const
     {
@@ -214,6 +260,7 @@ public:
     }
     /**
      * Calculate the precision vale with another heap.
+     * @param  topk another TopK.
      */
     const float precision(const Topk &topk) const
     {
