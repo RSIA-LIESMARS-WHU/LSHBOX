@@ -143,6 +143,16 @@ int main(int argc, char const *argv[])
     std::cout << "RECALL   : " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "PRECISION: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "COST     : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
+
+    // scanner.reset(data[0]);
+    // mylsh.query(data[0], scanner);
+    // scanner.topk().genTopk();
+    // std::vector<std::pair<float, unsigned> > res = scanner.topk().getTopk();
+    // for (std::vector<std::pair<float, unsigned> >::iterator it = res.begin(); it != res.end(); ++it)
+    // {
+    //     std::cout << it->second << ": " << it->first << std::endl;
+    // }
+    // std::cout << "DISTANCE COMPARISON TIMES: " << scanner.cnt() << std::endl;
 }
 ```
 You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/cass/audio.tar.gz](http://www.cs.princeton.edu/cass/audio.tar.gz), if the link is invalid, you can also get it from [LSHBOX-sample-data](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data).
@@ -342,7 +352,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/rbslsh.h>
+#include <lshbox/lsh/rbslsh.h>
 ```
 
 According to the second assumption in the paper, all coordinates of points in P are positive integer. Although we can convert all coordinates to integers by multiplying them by a suitably large number and rounding to the nearest integer, but I think it is very fussy, What's more, it often gets criticized for using too much memory when in a larger range of data. Therefore, it is recommended to use other algorithm.
@@ -375,7 +385,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/rhplsh.h>
+#include <lshbox/lsh/rhplsh.h>
 ```
 
 ####4.3 - Locality-Sensitive Hashing Scheme Based on Thresholding
@@ -411,7 +421,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/thlsh.h>
+#include <lshbox/lsh/thlsh.h>
 ```
 
 ####4.4 - Locality-Sensitive Hashing Scheme Based on p-Stable Distributions
@@ -443,7 +453,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/psdlsh.h>
+#include <lshbox/lsh/psdlsh.h>
 ```
 
 ####4.5 - Spectral Hashing
@@ -475,7 +485,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/shlsh.h>
+#include <lshbox/lsh/shlsh.h>
 ```
 
 ####4.6 - Iterative Quantization
@@ -509,7 +519,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/itqlsh.h>
+#include <lshbox/lsh/itqlsh.h>
 ```
 
 ####4.7 - Double-Bit Quantization Hashing
@@ -543,7 +553,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/dbqlsh.h>
+#include <lshbox/lsh/dbqlsh.h>
 ```
 
 ####4.8 - K-means Based Double-Bit Quantization Hashing
@@ -575,7 +585,7 @@ struct Parameter
 #####Implementation
 
 ```cpp
-#include <lshbox/kdbqlsh.h>
+#include <lshbox/lsh/kdbqlsh.h>
 ```
 
 According to the test, Double-Bit Quantization Hashing and Iterative Quantization performance very good and are superior to other schemes. Iterative Quantization can get high query accuracy with minimum cost while Double-Bit Quantization Hashing can achieve better query accuracy.
