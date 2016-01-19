@@ -77,14 +77,20 @@ This chapter contains small examples of how to use the LSHBOX library from diffe
 #include <lshbox.h>
 int main(int argc, char const *argv[])
 {
+    if (argc != 4)
+    {
+        std::cerr << "Usage: ./itqlsh_test data_file lsh_file benchmark_file" << std::endl;
+        return -1;
+    }
+    std::cout << "Example of using Iterative Quantization" << std::endl << std::endl;
     typedef float DATATYPE;
     std::cout << "LOADING DATA ..." << std::endl;
     lshbox::timer timer;
-    lshbox::Matrix<DATATYPE> data("audio.data");
+    lshbox::Matrix<DATATYPE> data(argv[1]);
     std::cout << "LOAD TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "CONSTRUCTING INDEX ..." << std::endl;
     timer.restart();
-    std::string file = "itq.lsh";
+    std::string file(argv[2]);
     bool use_index = false;
     lshbox::itqLsh<DATATYPE> mylsh;
     if (use_index)
@@ -104,34 +110,39 @@ int main(int argc, char const *argv[])
         mylsh.train(data);
     }
     mylsh.save(file);
-    std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s.";
-    std::cout << std::endl << "LOADING BENCHMARK ..." << std::endl;
+    std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
+    std::cout << "LOADING BENCHMARK ..." << std::endl;
     timer.restart();
     lshbox::Matrix<DATATYPE>::Accessor accessor(data);
     lshbox::Metric<DATATYPE> metric(data.getDim(), L1_DIST);
-    unsigned K = 10;
-    unsigned Q = 10;
+    lshbox::Benchmark bench;
+    std::string benchmark(argv[3]);
+    bench.load(benchmark);
+    unsigned K = bench.getK();
     lshbox::Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
         accessor,
         metric,
-        K,
-        std::numeric_limits<float>::max()
+        K
     );
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
-    for (int i = 0; i != Q; ++i)
+    timer.restart();
+    lshbox::Stat cost, recall, precision;
+    lshbox::progress_display pd(bench.getQ());
+    for (unsigned i = 0; i != bench.getQ(); ++i)
     {
-        std::cout << "----- QUERY " << i+1  << " -----" << std::endl;
-        scanner.reset(data[i]);
-        mylsh.query(data[i], scanner);
-        std::vector<std::pair<unsigned, float> > result;
-        result = scanner.topk().getTopk();
-        for (auto it = result.begin(); it != result.end(); ++it)
-        {
-            std::cout << it->first << ", " << it->second << std::endl;
-        }
-        std::cout << "Frequency : " << scanner.cnt() << std::endl;
+        scanner.reset(data[bench.getQuery(i)]);
+        mylsh.query(data[bench.getQuery(i)], scanner);
+        scanner.topk().genTopk();
+        recall << bench.getAnswer(i).recall(scanner.topk());
+        recall << bench.getAnswer(i).precision(scanner.topk());
+        cost << float(scanner.cnt()) / float(data.getSize());
+        ++pd;
     }
+    std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
+    std::cout << "RECALL   : " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
+    std::cout << "PRECISION: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
+    std::cout << "COST     : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
 }
 ```
 You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/cass/audio.tar.gz](http://www.cs.princeton.edu/cass/audio.tar.gz), if the link is invalid, you can also get it from [LSHBOX-sample-data](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data).
