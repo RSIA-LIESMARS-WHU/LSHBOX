@@ -29,14 +29,19 @@
 #include <lshbox.h>
 int main(int argc, char const *argv[])
 {
+    if (argc != 4)
+    {
+        std::cerr << "Usage: ./rbslsh_test data_file lsh_file benchmark_file" << std::endl;
+        return -1;
+    }
     std::cout << "Example of using Random Bits Sampling LSH" << std::endl << std::endl;
     std::cout << "LOADING DATA ..." << std::endl;
     lshbox::timer timer;
-    lshbox::Matrix<unsigned> data("unsigned.data");
+    lshbox::Matrix<unsigned> data(argv[1]);
     std::cout << "LOAD TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "CONSTRUCTING INDEX ..." << std::endl;
     timer.restart();
-    std::string file = "rbs.lsh";
+    std::string file(argv[2]);
     bool use_index = false;
     lshbox::rbsLsh mylsh;
     if (use_index)
@@ -66,44 +71,41 @@ int main(int argc, char const *argv[])
     lshbox::Matrix<unsigned>::Accessor accessor(data);
     lshbox::Metric<unsigned> metric(data.getDim(), L1_DIST);
     lshbox::Benchmark bench;
-    std::string benchmark("unsigned.ben");
+    std::string benchmark(argv[3]);
     bench.load(benchmark);
     unsigned K = bench.getK();
     lshbox::Scanner<lshbox::Matrix<unsigned>::Accessor> scanner(
         accessor,
         metric,
-        K,
-        std::numeric_limits<float>::max()
+        K
     );
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
     timer.restart();
-    lshbox::Stat cost, recall;
+    lshbox::Stat cost, recall, precision;
     lshbox::progress_display pd(bench.getQ());
     for (unsigned i = 0; i != bench.getQ(); ++i)
     {
         scanner.reset(data[bench.getQuery(i)]);
         mylsh.query(data[bench.getQuery(i)], scanner);
+        scanner.topk().genTopk();
         recall << bench.getAnswer(i).recall(scanner.topk());
+        recall << bench.getAnswer(i).precision(scanner.topk());
         cost << float(scanner.cnt()) / float(data.getSize());
         ++pd;
     }
     std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
-    std::cout << "RECALL: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
-    std::cout << "COST  : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
-    /*
-    for (int i=0; i != 100; ++i)
-    {
-        std::cout << "---------- QUERY " << i+1  << " ----------" << std::endl;
-        scanner.reset(data[i]);
-        mylsh.query(data[i], scanner);
-        std::vector<std::pair<unsigned, float> > result = scanner.topk().getTopk();
-        for (std::vector<std::pair<unsigned, float> >::iterator it = result.begin(); it != result.end(); ++it)
-        {
-            std::cout << it->first << ", " << it->second << std::endl;
-        }
-        std::cout << "VISIT: " << scanner.cnt() << std::endl;
-        getchar();
-    }
-    */
+    std::cout << "RECALL   : " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
+    std::cout << "PRECISION: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
+    std::cout << "COST     : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
+
+    // scanner.reset(data[0]);
+    // mylsh.query(data[0], scanner);
+    // scanner.topk().genTopk();
+    // std::vector<std::pair<float, unsigned> > res = scanner.topk().getTopk();
+    // for (std::vector<std::pair<float, unsigned> >::iterator it = res.begin(); it != res.end(); ++it)
+    // {
+    //     std::cout << it->second << ": " << it->first << std::endl;
+    // }
+    // std::cout << "DISTANCE COMPARISON TIMES: " << scanner.cnt() << std::endl;
 }

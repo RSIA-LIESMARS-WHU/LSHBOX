@@ -128,11 +128,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
@@ -239,11 +239,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
@@ -382,11 +382,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
@@ -497,11 +497,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
@@ -602,11 +602,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
@@ -711,11 +711,11 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
+        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();

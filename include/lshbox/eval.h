@@ -123,8 +123,8 @@ public:
             os << queries_[i] << "\t";
             for (unsigned j = 0; j != topks_[i].getTopk().size(); j++)
             {
-                os << "\t" <<  topks_[i].getTopk()[j].first;
                 os << "\t" <<  topks_[i].getTopk()[j].second;
+                os << "\t" <<  topks_[i].getTopk()[j].first;
             }
             os << std::endl;
         }
@@ -154,9 +154,13 @@ public:
             queries_[i] = q;
             for (unsigned j = 0; j != K_; ++j)
             {
-                is >> topks_[i].getTopk()[j].first;
-                is >> topks_[i].getTopk()[j].second;
+                unsigned key;
+                float dist;
+                is >> key;
+                is >> dist;
+                topks_[i].push(key, dist);
             }
+            topks_[i].genTopk();
         }
     }
     /**

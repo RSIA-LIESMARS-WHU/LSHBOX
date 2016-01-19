@@ -65,18 +65,18 @@ public:
         Scanner<lshbox::Matrix<DATATYPE>::Accessor> scanner(
             accessor,
             metric,
-            K,
-            std::numeric_limits<float>::max()
+            K
         );
         for (unsigned i = 0; i != size; ++i)
         {
             scanner.reset(quy + i * data.getDim());
             lsh.query(quy + i * data.getDim(), scanner);
-            std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+            scanner.topk().genTopk();
+            std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
             for (unsigned j = 0; j != tmp.size(); ++j)
             {
-                indices[i * K + j] = tmp[j].first;
-                dists[i * K + j] = tmp[j].second;
+                indices[i * K + j] = tmp[j].second;
+                dists[i * K + j] = tmp[j].first;
             }
         }
     }

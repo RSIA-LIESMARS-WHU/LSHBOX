@@ -38,111 +38,202 @@ namespace lshbox
  *
  * At this point topk should contain the nearest k query keys and distances.
  */
+
+template <typename Comparable>
+class MaxHeap
+{
+public:
+    explicit MaxHeap(int capacity = 100): array(capacity + 1), currentSize(0) {}
+
+    explicit MaxHeap(const std::vector<Comparable> &items): array(items.size() + 10), currentSize(items.size())
+    {
+        for (int i = 0; i < items.size(); ++i)
+        {
+            array[i + 1] = items[i];
+        }
+        buildHeap();
+    }
+
+    bool isEmpty() const
+    {
+        return currentSize == 0;
+    }
+
+    const Comparable & findMax() const
+    {
+        if (isEmpty())
+        {
+            std::cout << "UnderflowException() ..." << std::endl;
+        }
+        return array[1];
+    }
+
+    void insert(const Comparable & x)
+    {
+        if (currentSize == array.size() - 1)
+        {
+            array.resize(array.size() * 2);
+        }
+        int hole = ++currentSize;
+        for (; hole > 1 && x > array[hole / 2]; hole /= 2)
+        {
+            array[hole] = array[hole / 2];
+        }
+        array[hole] = x;
+    }
+
+    void deleteMax()
+    {
+        if (isEmpty())
+        {
+            std::cout << "UnderflowException() ..." << std::endl;
+        }
+        array[1] = array[currentSize--];
+        percolateDown(1);
+    }
+
+    void deleteMax(Comparable & minItem)
+    {
+        if (isEmpty())
+        {
+            std::cout << "UnderflowException() ..." << std::endl;
+        }
+        minItem = array[1];
+        array[1] = array[currentSize--];
+        percolateDown(1);
+    }
+
+    void makeEmpty()
+    {
+        currentSize = 0;
+    }
+
+    int size()
+    {
+        return currentSize;
+    }
+
+private:
+    int currentSize;
+    std::vector<Comparable> array;
+
+    void buildHeap()
+    {
+        for (int i = currentSize / 2; i > 0; --i)
+        {
+            percolateDown(i);
+        }
+    }
+
+    void percolateDown(int hole)
+    {
+        int child;
+        Comparable tmp = array[hole];
+        for (; hole * 2 <= currentSize; hole = child)
+        {
+            child = hole * 2;
+            if (child != currentSize && array[child + 1] > array[child])
+                child++;
+            if (array[child] > tmp)
+                array[hole] = array[child];
+            else
+                break;
+        }
+        array[hole] = tmp;
+    }
+};
+
 class Topk
 {
 private:
     unsigned K;
-    float R;
-    std::vector<std::pair<unsigned, float> > heapv;
+    MaxHeap<std::pair<float, unsigned> > heap;
+    std::vector<std::pair<float, unsigned> > tops;
 public:
-    Topk(): K(0), R(std::numeric_limits<float>::max()) {};
-    ~Topk() {};
-    /**
-     * Reset the heap
-     *
-     * @param k The number of nearest query keys
-     * @param r The initialization distance
-     */
-    void reset(unsigned k, float r = std::numeric_limits<float>::max())
+    Topk(): K(0) {}
+    void reset(int _K)
     {
-        R = r;
-        K = k;
-        heapv.resize(K);
-        for (std::vector<std::pair<unsigned, float> >::iterator it = heapv.begin();
-                it != heapv.end(); ++it)
-        {
-            *it = std::make_pair(0, R);
-        }
+        K = _K;
+        tops.resize(0);
     }
-    /**
-     * Get the std::vector<std::pair<unsigned, float> > instance which contains
-     * the nearest keys and distances.
-     */
-    const std::vector<std::pair<unsigned, float> > &getTopk() const
-    {
-        return heapv;
-    }
-    /**
-     * Get the std::vector<std::pair<unsigned, float> > instance which contains
-     * the nearest keys and distances.
-     */
-    std::vector<std::pair<unsigned, float> > &getTopk()
-    {
-        return heapv;
-    }
-    /**
-     * Add an element to the heap and then update it.
-     *
-     * @param key  The key of the element
-     * @param dist The distance of the element
-     */
     void push(unsigned key, float dist)
     {
-        if (dist < heapv[K - 1].second)
+        std::pair<float, unsigned> item(dist, key);
+        if (heap.size() < K)
         {
-            heapv.pop_back();
-            heapv.push_back(std::make_pair(key, dist));
-            std::sort(heapv.begin(), heapv.end(), ascend);
+            heap.insert(item);
+        }
+        else if (item < heap.findMax())
+        {
+            heap.deleteMax();
+            heap.insert(item);
         }
     }
-    /**
-     * Get the most nearest distance in the heap.
-     */
-    float getMin() const
+    void genTopk()
     {
-        return heapv[K - 1].second;
+        unsigned total = heap.size();
+        for (unsigned i = 0; i != total; ++i) {
+            std::pair<float, unsigned> top;
+            heap.deleteMax(top);
+            tops.push_back(top);
+        }
+        std::reverse(tops.begin(), tops.end());
+    }
+    const std::vector<std::pair<float, unsigned> > &getTopk() const
+    {
+        return tops;
+    }
+    /**
+     * Get the std::vector<std::pair<unsigned, float> > instance which contains
+     * the nearest keys and distances.
+     */
+    std::vector<std::pair<float, unsigned> > &getTopk()
+    {
+        return tops;
     }
     /**
      * Calculate the recall vale with another heap.
      */
-    float recall(const Topk &topk) const
+    const float recall(const Topk &topk) const
     {
+        std::vector<std::pair<float, unsigned> > tops = getTopk();
+        std::vector<std::pair<float, unsigned> > benchTops = topk.getTopk();
         unsigned matched = 0;
-        for (auto i = heapv.begin(); i != heapv.end(); ++i)
+        for (std::vector<std::pair<float, unsigned> >::iterator i = tops.begin(); i != tops.end(); ++i)
         {
-            for (auto j = topk.getTopk().begin(); j != topk.getTopk().end(); ++j)
+            for (std::vector<std::pair<float, unsigned> >::iterator j = benchTops.begin(); j != benchTops.end(); ++j)
             {
-                if (i->first == j ->first)
+                if (i->second == j->second)
                 {
-                    matched++;
+                    ++matched;
                     break;
                 }
             }
         }
-        return float(matched + 1) / float(heapv.size() + 1);
+        return float(matched + 1) / float(benchTops.size() + 1);
     }
     /**
      * Calculate the precision vale with another heap.
      */
-    float precision(const Topk &topk) const
+    const float precision(const Topk &topk) const
     {
+        std::vector<std::pair<float, unsigned> > tops = getTopk();
+        std::vector<std::pair<float, unsigned> > benchTops = topk.getTopk();
         unsigned matched = 0;
-        for (auto i = heapv.begin(); i != heapv.end(); ++i)
+        for (std::vector<std::pair<float, unsigned> >::iterator i = tops.begin(); i != tops.end(); ++i)
         {
-            for (auto j = topk.getTopk().begin(); j != topk.getTopk().end(); ++j)
+            for (std::vector<std::pair<float, unsigned> >::iterator j = benchTops.begin(); j != benchTops.end(); ++j)
             {
-                if (i->first == j ->first)
+                if (i->second == j->second)
                 {
-                    matched++;
+                    ++matched;
                     break;
                 }
             }
         }
-        return float(matched + 1) / float( topk.getTopk().size() + 1);
+        return float(matched + 1) / float(tops.size() + 1);
     }
 };
-
-
 
 /**
  * Top-K scanner.
@@ -166,9 +257,8 @@ public:
     Scanner(
         const ACCESSOR &accessor,
         const Metric<DATATYPE> &metric,
-        unsigned K,
-        float R = std::numeric_limits<float>::max()
-    ): accessor_(accessor), metric_(metric), K_(K), R_(R), cnt_(0) {}
+        unsigned K
+    ): accessor_(accessor), metric_(metric), K_(K), cnt_(0) {}
     /**
       * Reset the query, this function should be invoked before each query.
       */
@@ -176,7 +266,7 @@ public:
     {
         query_ = query;
         accessor_.reset();
-        topk_.reset(K_, R_);
+        topk_.reset(K_);
         cnt_ = 0;
     }
     /**
@@ -218,7 +308,6 @@ private:
     Topk topk_;
     Value query_;
     unsigned K_;
-    float R_;
     unsigned cnt_;
 };
 }

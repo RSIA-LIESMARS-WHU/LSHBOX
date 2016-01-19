@@ -29,10 +29,15 @@
 #include <lshbox.h>
 int main(int argc, char *argv[])
 {
+    if (argc != 2)
+    {
+        std::cerr << "Usage: ./create_test_data data_file" << std::endl;
+        return -1;
+    }
     std::cout << "CREATE UNSIGNED TEST DATA ..." << std::endl;
     lshbox::timer timer;
     std::mt19937 rng(unsigned(std::time(0)));
-    std::ofstream out_u("unsigned.data", std::ios::binary);
+    std::ofstream out_u(argv[1], std::ios::binary);
     unsigned bytes_u(sizeof(unsigned)), size_u(1000000), dim_u(10);
     out_u.write((char *)&bytes_u, bytes_u);
     out_u.write((char *)&size_u, bytes_u);
