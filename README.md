@@ -55,7 +55,7 @@ cmake -DCMAKE_BUILD_TYPE=Release .. -G"NMake Makefiles"
 nmake
 ```
 
-* Linux
+* Linux & OS X
 
 ```cpp
 cmake ..
