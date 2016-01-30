@@ -1,5 +1,0 @@
-<map id="ascend" name="ascend">
-<area shape="rect" id="node2" href="$classlshbox_1_1sh_lsh.html#acc27881308721eb376813f8053f8913a" title="lshbox::shLsh::train" alt="" coords="117,5,253,32"/>
-<area shape="rect" id="node3" href="$classlshbox_1_1_topk.html#a7c9ccab510d5de02567322bc4cfe933f" title="lshbox::Topk::push" alt="" coords="119,56,251,83"/>
-<area shape="rect" id="node4" href="$classlshbox_1_1_scanner.html#af8ae0c095dff0afccac9ecab289d7c1a" title="lshbox::Scanner::operator()" alt="" coords="301,56,480,83"/>
-</map>

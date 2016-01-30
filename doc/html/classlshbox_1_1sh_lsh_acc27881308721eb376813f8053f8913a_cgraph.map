@@ -1,6 +1,0 @@
-<map id="train" name="train">
-<area shape="rect" id="node2" href="$classlshbox_1_1_matrix.html#a4f8dbb76319fe40792867d6ca51ef447" title="lshbox::Matrix::getSize" alt="" coords="100,5,256,32"/>
-<area shape="rect" id="node3" href="$classlshbox_1_1_matrix.html#a357e4ff8d557d23cb18fdcfefcf93ec6" title="lshbox::Matrix::getDim" alt="" coords="101,56,255,83"/>
-<area shape="rect" id="node4" href="$namespacelshbox.html#aa5de942109bc3b5651161cccb357df7d" title="lshbox::ascend" alt="" coords="123,107,233,133"/>
-<area shape="rect" id="node5" href="$classlshbox_1_1sh_lsh.html#abdc806bb99834d4a9046634ef263d0f1" title="insert" alt="" coords="151,157,205,184"/>
-</map>

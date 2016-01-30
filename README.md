@@ -19,18 +19,18 @@ Locality-Sensitive Hashing (LSH) is an efficient method for large scale image re
 
 LSHBOX is a simple but robust C++ toolbox that provides several LSH algrithms, in addition, it can be integrated into Python and MATLAB languages. The following LSH algrithms have been implemented in LSHBOX, they are:
 
-* K-means Based Double-Bit Quantization Hashing(KDBQ)
-* Double-Bit Quantization Hashing(DBQ)
-* [Spectral Hashing](http://www.cs.huji.ac.il/~yweiss/SpectralHashing/) (SH)
-* [Iterative Quantization](http://www.unc.edu/~yunchao/itq.htm) (ITQ)
-* Random Hyperplane Hashing
 * LSH Based on Random Bits Sampling
+* Random Hyperplane Hashing
 * LSH Based on Thresholding
 * LSH Based on p-Stable Distributions
+* [Spectral Hashing](http://www.cs.huji.ac.il/~yweiss/SpectralHashing/) (SH)
+* [Iterative Quantization](http://www.unc.edu/~yunchao/itq.htm) (ITQ)
+* Double-Bit Quantization Hashing (DBQ)
+* K-means Based Double-Bit Quantization Hashing (KDBQ)
 
 There are two repositories for compilation and performance tests, they are:
 * [LSHBOX-3rdparty](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty): 3rdparty of LSHBOX, it is for compilation
-* [LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): datasets for performance tests
+* [LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): a dataset for performance tests
 
 Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit and with g++ in Linux, Mac test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
 
