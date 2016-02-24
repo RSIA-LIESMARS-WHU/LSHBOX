@@ -198,7 +198,8 @@ public:
     void push(unsigned key, float dist)
     {
         std::pair<float, unsigned> item(dist, key);
-        if (heap.size() < K)
+        unsigned S = heap.size();
+        if (S < K)
         {
             heap.insert(item);
         }

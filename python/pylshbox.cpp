@@ -135,11 +135,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
@@ -246,11 +246,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
@@ -389,11 +389,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
@@ -504,11 +504,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
@@ -609,11 +609,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
@@ -718,11 +718,11 @@ public:
         scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
-        std::vector<std::pair<unsigned, float> > tmp = scanner.topk().getTopk();
+        std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
         for (auto it = tmp.begin(); it != tmp.end(); ++it)
         {
-            key.append(it->first);
-            dist.append(it->second);
+            key.append(it->second);
+            dist.append(it->first);
         }
         boost::python::list result;
         result.append(key);
