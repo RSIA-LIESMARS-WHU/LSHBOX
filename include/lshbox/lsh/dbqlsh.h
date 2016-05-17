@@ -113,7 +113,12 @@ public:
         X.resize(data.getSize(), data.getDim());
         for (unsigned i = 0; i != X.rows(); ++i)
         {
-            X.row(i) = Eigen::Map<Eigen::VectorXf>(data[i], data.getDim());
+            std::vector<float> vals(0);
+            for (int j = 0; j != data.getDim(); ++j)
+            {
+                vals.push_back(data[i][j]);
+            }
+            X.row(i) = Eigen::Map<Eigen::VectorXf>(&vals[0], data.getDim());
         }
         Eigen::MatrixXf cov = X.transpose() * X;
         Eigen::SelfAdjointEigenSolver<Eigen::MatrixXf> eig(cov);

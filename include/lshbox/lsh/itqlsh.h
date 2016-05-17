@@ -120,7 +120,12 @@ public:
             Eigen::MatrixXf tmp(param.S, data.getDim());
             for (unsigned i = 0; i != tmp.rows(); ++i)
             {
-                tmp.row(i) = Eigen::Map<Eigen::VectorXf>(data[seqs[i]], data.getDim());
+                std::vector<float> vals(0);
+                for (int j = 0; j != data.getDim(); ++j)
+                {
+                    vals.push_back(data[seqs[i]][j]);
+                }
+                tmp.row(i) = Eigen::Map<Eigen::VectorXf>(&vals[0], data.getDim());
             }
             Eigen::MatrixXf centered = tmp.rowwise() - tmp.colwise().mean();
             Eigen::MatrixXf cov = (centered.transpose() * centered) / float(tmp.rows() - 1);

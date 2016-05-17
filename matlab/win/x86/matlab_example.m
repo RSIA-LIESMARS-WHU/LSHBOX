@@ -1,6 +1,7 @@
-% lshbox_example.m
+% matlab_example.m
 disp('prepare test data ...')
-dataset = rand(128,100000);
+dataset = randn(128,100000);
+dataset = dataset - repmat(mean(dataset), size(dataset, 1), 1);
 testset = dataset(:,1:10);
 disp('ok')
 input('Test rhplsh, Press any key to continue ...')

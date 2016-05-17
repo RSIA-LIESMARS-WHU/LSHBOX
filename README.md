@@ -72,7 +72,12 @@ This chapter contains small examples of how to use the LSHBOX library from diffe
 /**
  * @file itqlsh_test.cpp
  *
- * @brief Example of using Iterative Quantization for L2 distance.
+ * @brief Example of using Iterative Quantization LSH index for L2 distance.
+ */
+/**
+ * @file itqlsh_test.cpp
+ *
+ * @brief Example of using Iterative Quantization LSH index for L2 distance.
  */
 #include <lshbox.h>
 int main(int argc, char const *argv[])
@@ -165,102 +170,125 @@ You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/ca
 # -*- coding: utf-8 -*-
 # pylshbox_example.py
 import pylshbox
-import numpy
-# prepare test data
-float_mat = numpy.random.rand(100000, 192)
-float_query = float_mat[1,:]
-unsigned_mat = numpy.int32(float_mat*5)
-unsigned_query = unsigned_mat[1,:]
-# Test rbsLsh
+import numpy as np
+print 'prepare test data'
+float_mat = np.random.randn(100000, 192)
+float_query = float_mat[1, :]
+unsigned_mat = np.int32(float_mat * 5)
+unsigned_query = unsigned_mat[1, :]
+print ''
+print 'Test rbsLsh'
 rbs_mat = pylshbox.rbslsh()
 rbs_mat.init_mat(unsigned_mat.tolist(), '', 521, 5, 20, 5)
 result = rbs_mat.query(unsigned_query.tolist(), 1)
-indices, dists = result[0],result[1]
-# Test rhpLsh
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test rhpLsh'
 rhp_mat = pylshbox.rhplsh()
 rhp_mat.init_mat(float_mat.tolist(), '', 521, 5, 6)
 result = rhp_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
-# Test thLsh
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test thLsh'
 th_mat = pylshbox.thlsh()
 th_mat.init_mat(float_mat.tolist(), '', 521, 5, 12)
 result = th_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
-# Test psdlsh with param.T = 1
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test psdlsh with param.T = 1'
 psdL1_mat = pylshbox.psdlsh()
 psdL1_mat.init_mat(float_mat.tolist(), '', 521, 5, 1, 5)
 result = psdL1_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
-# Test psdlsh with param.T = 2
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test psdlsh with param.T = 2'
 psdL2_mat = pylshbox.psdlsh()
 psdL2_mat.init_mat(float_mat.tolist(), '', 521, 5, 2, 0.5)
 result = psdL2_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
-# Test shLsh
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test shLsh'
 sh_mat = pylshbox.shlsh()
 sh_mat.init_mat(float_mat.tolist(), '', 521, 5, 4, 100)
 result = sh_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
-# Test itqLsh
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
+print ''
+print 'Test itqLsh'
 itq_mat = pylshbox.itqlsh()
 itq_mat.init_mat(float_mat.tolist(), '', 521, 5, 8, 100, 50)
 result = itq_mat.query(float_query.tolist(), 2, 10)
-indices, dists = result[0],result[1]
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
 ```
 
 #####For MATLAB
 
 ```matlab
-% lshbox_example.m
-% prepare test data
-dataset = rand(128,100000);
+% matlab_example.m
+disp('prepare test data ...')
+dataset = randn(128,100000);
+dataset = dataset - repmat(mean(dataset), size(dataset, 1), 1);
 testset = dataset(:,1:10);
-% Test rhplsh
+disp('ok')
+input('Test rhplsh, Press any key to continue ...')
 param_rhp.M = 521;
 param_rhp.L = 5;
 param_rhp.N = 6;
 [indices, dists] = rhplsh(dataset, testset, param_rhp, '', 2, 10)
-% Test thlsh
+input('Test thlsh, Press any key to continue ...')
 param_th.M = 521;
 param_th.L = 5;
 param_th.N = 12;
 [indices, dists] = thlsh(dataset, testset, param_th, '', 2, 10)
-% Test psdlsh with param_psdL1.T = 1
+input('Test psdlsh with param_psdL1.T = 1, Press any key to continue ...')
 param_psdL1.M = 521;
 param_psdL1.L = 5;
 param_psdL1.T = 1;
 param_psdL1.W = 5;
 [indices, dists] = psdlsh(dataset, testset, param_psdL1, '', 1, 10)
-% Test psdlsh with param_psdL2.T = 2
+input('Test psdlsh with param_psdL2.T = 2, Press any key to continue ...')
 param_psdL2.M = 521;
 param_psdL2.L = 5;
 param_psdL2.T = 2;
 param_psdL2.W = 0.5;
 [indices, dists] = psdlsh(dataset, testset, param_psdL2, '', 2, 10)
-% Test shlsh
+input('Test shlsh, Press any key to continue ...')
 param_sh.M = 521;
 param_sh.L = 5;
 param_sh.N = 4;
 param_sh.S = 100;
 [indices, dists] = shlsh(dataset, testset, param_sh, '', 2, 10)
-% Test itqlsh
+disp('Test itqlsh, Press any key to continue.')
 param_itq.M = 521;
 param_itq.L = 5;
 param_itq.N = 8;
 param_itq.S = 100;
 param_itq.I = 50;
 [indices, dists] = itqlsh(dataset, testset, param_itq, '', 2, 10)
-% Test dbqlsh
+disp('Test dbqlsh, Press any key to continue.')
 param_dbq.M = 521;
 param_dbq.L = 5;
 param_dbq.N = 4;
 param_dbq.I = 5;
 [indices, dists] = dbqlsh(dataset, testset, param_dbq, '', 2, 10)
-% Test kdbqlsh
+disp('Test kdbqlsh, Press any key to continue.')
 param_kdbq.M = 521;
 param_kdbq.L = 5;
 param_kdbq.N = 4;
-param_kdbq.I = 5;
+param_kdbq.I = 50;
 [indices, dists] = kdbqlsh(dataset, testset, param_kdbq, '', 2, 10)
 ```
 
@@ -273,44 +301,52 @@ Have you ever find the empty string used in the Python and MATLAB code? In fact,
 # -*- coding: utf-8 -*-
 # pylshbox_example2.py
 import pylshbox
-import numpy
+import numpy as np
 import time
-# prepare test data
-float_file = 'audio.data'
-float_query = numpy.random.rand(192)
-# Test itqLsh
-# First time, need to constructing index. About 1.5s.
+print 'prepare test data'
+float_mat = np.random.randn(100000, 192)
+float_query = float_mat[1, :]
+print ''
+print 'Test itqLsh'
+print ''
+print 'First time, need to constructing index.'  # About 1.5s.
 start = time.time()
-itq_file = pylshbox.itqlsh()
-itq_file.init_file(float_file, 'pyitq.lsh', 521, 5, 8, 100, 50)
-result = itq_file.query(float_query.tolist(), 2, 10)
+itq_mat = pylshbox.itqlsh()
+itq_mat.init_mat(float_mat.tolist(), 'pyitq.lsh', 521, 5, 8, 100, 50)
+result = itq_mat.query(float_query.tolist(), 2, 10)
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
 print 'Elapsed time is %f seconds.' % (time.time() - start)
-# Second time, no need to re-indexing. About 0.05s.
+print ''
+print 'Second time, no need to re-indexing.'  # About 0.05s.
 start = time.time()
-itq_file2 = pylshbox.itqlsh()
-itq_file2.init_file(float_file, 'pyitq.lsh', 521, 5, 8, 100, 50)
-result = itq_file2.query(float_query.tolist(), 2, 10)
+itq_mat2 = pylshbox.itqlsh()
+itq_mat2.init_mat(float_mat.tolist(), 'pyitq.lsh')
+result = itq_mat2.query(float_query.tolist(), 2, 10)
+indices, dists = result[0], result[1]
+for i in range(len(indices)):
+    print indices[i], '\t', dists[i]
 print 'Elapsed time is %f seconds.' % (time.time() - start)
 ```
 
 #####For MATLAB
 
 ```matlab
-% lshbox_example2.m
-% prepare test data
-dataset = rand(128,500000);
+% matlab_example2.m
+dataset = randn(128,500000);
 testset = dataset(:,1:10);
-% Test itqlsh
+disp('Test itqlsh')
 param_itq.M = 521;
 param_itq.L = 5;
 param_itq.N = 8;
 param_itq.S = 100;
 param_itq.I = 50;
-% First time, need to constructing index. About 10s.
+disp('First time, need to constructing index') % About 10s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
 toc;
-% Second time, no need to re-indexing. About 2s.
+disp('Second time, no need to re-indexing') % About 2s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
 toc;

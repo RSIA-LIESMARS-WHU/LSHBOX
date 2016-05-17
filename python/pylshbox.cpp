@@ -743,27 +743,27 @@ private:
 {
     using namespace boost::python;
     class_<lshbox::pyRbsLsh>("rbslsh", "Locality-Sensitive Hashing Scheme Based on Random Bits Sampling.")
-        .def("init_file", &lshbox::pyRbsLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("C")))
-        .def("init_mat", &lshbox::pyRbsLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("C")))
+        .def("init_file", &lshbox::pyRbsLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 20, arg("C") = 5))
+        .def("init_mat", &lshbox::pyRbsLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 20, arg("C") = 5))
         .def("query", &lshbox::pyRbsLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
     class_<lshbox::pyRhpLsh>("rhplsh", "Locality-Sensitive Hashing Scheme Based on Random Hyperplane.")
-        .def("init_file", &lshbox::pyRhpLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N")))
-        .def("init_mat", &lshbox::pyRhpLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N")))
+        .def("init_file", &lshbox::pyRhpLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 6))
+        .def("init_mat", &lshbox::pyRhpLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 6))
         .def("query", &lshbox::pyRhpLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
     class_<lshbox::pyThLsh>("thlsh", "Locality-Sensitive Hashing Scheme Based on Thresholding.")
-        .def("init_file", &lshbox::pyThLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N")))
-        .def("init_mat", &lshbox::pyThLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N")))
+        .def("init_file", &lshbox::pyThLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 12))
+        .def("init_mat", &lshbox::pyThLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 12))
         .def("query", &lshbox::pyThLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
     class_<lshbox::pyPsdLsh>("psdlsh", "Locality-Sensitive Hashing Scheme Based on p-Stable Distributions.")
-        .def("init_file", &lshbox::pyPsdLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("T"), arg("W")))
-        .def("init_mat", &lshbox::pyPsdLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("T"), arg("W")))
+        .def("init_file", &lshbox::pyPsdLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("T") = 2, arg("W") = 0.5))
+        .def("init_mat", &lshbox::pyPsdLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("T") = 2, arg("W") = 0.5))
         .def("query", &lshbox::pyPsdLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
     class_<lshbox::pyShLsh>("shlsh", "Locality-Sensitive Hashing Scheme Based on Spectral Hashing.")
-        .def("init_file", &lshbox::pyShLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("S")))
-        .def("init_mat", &lshbox::pyShLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("S")))
+        .def("init_file", &lshbox::pyShLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 4, arg("S") = 100))
+        .def("init_mat", &lshbox::pyShLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 4, arg("S") = 100))
         .def("query", &lshbox::pyShLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
     class_<lshbox::pyItqLsh>("itqlsh", "Locality-Sensitive Hashing Scheme Based on Iterative Quantization.")
-		.def("init_file", &lshbox::pyItqLsh::init_file, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("S"), arg("I")))
-        .def("init_mat", &lshbox::pyItqLsh::init_mat, (arg("source"), arg("index"), arg("M"), arg("L"), arg("N"), arg("S"), arg("I")))
+		.def("init_file", &lshbox::pyItqLsh::init_file, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 8, arg("S") = 100, arg("I") = 50))
+        .def("init_mat", &lshbox::pyItqLsh::init_mat, (arg("source"), arg("index"), arg("M") = 521, arg("L") = 5, arg("N") = 8, arg("S") = 100, arg("I") = 50))
 		.def("query", &lshbox::pyItqLsh::query, (arg("quy"), arg("type") = 2, arg("K") = 10));
 }

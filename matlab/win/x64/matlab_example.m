@@ -1,6 +1,7 @@
-% lshbox_example.m
+% matlab_example.m
 disp('prepare test data ...')
-dataset = rand(128,100000);
+dataset = randn(128,100000);
+dataset = dataset - repmat(mean(dataset), size(dataset, 1), 1);
 testset = dataset(:,1:10);
 disp('ok')
 input('Test rhplsh, Press any key to continue ...')
@@ -38,3 +39,15 @@ param_itq.N = 8;
 param_itq.S = 100;
 param_itq.I = 50;
 [indices, dists] = itqlsh(dataset, testset, param_itq, '', 2, 10)
+disp('Test dbqlsh, Press any key to continue.')
+param_dbq.M = 521;
+param_dbq.L = 5;
+param_dbq.N = 4;
+param_dbq.I = 5;
+[indices, dists] = dbqlsh(dataset, testset, param_dbq, '', 2, 10)
+disp('Test kdbqlsh, Press any key to continue.')
+param_kdbq.M = 521;
+param_kdbq.L = 5;
+param_kdbq.N = 4;
+param_kdbq.I = 50;
+[indices, dists] = kdbqlsh(dataset, testset, param_kdbq, '', 2, 10)

@@ -1,5 +1,5 @@
-% lshbox_example2.m
-dataset = rand(128,500000);
+% matlab_example2.m
+dataset = randn(128,500000);
 testset = dataset(:,1:10);
 disp('Test itqlsh')
 param_itq.M = 521;

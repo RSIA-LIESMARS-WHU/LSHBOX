@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # pylshbox_example.py
 import pylshbox
-import numpy
+import numpy as np
 print 'prepare test data'
-float_mat = numpy.random.rand(100000, 192)
+float_mat = np.random.randn(100000, 192)
 float_query = float_mat[1, :]
-unsigned_mat = numpy.int32(float_mat * 5)
+unsigned_mat = np.int32(float_mat * 5)
 unsigned_query = unsigned_mat[1, :]
 print ''
 print 'Test rbsLsh'
@@ -64,4 +64,3 @@ result = itq_mat.query(float_query.tolist(), 2, 10)
 indices, dists = result[0], result[1]
 for i in range(len(indices)):
     print indices[i], '\t', dists[i]
-input()
