@@ -10,4 +10,5 @@ if nargin < 6
 end
 params = [P, K, params.M, params.L, params.T, params.W];
 [indices, dists] = psdlsh_search(data, testset, params, index);
+indices = indices + 1;
 end
