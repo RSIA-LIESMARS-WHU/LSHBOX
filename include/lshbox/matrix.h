@@ -121,7 +121,7 @@ public:
         is.read((char *)header, sizeof(header));
         reset(header[2], header[1]);
         is.read((char *)dims, sizeof(T) * dim * N);
-		is.close();
+        is.close();
     }
     /**
      * Load the Matrix from std::vector<T>.
@@ -159,24 +159,24 @@ public:
         header[2] = dim;
         os.write((char *)header, sizeof header);
         os.write((char *)dims, sizeof(T) * dim * N);
-		os.close();
+        os.close();
     }
     Matrix(const std::string &path): dims(NULL)
     {
         load(path);
     }
-	Matrix(const Matrix& M): dims(NULL)
-	{
-		reset(M.getDim(), M.getSize());
-		memcpy(dims, M.getData(), sizeof(T) * dim * N);
-	}
-	Matrix& operator = (const Matrix& M)
-	{
+    Matrix(const Matrix& M): dims(NULL)
+    {
+        reset(M.getDim(), M.getSize());
+        memcpy(dims, M.getData(), sizeof(T) * dim * N);
+    }
+    Matrix& operator = (const Matrix& M)
+    {
         dims = NULL;
-		reset(M.getDim(), M.getSize());
-		memcpy(dims, M.getData(), sizeof(T) * dim * N);
-		return *this;
-	}
+        reset(M.getDim(), M.getSize());
+        memcpy(dims, M.getData(), sizeof(T) * dim * N);
+        return *this;
+    }
     /**
      * An accessor class to be used with LSH index.
      */

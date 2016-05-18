@@ -45,11 +45,9 @@ namespace lshbox
  *     Proceedings of the twentieth annual symposium on Computational geometry, June
  *     08-11, 2004, Brooklyn, New York, USA.
  */
-template <typename DATATYPE = float>
+template<typename DATATYPE = float>
 class psdLsh
 {
-#define CAUCHY   1
-#define GAUSSIAN 2
 public:
     struct Parameter
     {
@@ -76,159 +74,172 @@ public:
      * @param param_ A instance of psdLsh<DATATYPE>::Parametor, which contains
      * the necessary parameters
      */
-    void reset(const Parameter &param_)
-    {
-        param = param_;
-        tables.resize(param.L);
-        stableArray.resize(param.L);
-        std::mt19937 rng(unsigned(std::time(0)));
-        std::uniform_real_distribution<float> ur(0, param.W);
-        switch (param.T)
-        {
-        case CAUCHY:
-        {
-            std::cauchy_distribution<float> cd;
-            for (std::vector<std::vector<float> >::iterator iter = stableArray.begin(); iter != stableArray.end(); ++iter)
-            {
-                for (unsigned i = 0; i != param.D; ++i)
-                {
-                    iter->push_back(cd(rng));
-                }
-                rndBs.push_back(ur(rng));
-            }
-            return;
-        }
-        case GAUSSIAN:
-        {
-            std::normal_distribution<float> nd;
-            for (std::vector<std::vector<float> >::iterator iter = stableArray.begin(); iter != stableArray.end(); ++iter)
-            {
-                for (unsigned i = 0; i != param.D; ++i)
-                {
-                    iter->push_back(nd(rng));
-                }
-                rndBs.push_back(ur(rng));
-            }
-            return;
-        }
-        default:
-        {
-            return;
-        }
-        }
-    }
+    void reset(const Parameter &param_);
     /**
      * Insert a vector to the index.
      *
      * @param key   The sequence number of vector
      * @param domin The pointer to the vector
      */
-    void insert(unsigned key, DATATYPE *domin)
-    {
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            float sum(0);
-            for (unsigned j = 0; j != param.D; ++j)
-            {
-                sum += domin[j] * stableArray[i][j];
-            }
-            unsigned hashVal = unsigned(std::floor((sum + rndBs[i]) / param.W)) % param.M;
-            tables[i][hashVal].push_back(key);
-        }
-    }
+    void insert(unsigned key, DATATYPE *domin);
     /**
      * Query the approximate nearest neighborholds.
      *
      * @param domin   The pointer to the vector
      * @param scanner Top-K scanner, use for scan the approximate nearest neighborholds
      */
-    template <typename SCANNER>
-    void query(DATATYPE *domin, SCANNER &scanner)
-    {
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            float sum(0);
-            for (unsigned j = 0; j != param.D; ++j)
-            {
-                sum += domin[j] * stableArray[i][j];
-            }
-            unsigned hashVal = unsigned(std::floor((sum + rndBs[i]) / param.W)) % param.M;
-            if (tables[i].find(hashVal) != tables[i].end())
-            {
-                for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
-                {
-                    scanner(*iter);
-                }
-            }
-        }
-    }
+    template<typename SCANNER>
+    void query(DATATYPE *domin, SCANNER &scanner);
     /**
      * Load the index from binary file.
      *
      * @param file The path of binary file.
      */
-    void load(const std::string &file)
-    {
-        std::ifstream in(file, std::ios::binary);
-        in.read((char *)&param.M, sizeof(unsigned));
-        in.read((char *)&param.L, sizeof(unsigned));
-        in.read((char *)&param.D, sizeof(unsigned));
-        in.read((char *)&param.W, sizeof(float));
-        tables.resize(param.L);
-        stableArray.resize(param.L);
-        rndBs.resize(param.L);
-        in.read((char *)&rndBs[0], sizeof(float) * param.L);
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            stableArray[i].resize(param.D);
-            in.read((char *)&stableArray[i][0], sizeof(float) * param.D);
-            unsigned count;
-            in.read((char *)&count, sizeof(unsigned));
-            for (unsigned j = 0; j != count; ++j)
-            {
-                unsigned target;
-                in.read((char *)&target, sizeof(unsigned));
-                unsigned length;
-                in.read((char *)&length, sizeof(unsigned));
-                tables[i][target].resize(length);
-                in.read((char *) & (tables[i][target][0]), sizeof(unsigned) * length);
-            }
-        }
-        in.close();
-    }
+    void load(const std::string &file);
     /**
      * Save the index as binary file.
      *
      * @param file The path of binary file.
      */
-    void save(const std::string &file)
-    {
-        std::ofstream out(file, std::ios::binary);
-        out.write((char *)&param.M, sizeof(unsigned));
-        out.write((char *)&param.L, sizeof(unsigned));
-        out.write((char *)&param.D, sizeof(unsigned));
-        out.write((char *)&param.W, sizeof(float));
-        out.write((char *)&rndBs[0], sizeof(float) * param.L);
-        for (int i = 0; i != param.L; ++i)
-        {
-            out.write((char *)&stableArray[i][0], sizeof(float) * param.D);
-            unsigned count = unsigned(tables[i].size());
-            out.write((char *)&count, sizeof(unsigned));
-            for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
-            {
-                unsigned target = iter->first;
-                out.write((char *)&target, sizeof(unsigned));
-                unsigned length = unsigned(iter->second.size());
-                out.write((char *)&length, sizeof(unsigned));
-                out.write((char *) & ((iter->second)[0]), sizeof(unsigned) * length);
-            }
-        }
-        out.close();
-    }
+    void save(const std::string &file);
 private:
     Parameter param;
     std::vector<float> rndBs;
     std::vector<std::vector<float> > stableArray;
     std::vector<std::map<unsigned, std::vector<unsigned> > > tables;
 };
+}
+
+// ------------------------- implementation -------------------------
+template<typename DATATYPE>
+void lshbox::psdLsh<DATATYPE>::reset(const Parameter &param_)
+{
+    param = param_;
+    tables.resize(param.L);
+    stableArray.resize(param.L);
+    std::mt19937 rng(unsigned(std::time(0)));
+    std::uniform_real_distribution<float> ur(0, param.W);
+    switch (param.T)
+    {
+    case CAUCHY:
+    {
+        std::cauchy_distribution<float> cd;
+        for (std::vector<std::vector<float> >::iterator iter = stableArray.begin(); iter != stableArray.end(); ++iter)
+        {
+            for (unsigned i = 0; i != param.D; ++i)
+            {
+                iter->push_back(cd(rng));
+            }
+            rndBs.push_back(ur(rng));
+        }
+        return;
+    }
+    case GAUSSIAN:
+    {
+        std::normal_distribution<float> nd;
+        for (std::vector<std::vector<float> >::iterator iter = stableArray.begin(); iter != stableArray.end(); ++iter)
+        {
+            for (unsigned i = 0; i != param.D; ++i)
+            {
+                iter->push_back(nd(rng));
+            }
+            rndBs.push_back(ur(rng));
+        }
+        return;
+    }
+    default:
+    {
+        return;
+    }
+    }
+}
+template<typename DATATYPE>
+void lshbox::psdLsh<DATATYPE>::insert(unsigned key, DATATYPE *domin)
+{
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        float sum(0);
+        for (unsigned j = 0; j != param.D; ++j)
+        {
+            sum += domin[j] * stableArray[i][j];
+        }
+        unsigned hashVal = unsigned(std::floor((sum + rndBs[i]) / param.W)) % param.M;
+        tables[i][hashVal].push_back(key);
+    }
+}
+template<typename DATATYPE>
+template<typename SCANNER>
+void lshbox::psdLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
+{
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        float sum(0);
+        for (unsigned j = 0; j != param.D; ++j)
+        {
+            sum += domin[j] * stableArray[i][j];
+        }
+        unsigned hashVal = unsigned(std::floor((sum + rndBs[i]) / param.W)) % param.M;
+        if (tables[i].find(hashVal) != tables[i].end())
+        {
+            for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
+            {
+                scanner(*iter);
+            }
+        }
+    }
+}
+template<typename DATATYPE>
+void lshbox::psdLsh<DATATYPE>::load(const std::string &file)
+{
+    std::ifstream in(file, std::ios::binary);
+    in.read((char *)&param.M, sizeof(unsigned));
+    in.read((char *)&param.L, sizeof(unsigned));
+    in.read((char *)&param.D, sizeof(unsigned));
+    in.read((char *)&param.W, sizeof(float));
+    tables.resize(param.L);
+    stableArray.resize(param.L);
+    rndBs.resize(param.L);
+    in.read((char *)&rndBs[0], sizeof(float) * param.L);
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        stableArray[i].resize(param.D);
+        in.read((char *)&stableArray[i][0], sizeof(float) * param.D);
+        unsigned count;
+        in.read((char *)&count, sizeof(unsigned));
+        for (unsigned j = 0; j != count; ++j)
+        {
+            unsigned target;
+            in.read((char *)&target, sizeof(unsigned));
+            unsigned length;
+            in.read((char *)&length, sizeof(unsigned));
+            tables[i][target].resize(length);
+            in.read((char *) & (tables[i][target][0]), sizeof(unsigned) * length);
+        }
+    }
+    in.close();
+}
+template<typename DATATYPE>
+void lshbox::psdLsh<DATATYPE>::save(const std::string &file)
+{
+    std::ofstream out(file, std::ios::binary);
+    out.write((char *)&param.M, sizeof(unsigned));
+    out.write((char *)&param.L, sizeof(unsigned));
+    out.write((char *)&param.D, sizeof(unsigned));
+    out.write((char *)&param.W, sizeof(float));
+    out.write((char *)&rndBs[0], sizeof(float) * param.L);
+    for (int i = 0; i != param.L; ++i)
+    {
+        out.write((char *)&stableArray[i][0], sizeof(float) * param.D);
+        unsigned count = unsigned(tables[i].size());
+        out.write((char *)&count, sizeof(unsigned));
+        for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
+        {
+            unsigned target = iter->first;
+            out.write((char *)&target, sizeof(unsigned));
+            unsigned length = unsigned(iter->second.size());
+            out.write((char *)&length, sizeof(unsigned));
+            out.write((char *) & ((iter->second)[0]), sizeof(unsigned) * length);
+        }
+    }
+    out.close();
 }

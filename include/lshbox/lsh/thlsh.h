@@ -50,7 +50,7 @@ namespace lshbox
  *     Data Structures. In Proceedings of ACM 13th Conference on Information
  *     and Knowledge Management (CIKM), Washington D.C., USA. November 2004.
  */
-template <typename DATATYPE = float>
+template<typename DATATYPE = float>
 class thLsh
 {
 public:
@@ -81,161 +81,34 @@ public:
      * @param param_ A instance of thLsh<DATATYPE>::Parametor, which contains
      * the necessary parameters
      */
-    void reset(const Parameter &param_)
-    {
-        param = param_;
-        tables.resize(param.L);
-        rndBits.resize(param.L);
-        rndArray.resize(param.L);
-        std::mt19937 rng(unsigned(std::time(0)));
-        std::uniform_int_distribution<unsigned> usBits(0, param.D - 1);
-        std::uniform_int_distribution<unsigned> usArray(0, param.M - 1);
-        std::uniform_real_distribution<float> urThreadholds(param.Min, param.Max);
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            while (rndBits[i].size() != param.N)
-            {
-                unsigned target = usBits(rng);
-                if (std::find(rndBits[i].begin(), rndBits[i].end(), target) == rndBits[i].end())
-                {
-                    rndBits[i].push_back(target);
-                }
-            }
-            std::sort(rndBits[i].begin(), rndBits[i].end());
-            threadholds.push_back(urThreadholds(rng));
-        }
-        for (std::vector<std::vector<unsigned> >::iterator iter = rndArray.begin(); iter != rndArray.end(); ++iter)
-        {
-            for (unsigned i = 0; i != param.N; ++i)
-            {
-                iter->push_back(usArray(rng));
-            }
-        }
-    }
+    void reset(const Parameter &param_);
     /**
      * Insert a vector to the index.
      *
      * @param key   The sequence number of vector
      * @param domin The pointer to the vector
      */
-    void insert(unsigned key, DATATYPE *domin)
-    {
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            unsigned sum(0), seq(0);
-            for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
-            {
-                if (domin[*it] > threadholds[seq])
-                {
-                    sum += rndArray[i][seq];
-                }
-                ++seq;
-            }
-            unsigned hashVal = sum % param.M;
-            tables[i][hashVal].push_back(key);
-        }
-    }
+    void insert(unsigned key, DATATYPE *domin);
     /**
      * Query the approximate nearest neighborholds.
      *
      * @param domin   The pointer to the vector
      * @param scanner Top-K scanner, use for scan the approximate nearest neighborholds
      */
-    template <typename SCANNER>
-    void query(DATATYPE *domin, SCANNER &scanner)
-    {
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            unsigned sum(0), seq(0);
-            for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
-            {
-                if (domin[*it] > threadholds[seq])
-                {
-                    sum += rndArray[i][seq];
-                }
-                ++seq;
-            }
-            unsigned hashVal = sum % param.M;
-            if (tables[i].find(hashVal) != tables[i].end())
-            {
-                for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
-                {
-                    scanner(*iter);
-                }
-            }
-        }
-    }
+    template<typename SCANNER>
+    void query(DATATYPE *domin, SCANNER &scanner);
     /**
      * Load the index from binary file.
      *
      * @param file The path of binary file.
      */
-    void load(const std::string &file)
-    {
-        std::ifstream in(file, std::ios::binary);
-        in.read((char *)&param.M, sizeof(unsigned));
-        in.read((char *)&param.L, sizeof(unsigned));
-        in.read((char *)&param.D, sizeof(unsigned));
-        in.read((char *)&param.N, sizeof(unsigned));
-        in.read((char *)&param.Max, sizeof(float));
-        in.read((char *)&param.Min, sizeof(float));
-        tables.resize(param.L);
-        rndBits.resize(param.L);
-        rndArray.resize(param.L);
-        threadholds.resize(param.L);
-        in.read((char *)&threadholds[0], sizeof(float) * param.L);
-        for (unsigned i = 0; i != param.L; ++i)
-        {
-            rndBits[i].resize(param.N);
-            rndArray[i].resize(param.N);
-            in.read((char *)&rndBits[i][0], sizeof(unsigned) * param.N);
-            in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
-            unsigned count;
-            in.read((char *)&count, sizeof(unsigned));
-            for (unsigned j = 0; j != count; ++j)
-            {
-                unsigned target;
-                in.read((char *)&target, sizeof(unsigned));
-                unsigned length;
-                in.read((char *)&length, sizeof(unsigned));
-                tables[i][target].resize(length);
-                in.read((char *) & (tables[i][target][0]), sizeof(unsigned) * length);
-            }
-        }
-        in.close();
-    }
+    void load(const std::string &file);
     /**
      * Save the index as binary file.
      *
      * @param file The path of binary file.
      */
-    void save(const std::string &file)
-    {
-        std::ofstream out(file, std::ios::binary);
-        out.write((char *)&param.M, sizeof(unsigned));
-        out.write((char *)&param.L, sizeof(unsigned));
-        out.write((char *)&param.D, sizeof(unsigned));
-        out.write((char *)&param.N, sizeof(unsigned));
-        out.write((char *)&param.Max, sizeof(float));
-        out.write((char *)&param.Min, sizeof(float));
-        out.write((char *)&threadholds[0], sizeof(float) * param.L);
-        for (int i = 0; i != param.L; ++i)
-        {
-            out.write((char *)&rndBits[i][0], sizeof(unsigned) * param.N);
-            out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
-            unsigned count = unsigned(tables[i].size());
-            out.write((char *)&count, sizeof(unsigned));
-            for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
-            {
-                unsigned target = iter->first;
-                out.write((char *)&target, sizeof(unsigned));
-                unsigned length = unsigned(iter->second.size());
-                out.write((char *)&length, sizeof(unsigned));
-                out.write((char *) & ((iter->second)[0]), sizeof(unsigned) * length);
-            }
-        }
-        out.close();
-    }
+    void save(const std::string &file);
 private:
     Parameter param;
     std::vector<float> threadholds;
@@ -243,4 +116,144 @@ private:
     std::vector<std::vector<unsigned> > rndArray;
     std::vector<std::map<unsigned, std::vector<unsigned> > > tables;
 };
+}
+
+// ------------------------- implementation -------------------------
+template<typename DATATYPE>
+void lshbox::thLsh<DATATYPE>::reset(const Parameter &param_)
+{
+    param = param_;
+    tables.resize(param.L);
+    rndBits.resize(param.L);
+    rndArray.resize(param.L);
+    std::mt19937 rng(unsigned(std::time(0)));
+    std::uniform_int_distribution<unsigned> usBits(0, param.D - 1);
+    std::uniform_int_distribution<unsigned> usArray(0, param.M - 1);
+    std::uniform_real_distribution<float> urThreadholds(param.Min, param.Max);
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        while (rndBits[i].size() != param.N)
+        {
+            unsigned target = usBits(rng);
+            if (std::find(rndBits[i].begin(), rndBits[i].end(), target) == rndBits[i].end())
+            {
+                rndBits[i].push_back(target);
+            }
+        }
+        std::sort(rndBits[i].begin(), rndBits[i].end());
+        threadholds.push_back(urThreadholds(rng));
+    }
+    for (std::vector<std::vector<unsigned> >::iterator iter = rndArray.begin(); iter != rndArray.end(); ++iter)
+    {
+        for (unsigned i = 0; i != param.N; ++i)
+        {
+            iter->push_back(usArray(rng));
+        }
+    }
+}
+template<typename DATATYPE>
+void lshbox::thLsh<DATATYPE>::insert(unsigned key, DATATYPE *domin)
+{
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        unsigned sum(0), seq(0);
+        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
+        {
+            if (domin[*it] > threadholds[seq])
+            {
+                sum += rndArray[i][seq];
+            }
+            ++seq;
+        }
+        unsigned hashVal = sum % param.M;
+        tables[i][hashVal].push_back(key);
+    }
+}
+template<typename DATATYPE>
+template<typename SCANNER>
+void lshbox::thLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
+{
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        unsigned sum(0), seq(0);
+        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
+        {
+            if (domin[*it] > threadholds[seq])
+            {
+                sum += rndArray[i][seq];
+            }
+            ++seq;
+        }
+        unsigned hashVal = sum % param.M;
+        if (tables[i].find(hashVal) != tables[i].end())
+        {
+            for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
+            {
+                scanner(*iter);
+            }
+        }
+    }
+}
+template<typename DATATYPE>
+void lshbox::thLsh<DATATYPE>::load(const std::string &file)
+{
+    std::ifstream in(file, std::ios::binary);
+    in.read((char *)&param.M, sizeof(unsigned));
+    in.read((char *)&param.L, sizeof(unsigned));
+    in.read((char *)&param.D, sizeof(unsigned));
+    in.read((char *)&param.N, sizeof(unsigned));
+    in.read((char *)&param.Max, sizeof(float));
+    in.read((char *)&param.Min, sizeof(float));
+    tables.resize(param.L);
+    rndBits.resize(param.L);
+    rndArray.resize(param.L);
+    threadholds.resize(param.L);
+    in.read((char *)&threadholds[0], sizeof(float) * param.L);
+    for (unsigned i = 0; i != param.L; ++i)
+    {
+        rndBits[i].resize(param.N);
+        rndArray[i].resize(param.N);
+        in.read((char *)&rndBits[i][0], sizeof(unsigned) * param.N);
+        in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        unsigned count;
+        in.read((char *)&count, sizeof(unsigned));
+        for (unsigned j = 0; j != count; ++j)
+        {
+            unsigned target;
+            in.read((char *)&target, sizeof(unsigned));
+            unsigned length;
+            in.read((char *)&length, sizeof(unsigned));
+            tables[i][target].resize(length);
+            in.read((char *) & (tables[i][target][0]), sizeof(unsigned) * length);
+        }
+    }
+    in.close();
+}
+template<typename DATATYPE>
+void lshbox::thLsh<DATATYPE>::save(const std::string &file)
+{
+    std::ofstream out(file, std::ios::binary);
+    out.write((char *)&param.M, sizeof(unsigned));
+    out.write((char *)&param.L, sizeof(unsigned));
+    out.write((char *)&param.D, sizeof(unsigned));
+    out.write((char *)&param.N, sizeof(unsigned));
+    out.write((char *)&param.Max, sizeof(float));
+    out.write((char *)&param.Min, sizeof(float));
+    out.write((char *)&threadholds[0], sizeof(float) * param.L);
+    for (int i = 0; i != param.L; ++i)
+    {
+        out.write((char *)&rndBits[i][0], sizeof(unsigned) * param.N);
+        out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        unsigned count = unsigned(tables[i].size());
+        out.write((char *)&count, sizeof(unsigned));
+        for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
+        {
+            unsigned target = iter->first;
+            out.write((char *)&target, sizeof(unsigned));
+            unsigned length = unsigned(iter->second.size());
+            out.write((char *)&length, sizeof(unsigned));
+            out.write((char *) & ((iter->second)[0]), sizeof(unsigned) * length);
+        }
+    }
+    out.close();
 }

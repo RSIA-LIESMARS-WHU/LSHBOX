@@ -32,15 +32,19 @@
 #include <time.h>
 namespace lshbox
 {
+#define CAUCHY   1
+#define GAUSSIAN 2
 #define M_PI 3.14159265358979323846
 /**
  * Sort std::vector<std::pair<unsigned, float> > by the second value.
  */
-bool ascend(const std::pair<unsigned, float> &lhs,
-            const std::pair<unsigned, float> &rhs)
+struct ascend_sort
 {
-    return lhs.second < rhs.second;
-}
+    bool operator()(const std::pair<unsigned, float> &lhs, const std::pair<unsigned, float> &rhs)
+    {
+        return lhs.second < rhs.second;
+    }
+};
 /**
  * Displays an appropriate indication of progress at an appropriate place
  * in an appropriate form.
