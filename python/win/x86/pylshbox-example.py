@@ -5,9 +5,9 @@ import pylshbox
 import numpy as np
 print 'prepare test data'
 float_mat = np.random.randn(100000, 192)
-float_query = float_mat[1, :]
-unsigned_mat = np.int32(float_mat * 5)
-unsigned_query = unsigned_mat[1, :]
+float_query = float_mat[0]
+unsigned_mat = np.uint32(float_mat * 5)
+unsigned_query = unsigned_mat[0]
 print ''
 print 'Test rbsLsh'
 rbs_mat = pylshbox.rbslsh()

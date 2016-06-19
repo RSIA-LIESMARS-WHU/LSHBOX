@@ -83,6 +83,12 @@ public:
      */
     void reset(const Parameter &param_);
     /**
+     * Hash the dataset.
+     *
+     * @param data A instance of Matrix<DATATYPE>, it is the search dataset.
+     */
+    void hash(Matrix<DATATYPE> &data);
+    /**
      * Insert a vector to the index.
      *
      * @param key   The sequence number of vector
@@ -152,6 +158,16 @@ void lshbox::thLsh<DATATYPE>::reset(const Parameter &param_)
     }
 }
 template<typename DATATYPE>
+void lshbox::thLsh<DATATYPE>::hash(Matrix<DATATYPE> &data)
+{
+    progress_display pd(data.getSize());
+    for (unsigned i = 0; i != data.getSize(); ++i)
+    {
+        insert(i, data[i]);
+        ++pd;
+    }
+}
+template<typename DATATYPE>
 void lshbox::thLsh<DATATYPE>::insert(unsigned key, DATATYPE *domin)
 {
     for (unsigned i = 0; i != param.L; ++i)
@@ -173,6 +189,7 @@ template<typename DATATYPE>
 template<typename SCANNER>
 void lshbox::thLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
 {
+    scanner.reset(domin);
     for (unsigned i = 0; i != param.L; ++i)
     {
         unsigned sum(0), seq(0);
@@ -193,6 +210,7 @@ void lshbox::thLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
             }
         }
     }
+    scanner.topk().genTopk();
 }
 template<typename DATATYPE>
 void lshbox::thLsh<DATATYPE>::load(const std::string &file)

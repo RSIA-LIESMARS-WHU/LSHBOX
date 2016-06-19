@@ -81,9 +81,15 @@ public:
     /**
      * Train the data to get several groups of suitable vector for index.
      *
-     * @param data A instance of Matrix<DATATYPE>, most of the time, is the search library.
+     * @param data A instance of Matrix<DATATYPE>, most of the time, is the search dataset.
      */
     void train(Matrix<DATATYPE> &data);
+    /**
+     * Hash the dataset.
+     *
+     * @param data A instance of Matrix<DATATYPE>, it is the search dataset.
+     */
+    void hash(Matrix<DATATYPE> &data);
     /**
      * Insert a vector to the index.
      *
@@ -223,6 +229,10 @@ void lshbox::itqLsh<DATATYPE>::train(Matrix<DATATYPE> &data)
             }
         }
     }
+}
+template<typename DATATYPE>
+void lshbox::itqLsh<DATATYPE>::hash(Matrix<DATATYPE> &data)
+{
     progress_display pd(data.getSize());
     for (unsigned i = 0; i != data.getSize(); ++i)
     {
@@ -264,6 +274,7 @@ template<typename DATATYPE>
 template<typename SCANNER>
 void lshbox::itqLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
 {
+    scanner.reset(domin);
     for (unsigned k = 0; k != param.L; ++k)
     {
         unsigned sum = 0;
@@ -296,6 +307,7 @@ void lshbox::itqLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
             }
         }
     }
+    scanner.topk().genTopk();
 }
 template<typename DATATYPE>
 void lshbox::itqLsh<DATATYPE>::load(const std::string &file)

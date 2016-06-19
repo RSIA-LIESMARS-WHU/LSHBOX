@@ -397,6 +397,7 @@ template<typename DATATYPE>
 template<typename SCANNER>
 void lshbox::dbqLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
 {
+    scanner.reset(domin);
     for (unsigned k = 0; k != param.L; ++k)
     {
         unsigned sum = 0;
@@ -437,6 +438,7 @@ void lshbox::dbqLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
             }
         }
     }
+    scanner.topk().genTopk();
 }
 template<typename DATATYPE>
 void lshbox::dbqLsh<DATATYPE>::load(const std::string &file)

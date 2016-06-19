@@ -66,12 +66,7 @@ public:
             param.N = N;
             param.C = C;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -107,12 +102,7 @@ public:
             param.N = N;
             param.C = C;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -130,9 +120,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
@@ -179,12 +167,7 @@ public:
             param.D = data.getDim();
             param.N = N;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -218,12 +201,7 @@ public:
             param.D = data.getDim();
             param.N = N;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -241,9 +219,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
@@ -306,12 +282,7 @@ public:
                 }
             }
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -361,12 +332,7 @@ public:
                 }
             }
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -384,9 +350,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
@@ -435,12 +399,7 @@ public:
             param.T = T;
             param.W = W;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -476,12 +435,7 @@ public:
             param.T = T;
             param.W = W;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -499,9 +453,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
@@ -551,6 +503,7 @@ public:
             param.S = S;
             lsh.reset(param);
             lsh.train(data);
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -587,6 +540,7 @@ public:
             param.S = S;
             lsh.reset(param);
             lsh.train(data);
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -604,9 +558,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
@@ -658,6 +610,7 @@ public:
             param.I = I;
             lsh.reset(param);
             lsh.train(data);
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -696,6 +649,7 @@ public:
             param.I = I;
             lsh.reset(param);
             lsh.train(data);
+            lsh.hash(data);
             lsh.save(index);
             std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
         }
@@ -713,9 +667,7 @@ public:
             metric,
             K
         );
-        scanner.reset(&quy_vec[0]);
         lsh.query(&quy_vec[0], scanner);
-        scanner.topk().genTopk();
         boost::python::list key;
         boost::python::list dist;
         std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();

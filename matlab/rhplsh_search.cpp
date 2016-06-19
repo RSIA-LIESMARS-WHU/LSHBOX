@@ -51,12 +51,7 @@ public:
             param.D = data.getDim();
             param.N = N;
             lsh.reset(param);
-            progress_display pd(data.getSize());
-            for (unsigned i = 0; i != data.getSize(); ++i)
-            {
-                lsh.insert(i, data[i]);
-                ++pd;
-            }
+            lsh.hash(data);
             lsh.save(index);
         }
     }
@@ -71,9 +66,7 @@ public:
         );
         for (unsigned i = 0; i != size; ++i)
         {
-            scanner.reset(quy + i * data.getDim());
             lsh.query(quy + i * data.getDim(), scanner);
-            scanner.topk().genTopk();
             std::vector<std::pair<float, unsigned> > tmp = scanner.topk().getTopk();
             for (unsigned j = 0; j != tmp.size(); ++j)
             {

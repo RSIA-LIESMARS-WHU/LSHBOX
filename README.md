@@ -74,11 +74,6 @@ This chapter contains small examples of how to use the LSHBOX library from diffe
  *
  * @brief Example of using Iterative Quantization LSH index for L2 distance.
  */
-/**
- * @file itqlsh_test.cpp
- *
- * @brief Example of using Iterative Quantization LSH index for L2 distance.
- */
 #include <lshbox.h>
 int main(int argc, char const *argv[])
 {
@@ -113,6 +108,7 @@ int main(int argc, char const *argv[])
         param.I = 50;
         mylsh.reset(param);
         mylsh.train(data);
+        mylsh.hash(data);
     }
     mylsh.save(file);
     std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
@@ -132,26 +128,20 @@ int main(int argc, char const *argv[])
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
     timer.restart();
-    lshbox::Stat cost, recall, precision;
+    lshbox::Stat cost, recall;
     lshbox::progress_display pd(bench.getQ());
     for (unsigned i = 0; i != bench.getQ(); ++i)
     {
-        scanner.reset(data[bench.getQuery(i)]);
         mylsh.query(data[bench.getQuery(i)], scanner);
-        scanner.topk().genTopk();
         recall << bench.getAnswer(i).recall(scanner.topk());
-        recall << bench.getAnswer(i).precision(scanner.topk());
         cost << float(scanner.cnt()) / float(data.getSize());
         ++pd;
     }
     std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
     std::cout << "RECALL   : " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
-    std::cout << "PRECISION: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "COST     : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
 
-    // scanner.reset(data[0]);
     // mylsh.query(data[0], scanner);
-    // scanner.topk().genTopk();
     // std::vector<std::pair<float, unsigned> > res = scanner.topk().getTopk();
     // for (std::vector<std::pair<float, unsigned> >::iterator it = res.begin(); it != res.end(); ++it)
     // {
@@ -173,9 +163,9 @@ import pylshbox
 import numpy as np
 print 'prepare test data'
 float_mat = np.random.randn(100000, 192)
-float_query = float_mat[1, :]
-unsigned_mat = np.int32(float_mat * 5)
-unsigned_query = unsigned_mat[1, :]
+float_query = float_mat[0]
+unsigned_mat = np.uint32(float_mat * 5)
+unsigned_query = unsigned_mat[0]
 print ''
 print 'Test rbsLsh'
 rbs_mat = pylshbox.rbslsh()
@@ -305,11 +295,11 @@ import numpy as np
 import time
 print 'prepare test data'
 float_mat = np.random.randn(100000, 192)
-float_query = float_mat[1, :]
+float_query = float_mat[0]
 print ''
 print 'Test itqLsh'
 print ''
-print 'First time, need to constructing index.'  # About 1.5s.
+print 'First time, need to constructing index.'  # About 7s.
 start = time.time()
 itq_mat = pylshbox.itqlsh()
 itq_mat.init_mat(float_mat.tolist(), 'pyitq.lsh', 521, 5, 8, 100, 50)
@@ -319,7 +309,7 @@ for i in range(len(indices)):
     print indices[i], '\t', dists[i]
 print 'Elapsed time is %f seconds.' % (time.time() - start)
 print ''
-print 'Second time, no need to re-indexing.'  # About 0.05s.
+print 'Second time, no need to re-indexing.'  # About 3s.
 start = time.time()
 itq_mat2 = pylshbox.itqlsh()
 itq_mat2.init_mat(float_mat.tolist(), 'pyitq.lsh')
@@ -342,11 +332,11 @@ param_itq.L = 5;
 param_itq.N = 8;
 param_itq.S = 100;
 param_itq.I = 50;
-disp('First time, need to constructing index') % About 10s.
+disp('First time, need to constructing index') % About 13s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
 toc;
-disp('Second time, no need to re-indexing') % About 2s.
+disp('Second time, no need to re-indexing') % About 0.5s.
 tic;
 [indices, dists] = itqlsh(dataset, testset, param_itq, 'itq.lsh', 2, 10);
 toc;

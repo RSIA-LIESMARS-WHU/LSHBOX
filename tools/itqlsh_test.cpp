@@ -60,6 +60,7 @@ int main(int argc, char const *argv[])
         param.I = 50;
         mylsh.reset(param);
         mylsh.train(data);
+        mylsh.hash(data);
     }
     mylsh.save(file);
     std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
@@ -79,26 +80,20 @@ int main(int argc, char const *argv[])
     std::cout << "LOADING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "RUNING QUERY ..." << std::endl;
     timer.restart();
-    lshbox::Stat cost, recall, precision;
+    lshbox::Stat cost, recall;
     lshbox::progress_display pd(bench.getQ());
     for (unsigned i = 0; i != bench.getQ(); ++i)
     {
-        scanner.reset(data[bench.getQuery(i)]);
         mylsh.query(data[bench.getQuery(i)], scanner);
-        scanner.topk().genTopk();
         recall << bench.getAnswer(i).recall(scanner.topk());
-        recall << bench.getAnswer(i).precision(scanner.topk());
         cost << float(scanner.cnt()) / float(data.getSize());
         ++pd;
     }
     std::cout << "MEAN QUERY TIME: " << timer.elapsed() / bench.getQ() << "s." << std::endl;
     std::cout << "RECALL   : " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
-    std::cout << "PRECISION: " << recall.getAvg() << " +/- " << recall.getStd() << std::endl;
     std::cout << "COST     : " << cost.getAvg() << " +/- " << cost.getStd() << std::endl;
 
-    // scanner.reset(data[0]);
     // mylsh.query(data[0], scanner);
-    // scanner.topk().genTopk();
     // std::vector<std::pair<float, unsigned> > res = scanner.topk().getTopk();
     // for (std::vector<std::pair<float, unsigned> >::iterator it = res.begin(); it != res.end(); ++it)
     // {

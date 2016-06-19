@@ -78,6 +78,12 @@ public:
      */
     void reset(const Parameter &param_);
     /**
+     * Hash the dataset.
+     *
+     * @param data A instance of Matrix<unsigned>, it is the search dataset.
+     */
+    void hash(Matrix<unsigned> &data);
+    /**
      * Insert a vector to the index.
      *
      * @param key   The sequence number of vector
@@ -142,6 +148,15 @@ void lshbox::rbsLsh::reset(const Parameter &param_)
         }
     }
 }
+void lshbox::rbsLsh::hash(Matrix<unsigned> &data)
+{
+    progress_display pd(data.getSize());
+    for (unsigned i = 0; i != data.getSize(); ++i)
+    {
+        insert(i, data[i]);
+        ++pd;
+    }
+}
 void lshbox::rbsLsh::insert(unsigned key, unsigned *domin)
 {
     for (unsigned i = 0; i != param.L; ++i)
@@ -162,6 +177,7 @@ void lshbox::rbsLsh::insert(unsigned key, unsigned *domin)
 template<typename SCANNER>
 void lshbox::rbsLsh::query(unsigned *domin, SCANNER &scanner)
 {
+    scanner.reset(domin);
     for (unsigned i = 0; i != param.L; ++i)
     {
         unsigned sum(0), seq(0);
@@ -182,6 +198,7 @@ void lshbox::rbsLsh::query(unsigned *domin, SCANNER &scanner)
             }
         }
     }
+    scanner.topk().genTopk();
 }
 void lshbox::rbsLsh::load(const std::string &file)
 {
