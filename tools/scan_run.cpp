@@ -51,10 +51,6 @@ int main(int argc, char *argv[])
         lshbox::Topk &topk = bench.getAnswer(i);
         for (unsigned j = 0; j != data.getSize(); ++j)
         {
-            if (q == j)
-            {
-                continue;
-            }
             topk.push(j, metric.dist(data[q], data[j]));
         }
         topk.genTopk();
