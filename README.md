@@ -152,10 +152,16 @@ int main(int argc, char const *argv[])
 ```
 You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/cass/audio.tar.gz](http://www.cs.princeton.edu/cass/audio.tar.gz), if the link is invalid, you can also get it from [LSHBOX-sample-data](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data).
 
+FOR EXAMPLE, RUN THE CODE IN COMMAND LINE AFTER BUILD ALL THE TOOLS:
+
+```
+> create_benchmark audio.data audio.ben 200 50
+> itqlsh_test audio.data audio.itq audio.ben
+```
 
 #####<font color="#C46ED3">NOTE1:
 
-In our project, the format of the input file (such as `audio.data`, which is in 'float' data type) is a binary file but not a text file, because binary file has many advantages. In `LSHBOX/tools/create_test_data.cpp`, we create a binary file with `unsigned` data type, from the process, you will find that the binary file is organized as the following format:
+In our project, the format of the input file (such as `audio.data`, which is in `float` data type) is a binary file but not a text file, because binary file has many advantages. In `LSHBOX/tools/create_test_data.cpp`, we create a binary file with `unsigned` data type, from the process, you will find that the binary file is organized as the following format:
 
 >{Bytes of the data type} {The size of the vectors} {The dimension of the vectors} {All of the binary vector, arranged in turn}
 
