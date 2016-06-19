@@ -66,7 +66,7 @@ make
 
 This chapter contains small examples of how to use the LSHBOX library from different programming languages (C++, Python and MATLAB).
 
-#####For C++
+####For C++
 
 ```cpp
 /**
@@ -152,8 +152,20 @@ int main(int argc, char const *argv[])
 ```
 You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/cass/audio.tar.gz](http://www.cs.princeton.edu/cass/audio.tar.gz), if the link is invalid, you can also get it from [LSHBOX-sample-data](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data).
 
-#####For Python
-(NOTE: In Windows, the py module name is pylshbox, but in linux, it will be libpylshbox.)
+
+#####<font color="#C46ED3">NOTE1:
+
+In our project, the format of the input file (such as `audio.data`) is a binary file but not a text file, because binary file has many advantages. In `LSHBOX/tools/create_test_data.cpp`, we create a binary file with `unsigned` data type, from the process, you will find that the binary file is organized as the following format:
+
+>{Bytes of the data type} {The size of the vectors} {The dimension of the vectors} {All of the binary vector, arranged in turn}
+
+For your application, you should also transform your dataset into this binary format.</font>
+
+#####<font color="#4279F6">NOTE2:
+
+In addition, the dataset should be zero-centered, IT IS VERY IMPORTANT!</font>
+
+####For Python
 
 ```python
 #!/usr/bin/env python
@@ -224,7 +236,11 @@ for i in range(len(indices)):
     print indices[i], '\t', dists[i]
 ```
 
-#####For MATLAB
+#####<font color="#4279F6">NOTE:
+
+In Windows, the py module name is pylshbox, but in linux, it will be libpylshbox.</font>
+
+####For MATLAB
 
 ```matlab
 % matlab_example.m
@@ -284,7 +300,7 @@ param_kdbq.I = 50;
 
 Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.
 
-#####For Python
+####In Python
 
 ```python
 #!/usr/bin/env python
@@ -320,7 +336,7 @@ for i in range(len(indices)):
 print 'Elapsed time is %f seconds.' % (time.time() - start)
 ```
 
-#####For MATLAB
+####In MATLAB
 
 ```matlab
 % matlab_example2.m

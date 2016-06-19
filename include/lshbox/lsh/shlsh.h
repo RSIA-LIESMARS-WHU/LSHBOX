@@ -93,7 +93,7 @@ public:
      * @param key   The sequence number of vector
      * @param domin The pointer to the vector
      */
-    void insert(unsigned key, DATATYPE *domin);
+    void insert(unsigned key, const DATATYPE *domin);
     /**
      * Query the approximate nearest neighborholds.
      *
@@ -102,6 +102,14 @@ public:
      */
     template<typename SCANNER>
     void query(const DATATYPE *domin, SCANNER &scanner);
+    /**
+     * get the hash value of a vector.
+     *
+     * @param k     The idx of the table
+     * @param domin The pointer to the vector
+     * @return      The hash value
+     */
+    unsigned getHashVal(unsigned k, const DATATYPE *domin);
     /**
      * Load the index from binary file.
      *
@@ -260,33 +268,11 @@ void lshbox::shLsh<DATATYPE>::hash(Matrix<DATATYPE> &data)
     }
 }
 template<typename DATATYPE>
-void lshbox::shLsh<DATATYPE>::insert(unsigned key, DATATYPE *domin)
+void lshbox::shLsh<DATATYPE>::insert(unsigned key, const DATATYPE *domin)
 {
     for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum = 0;
-        std::vector<float> domin_pc(pcsAll[k].size());
-        for (unsigned i = 0; i != domin_pc.size(); ++i)
-        {
-            for (unsigned j = 0; j != pcsAll[k][i].size(); ++j)
-            {
-                domin_pc[i] += domin[j] * pcsAll[k][i][j];
-            }
-            domin_pc[i] -= float(minsAll[k][i]);
-        }
-        for (unsigned i = 0; i != domin_pc.size(); ++i)
-        {
-            float product = 1;
-            for (unsigned j = 0; j != omegasAll[k][i].size(); ++j)
-            {
-                product *= float(std::sin(domin_pc[j] * omegasAll[k][i][j] + M_PI / 2));
-            }
-            if (product > 0)
-            {
-                sum += rndArray[k][i];
-            }
-        }
-        unsigned hashVal = sum % param.M;
+        unsigned hashVal = getHashVal(k, domin);
         tables[k][hashVal].push_back(key);
     }
 }
@@ -297,29 +283,7 @@ void lshbox::shLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
     scanner.reset(domin);
     for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum = 0;
-        std::vector<float> domin_pc(pcsAll[k].size());
-        for (unsigned i = 0; i != domin_pc.size(); ++i)
-        {
-            for (unsigned j = 0; j != pcsAll[k][i].size(); ++j)
-            {
-                domin_pc[i] += domin[j] * pcsAll[k][i][j];
-            }
-            domin_pc[i] -= float(minsAll[k][i]);
-        }
-        for (unsigned i = 0; i != domin_pc.size(); ++i)
-        {
-            float product = 1;
-            for (unsigned j = 0; j != omegasAll[k][i].size(); ++j)
-            {
-                product *= float(std::sin(domin_pc[j] * omegasAll[k][i][j] + M_PI / 2));
-            }
-            if (product > 0)
-            {
-                sum += rndArray[k][i];
-            }
-        }
-        unsigned hashVal = sum % param.M;
+        unsigned hashVal = getHashVal(k, domin);
         if (tables[k].find(hashVal) != tables[k].end())
         {
             for (std::vector<unsigned>::iterator iter = tables[k][hashVal].begin(); iter != tables[k][hashVal].end(); ++iter)
@@ -329,6 +293,34 @@ void lshbox::shLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
         }
     }
     scanner.topk().genTopk();
+}
+template<typename DATATYPE>
+unsigned lshbox::shLsh<DATATYPE>::getHashVal(unsigned k, const DATATYPE *domin)
+{
+    unsigned sum = 0;
+    std::vector<float> domin_pc(pcsAll[k].size());
+    for (unsigned i = 0; i != domin_pc.size(); ++i)
+    {
+        for (unsigned j = 0; j != pcsAll[k][i].size(); ++j)
+        {
+            domin_pc[i] += domin[j] * pcsAll[k][i][j];
+        }
+        domin_pc[i] -= float(minsAll[k][i]);
+    }
+    for (unsigned i = 0; i != domin_pc.size(); ++i)
+    {
+        float product = 1;
+        for (unsigned j = 0; j != omegasAll[k][i].size(); ++j)
+        {
+            product *= float(std::sin(domin_pc[j] * omegasAll[k][i][j] + M_PI / 2));
+        }
+        if (product > 0)
+        {
+            sum += rndArray[k][i];
+        }
+    }
+    unsigned hashVal = sum % param.M;
+    return hashVal;
 }
 template<typename DATATYPE>
 void lshbox::shLsh<DATATYPE>::load(const std::string &file)

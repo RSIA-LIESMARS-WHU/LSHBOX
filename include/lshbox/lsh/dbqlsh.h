@@ -107,7 +107,7 @@ public:
      * @param scanner Top-K scanner, use for scan the approximate nearest neighborhoods
      */
     template<typename SCANNER>
-    void query(DATATYPE *domin, SCANNER &scanner);
+    void query(const DATATYPE *domin, SCANNER &scanner);
     /**
      * Load the index from binary file.
      *
@@ -395,7 +395,7 @@ void lshbox::dbqLsh<DATATYPE>::BitsAllocation(unsigned key)
 }
 template<typename DATATYPE>
 template<typename SCANNER>
-void lshbox::dbqLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
+void lshbox::dbqLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
 {
     scanner.reset(domin);
     for (unsigned k = 0; k != param.L; ++k)

@@ -89,7 +89,7 @@ public:
      * @param key   The sequence number of vector
      * @param domin The pointer to the vector
      */
-    void insert(unsigned key, unsigned *domin);
+    void insert(unsigned key, const unsigned *domin);
     /**
      * Query the approximate nearest neighborholds.
      *
@@ -97,7 +97,15 @@ public:
      * @param scanner Top-K scanner, use for scan the approximate nearest neighborholds
      */
     template <typename SCANNER>
-    void query(unsigned *domin, SCANNER &scanner);
+    void query(const unsigned *domin, SCANNER &scanner);
+    /**
+     * get the hash value of a vector.
+     *
+     * @param k     The idx of the table
+     * @param domin The pointer to the vector
+     * @return      The hash value
+     */
+    unsigned getHashVal(unsigned k, const unsigned *domin);
     /**
      * Load the index from binary file.
      *
@@ -157,48 +165,44 @@ void lshbox::rbsLsh::hash(Matrix<unsigned> &data)
         ++pd;
     }
 }
-void lshbox::rbsLsh::insert(unsigned key, unsigned *domin)
+void lshbox::rbsLsh::insert(unsigned key, const unsigned *domin)
 {
-    for (unsigned i = 0; i != param.L; ++i)
+    for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum(0), seq(0);
-        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
-        {
-            if ((*it % param.C) <= unsigned(domin[*it / param.C]))
-            {
-                sum += rndArray[i][seq];
-            }
-            ++seq;
-        }
-        unsigned hashVal = sum % param.M;
-        tables[i][hashVal].push_back(key);
+        unsigned hashVal = getHashVal(k, domin);
+        tables[k][hashVal].push_back(key);
     }
 }
 template<typename SCANNER>
-void lshbox::rbsLsh::query(unsigned *domin, SCANNER &scanner)
+void lshbox::rbsLsh::query(const unsigned *domin, SCANNER &scanner)
 {
     scanner.reset(domin);
-    for (unsigned i = 0; i != param.L; ++i)
+    for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum(0), seq(0);
-        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
+        unsigned hashVal = getHashVal(k, domin);
+        if (tables[k].find(hashVal) != tables[k].end())
         {
-            if ((*it % param.C) <= unsigned(domin[*it / param.C]))
-            {
-                sum += rndArray[i][seq];
-            }
-            ++seq;
-        }
-        unsigned hashVal = sum % param.M;
-        if (tables[i].find(hashVal) != tables[i].end())
-        {
-            for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
+            for (std::vector<unsigned>::iterator iter = tables[k][hashVal].begin(); iter != tables[k][hashVal].end(); ++iter)
             {
                 scanner(*iter);
             }
         }
     }
     scanner.topk().genTopk();
+}
+unsigned lshbox::rbsLsh::getHashVal(unsigned k, const unsigned *domin)
+{
+    unsigned sum(0), seq(0);
+    for (std::vector<unsigned>::iterator it = rndBits[k].begin(); it != rndBits[k].end(); ++it)
+    {
+        if ((*it % param.C) <= unsigned(domin[*it / param.C]))
+        {
+            sum += rndArray[k][seq];
+        }
+        ++seq;
+    }
+    unsigned hashVal = sum % param.M;
+    return hashVal;
 }
 void lshbox::rbsLsh::load(const std::string &file)
 {

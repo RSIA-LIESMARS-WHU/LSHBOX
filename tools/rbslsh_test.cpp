@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
     std::cout << "LOADING BENCHMARK ..." << std::endl;
     timer.restart();
     lshbox::Matrix<unsigned>::Accessor accessor(data);
-    lshbox::Metric<unsigned> metric(data.getDim(), L1_DIST);
+    lshbox::Metric<unsigned> metric(data.getDim(), L2_DIST);
     lshbox::Benchmark bench;
     std::string benchmark(argv[3]);
     bench.load(benchmark);

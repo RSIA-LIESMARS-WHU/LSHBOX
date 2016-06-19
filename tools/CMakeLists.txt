@@ -2,7 +2,7 @@ PROJECT(TOOLS)
 
 SET(TOOLS
     create_test_data
-    scan_run
+    create_benchmark
     rbslsh_test
     rhplsh_test
     thlsh_test

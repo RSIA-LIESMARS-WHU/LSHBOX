@@ -22,19 +22,27 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * @file scan_run.cpp
+ * @file create_benchmark.cpp
  *
  * @brief Linear scan dataset and construct benchmark.
  */
 #include <lshbox.h>
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc < 3 || argc > 5)
     {
-        std::cerr << "Usage: ./scan_run data_file benchmark_file" << std::endl;
+        std::cerr << "Usage: ./create_benchmark data_file benchmark_file [Q = 200] [K = 50]" << std::endl;
         return -1;
     }
-    unsigned K = 100, Q = 1000, seed = 2;
+    unsigned K = 50, Q = 200, seed = 2;
+    if (argc > 3)
+    {
+        Q = atoi(argv[3]);
+    }
+    if (argc > 4)
+    {
+        K = atoi(argv[4]);
+    }
     lshbox::timer timer;
     std::cout << "CREATE BENCHMARK FOR DATA ..." << std::endl;
     timer.restart();
@@ -43,7 +51,7 @@ int main(int argc, char *argv[])
     lshbox::Matrix<float> data(file);
     lshbox::Benchmark bench;
     bench.init(Q, K, data.getSize(), seed);
-    lshbox::Metric<float> metric(data.getDim(), L1_DIST);
+    lshbox::Metric<float> metric(data.getDim(), L2_DIST);
     lshbox::progress_display pd(Q);
     for (unsigned i = 0; i != Q; ++i)
     {

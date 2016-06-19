@@ -94,7 +94,7 @@ public:
      * @param key   The sequence number of vector
      * @param domin The pointer to the vector
      */
-    void insert(unsigned key, DATATYPE *domin);
+    void insert(unsigned key, const DATATYPE *domin);
     /**
      * Query the approximate nearest neighborholds.
      *
@@ -102,7 +102,15 @@ public:
      * @param scanner Top-K scanner, use for scan the approximate nearest neighborholds
      */
     template<typename SCANNER>
-    void query(DATATYPE *domin, SCANNER &scanner);
+    void query(const DATATYPE *domin, SCANNER &scanner);
+    /**
+     * get the hash value of a vector.
+     *
+     * @param k     The idx of the table
+     * @param domin The pointer to the vector
+     * @return      The hash value
+     */
+    unsigned getHashVal(unsigned k, const DATATYPE *domin);
     /**
      * Load the index from binary file.
      *
@@ -168,49 +176,46 @@ void lshbox::thLsh<DATATYPE>::hash(Matrix<DATATYPE> &data)
     }
 }
 template<typename DATATYPE>
-void lshbox::thLsh<DATATYPE>::insert(unsigned key, DATATYPE *domin)
+void lshbox::thLsh<DATATYPE>::insert(unsigned key, const DATATYPE *domin)
 {
-    for (unsigned i = 0; i != param.L; ++i)
+    for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum(0), seq(0);
-        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
-        {
-            if (domin[*it] > threadholds[seq])
-            {
-                sum += rndArray[i][seq];
-            }
-            ++seq;
-        }
-        unsigned hashVal = sum % param.M;
-        tables[i][hashVal].push_back(key);
+        unsigned hashVal = getHashVal(k, domin);
+        tables[k][hashVal].push_back(key);
     }
 }
 template<typename DATATYPE>
 template<typename SCANNER>
-void lshbox::thLsh<DATATYPE>::query(DATATYPE *domin, SCANNER &scanner)
+void lshbox::thLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
 {
     scanner.reset(domin);
-    for (unsigned i = 0; i != param.L; ++i)
+    for (unsigned k = 0; k != param.L; ++k)
     {
-        unsigned sum(0), seq(0);
-        for (std::vector<unsigned>::iterator it = rndBits[i].begin(); it != rndBits[i].end(); ++it)
+        unsigned hashVal = getHashVal(k, domin);
+        if (tables[k].find(hashVal) != tables[k].end())
         {
-            if (domin[*it] > threadholds[seq])
-            {
-                sum += rndArray[i][seq];
-            }
-            ++seq;
-        }
-        unsigned hashVal = sum % param.M;
-        if (tables[i].find(hashVal) != tables[i].end())
-        {
-            for (std::vector<unsigned>::iterator iter = tables[i][hashVal].begin(); iter != tables[i][hashVal].end(); ++iter)
+            for (std::vector<unsigned>::iterator iter = tables[k][hashVal].begin(); iter != tables[k][hashVal].end(); ++iter)
             {
                 scanner(*iter);
             }
         }
     }
     scanner.topk().genTopk();
+}
+template<typename DATATYPE>
+unsigned lshbox::thLsh<DATATYPE>::getHashVal(unsigned k, const DATATYPE *domin)
+{
+    unsigned sum(0), seq(0);
+    for (std::vector<unsigned>::iterator it = rndBits[k].begin(); it != rndBits[k].end(); ++it)
+    {
+        if (domin[*it] > threadholds[seq])
+        {
+            sum += rndArray[k][seq];
+        }
+        ++seq;
+    }
+    unsigned hashVal = sum % param.M;
+    return hashVal;
 }
 template<typename DATATYPE>
 void lshbox::thLsh<DATATYPE>::load(const std::string &file)
