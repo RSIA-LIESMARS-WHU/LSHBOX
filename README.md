@@ -152,7 +152,7 @@ int main(int argc, char const *argv[])
 ```
 You can get the sample dataset `audio.data` from [http://www.cs.princeton.edu/cass/audio.tar.gz](http://www.cs.princeton.edu/cass/audio.tar.gz), if the link is invalid, you can also get it from [LSHBOX-sample-data](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data).
 
-FOR EXAMPLE, RUN THE CODE IN COMMAND LINE AFTER BUILD ALL THE TOOLS:
+FOR EXAMPLE, YOU CAN RUN THE FOLLOWING CODE IN COMMAND LINE AFTER BUILD ALL THE TOOLS:
 
 ```
 > create_benchmark audio.data audio.ben 200 50
