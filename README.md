@@ -32,7 +32,7 @@ There are two repositories for compilation and performance tests, they are:
 * [LSHBOX-3rdparty](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-3rdparty): 3rdparty of LSHBOX, it is for compilation
 * [LSHBOX-sample datasets](https://github.com/RSIA-LIESMARS-WHU/LSHBOX-sample-data): a dataset for performance tests
 
-Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit and with g++ in Linux, Mac test will be done in the next weeks. We hope that there are more people that join in the test or contribute more algrithms.
+Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit and with g++ in Linux, Mac test will be done in the future. We hope that there are more people that join in the test or contribute more algrithms.
 
 #####Please feel free to contact us [tanggefu@gmail.com, 20288ly@sina.cn or xiaozf@gmail.com] if you have any questions.
 
@@ -159,17 +159,17 @@ FOR EXAMPLE, YOU CAN RUN THE FOLLOWING CODE IN COMMAND LINE AFTER BUILD ALL THE 
 > itqlsh_test audio.data audio.itq audio.ben
 ```
 
-#####<font color="#C46ED3">NOTE1:
+#####NOTE1:
 
 In our project, the format of the input file (such as `audio.data`, which is in `float` data type) is a binary file but not a text file, because binary file has many advantages. In `LSHBOX/tools/create_test_data.cpp`, we create a binary file with `unsigned` data type, from the process, you will find that the binary file is organized as the following format:
 
 >{Bytes of the data type} {The size of the vectors} {The dimension of the vectors} {All of the binary vector, arranged in turn}
 
-For your application, you should also transform your dataset into this binary format.</font>
+For your application, you should also transform your dataset into this binary format.
 
-#####<font color="#4279F6">NOTE2:
+#####NOTE2:
 
-In addition, the dataset should be zero-centered, IT IS VERY IMPORTANT!</font>
+In addition, the dataset should be zero-centered, IT IS VERY IMPORTANT!
 
 ####For Python
 
