@@ -461,10 +461,13 @@ void lshbox::kdbqLsh<DATATYPE>::load(const std::string &file)
     rndArray.resize(param.L);
     pcsAll.resize(param.L);
     omegasAll.resize(param.L);
+    u0.resize(param.L, param.N);
+    u1.resize(param.L, param.N);
+    u2.resize(param.L, param.N);
     for (unsigned i = 0; i != param.L; ++i)
     {
-        rndArray[i].resize(param.N);
-        in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        rndArray[i].resize(param.N * 2);
+        in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N * 2);
         unsigned count;
         in.read((char *)&count, sizeof(unsigned));
         for (unsigned j = 0; j != count; ++j)
@@ -486,6 +489,9 @@ void lshbox::kdbqLsh<DATATYPE>::load(const std::string &file)
             in.read((char *)&omegasAll[i][j][0], sizeof(float) * param.N);
         }
     }
+    in.read((char *)&u0(0, 0), sizeof(float) * param.L * param.N);
+    in.read((char *)&u1(0, 0), sizeof(float) * param.L * param.N); 
+    in.read((char *)&u2(0, 0), sizeof(float) * param.L * param.N); 
     in.close();
 }
 template<typename DATATYPE>
@@ -498,7 +504,7 @@ void lshbox::kdbqLsh<DATATYPE>::save(const std::string &file)
     out.write((char *)&param.N, sizeof(unsigned));
     for (int i = 0; i != param.L; ++i)
     {
-        out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N * 2);
         unsigned count = unsigned(tables[i].size());
         out.write((char *)&count, sizeof(unsigned));
         for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
@@ -515,5 +521,8 @@ void lshbox::kdbqLsh<DATATYPE>::save(const std::string &file)
             out.write((char *)&omegasAll[i][j][0], sizeof(float) * param.N);
         }
     }
+    out.write((char *)&u0(0, 0), sizeof(float) * param.L * param.N);
+    out.write((char *)&u1(0, 0), sizeof(float) * param.L * param.N); 
+    out.write((char *)&u2(0, 0), sizeof(float) * param.L * param.N); 
     out.close();
 }

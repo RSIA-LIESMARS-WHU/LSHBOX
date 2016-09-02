@@ -126,7 +126,7 @@ private:
     std::vector<std::vector<std::vector<float> > >  omegasAll;
     std::vector<std::vector<unsigned> > rndArray;
     std::vector<std::map<unsigned, std::vector<unsigned> > > tables;
-    Eigen::VectorXf prjColMean;
+    Eigen::MatrixXf prjColMean;
     std::vector<std::vector<std::vector<std::pair<float, unsigned> > > > prjArray;
     std::vector<std::vector<std::vector<std::vector<std::pair<float, unsigned> > > > > S;
     Eigen::MatrixXf A;
@@ -148,6 +148,7 @@ void lshbox::dbqLsh<DATATYPE>::reset(const Parameter &param_)
     A.resize(param.L, param.N);
     B.resize(param.L, param.N);
     S.resize(param.L);
+    prjColMean.resize(param.L, param.N);
     std::mt19937 rng(unsigned(std::time(0)));
     std::uniform_int_distribution<unsigned> usArray(0, param.M - 1);
     for (std::vector<std::vector<unsigned> >::iterator iter = rndArray.begin(); iter != rndArray.end(); ++iter)
@@ -277,8 +278,7 @@ void lshbox::dbqLsh<DATATYPE>::DataProjectoin()
                 prjMat(i, q) = sum;
             }
         }
-        prjColMean.resize(param.N);
-        prjColMean = prjMat.colwise().mean();
+        prjColMean.row(k) = prjMat.colwise().mean();
         Eigen::MatrixXf prjCentr = prjMat.rowwise() - prjMat.colwise().mean();
         prjArray[k].resize(param.N);
         S[k].resize(param.N);
@@ -404,13 +404,11 @@ void lshbox::dbqLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
         std::vector<float> domin_pc(param.N);
         for (unsigned i = 0; i != domin_pc.size(); ++i)
         {
-            domin_pc[i] = 0.0;
             for (unsigned j = 0; j != param.D; ++j)
             {
                 domin_pc[i] += domin[j] * pcsAll[k][i][j];
             }
         }
-
         for (unsigned i = 0; i != domin_pc.size(); ++i)
         {
             float product = 0;
@@ -418,7 +416,7 @@ void lshbox::dbqLsh<DATATYPE>::query(const DATATYPE *domin, SCANNER &scanner)
             {
                 product += float(domin_pc[j] * omegasAll[k][i][j]);
             }
-            product -= prjColMean(i);
+            product -= prjColMean(k, i);
             if (product <= A(k, i))
             {
                 sum += rndArray[k][2 * i + 1];
@@ -452,10 +450,13 @@ void lshbox::dbqLsh<DATATYPE>::load(const std::string &file)
     rndArray.resize(param.L);
     pcsAll.resize(param.L);
     omegasAll.resize(param.L);
+    A.resize(param.L, param.N);
+    B.resize(param.L, param.N);
+    prjColMean.resize(param.L, param.N);
     for (unsigned i = 0; i != param.L; ++i)
     {
-        rndArray[i].resize(param.N);
-        in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        rndArray[i].resize(param.N * 2);
+        in.read((char *)&rndArray[i][0], sizeof(unsigned) * param.N * 2);
         unsigned count;
         in.read((char *)&count, sizeof(unsigned));
         for (unsigned j = 0; j != count; ++j)
@@ -477,6 +478,9 @@ void lshbox::dbqLsh<DATATYPE>::load(const std::string &file)
             in.read((char *)&omegasAll[i][j][0], sizeof(float) * param.N);
         }
     }
+    in.read((char *)&A(0, 0), sizeof(float) * param.L * param.N);
+    in.read((char *)&B(0, 0), sizeof(float) * param.L * param.N);
+    in.read((char *)&prjColMean(0, 0), sizeof(float)* param.L * param.N);
     in.close();
 }
 template<typename DATATYPE>
@@ -489,7 +493,7 @@ void lshbox::dbqLsh<DATATYPE>::save(const std::string &file)
     out.write((char *)&param.N, sizeof(unsigned));
     for (int i = 0; i != param.L; ++i)
     {
-        out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N);
+        out.write((char *)&rndArray[i][0], sizeof(unsigned) * param.N * 2);
         unsigned count = unsigned(tables[i].size());
         out.write((char *)&count, sizeof(unsigned));
         for (std::map<unsigned, std::vector<unsigned> >::iterator iter = tables[i].begin(); iter != tables[i].end(); ++iter)
@@ -506,5 +510,8 @@ void lshbox::dbqLsh<DATATYPE>::save(const std::string &file)
             out.write((char *)&omegasAll[i][j][0], sizeof(float) * param.N);
         }
     }
+    out.write((char *)&A(0, 0), sizeof(float) * param.L * param.N);
+    out.write((char *)&B(0, 0), sizeof(float) * param.L * param.N);
+    out.write((char *)&prjColMean(0, 0), sizeof(float) * param.L * param.N);
     out.close();
 }
