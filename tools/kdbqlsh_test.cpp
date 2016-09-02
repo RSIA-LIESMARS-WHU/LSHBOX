@@ -61,8 +61,8 @@ int main(int argc, char const *argv[])
         param.I = 50;
         mylsh.reset(param);
         mylsh.train(data);
+        mylsh.save(file);
     }
-    mylsh.save(file);
     std::cout << "CONSTRUCTING TIME: " << timer.elapsed() << "s." << std::endl;
     std::cout << "LOADING BENCHMARK ..." << std::endl;
 
