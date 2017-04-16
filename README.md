@@ -1,9 +1,9 @@
 LSHBOX-0.9
 ==========
-###*A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.*
+### *A C++ Toolbox of Locality-Sensitive Hashing for Large Scale Image Retrieval, Also Support Python and MATLAB.*
 -----------------------------------------------------------------------------------------------------------------
 
-####Change Log
+#### Change Log
 
 * 2015.07.04
 
@@ -13,7 +13,7 @@ A new LSH method, K-means Based Double-Bit Quantization for Hashing (KDBQ), was 
 
 A new LSH method, Double-Bit Quantization Hashing (DBQ), was added into LSHBOX-0.9 on June 4th, 2015. We implement DBQ by C++ but also provide MATLAB interface. And the Python interface will be added into LSHBOX-0.9 later. Other files related to DBQ have been updated synchronously.
 
-###Chapter 1 - Introduction
+### Chapter 1 - Introduction
 
 Locality-Sensitive Hashing (LSH) is an efficient method for large scale image retrieval, and it achieves great performance in approximate nearest neighborhood searching.
 
@@ -36,9 +36,9 @@ In addition, [File-Based-ITQ](https://github.com/RSIA-LIESMARS-WHU/File-Based-IT
 
 Part of the code depends on the C++11, So I think your compiler should support this feature. We tested LSHBOX with VS2010 in Windows 7/8 32bit/64bit and with g++ in Linux, Mac test will be done in the future. We hope that there are more people that join in the test or contribute more algrithms.
 
-#####Please feel free to contact us [tanggefu@gmail.com, 20288ly@sina.cn or xiaozf@gmail.com] if you have any questions.
+##### Please feel free to contact us [tanggefu@gmail.com, 20288ly@sina.cn or xiaozf@gmail.com] if you have any questions.
 
-###Chapter 2 - Compilation
+### Chapter 2 - Compilation
 
 LSHBOX is written by C++. And it also can be easily used in many contexts through the Python and MATLAB bindings provided with this toolbox.
 
@@ -64,11 +64,11 @@ cmake ..
 make
 ```
 
-###Chapter 3 - Usage
+### Chapter 3 - Usage
 
 This chapter contains small examples of how to use the LSHBOX library from different programming languages (C++, Python and MATLAB).
 
-####For C++
+#### For C++
 
 ```cpp
 /**
@@ -161,7 +161,7 @@ FOR EXAMPLE, YOU CAN RUN THE FOLLOWING CODE IN COMMAND LINE AFTER BUILD ALL THE 
 > itqlsh_test audio.data audio.itq audio.ben
 ```
 
-#####NOTE1:
+##### NOTE1:
 
 In our project, the format of the input file (such as `audio.data`, which is in `float` data type) is a binary file but not a text file, because binary file has many advantages. In `LSHBOX/tools/create_test_data.cpp`, we create a binary file with `unsigned` data type, from the process, you will find that the binary file is organized as the following format:
 
@@ -169,11 +169,11 @@ In our project, the format of the input file (such as `audio.data`, which is in 
 
 For your application, you should also transform your dataset into this binary format.
 
-#####NOTE2:
+##### NOTE2:
 
 In addition, the dataset should be zero-centered, IT IS VERY IMPORTANT!
 
-####For Python
+#### For Python
 
 ```python
 #!/usr/bin/env python
@@ -244,11 +244,11 @@ for i in range(len(indices)):
     print indices[i], '\t', dists[i]
 ```
 
-#####<font color="#4279F6">NOTE:
+##### <font color="#4279F6">NOTE:
 
 In Windows, the py module name is pylshbox, but in linux, it will be libpylshbox.</font>
 
-####For MATLAB
+#### For MATLAB
 
 ```matlab
 % matlab_example.m
@@ -308,7 +308,7 @@ param_kdbq.I = 50;
 
 Have you ever find the empty string used in the Python and MATLAB code? In fact, they can be used to save the index through pass a file name. Like the following, you will find the next query speed faster than the first, because there is no re-indexing.
 
-####In Python
+#### In Python
 
 ```python
 #!/usr/bin/env python
@@ -344,7 +344,7 @@ for i in range(len(indices)):
 print 'Elapsed time is %f seconds.' % (time.time() - start)
 ```
 
-####In MATLAB
+#### In MATLAB
 
 ```matlab
 % matlab_example2.m
@@ -366,14 +366,14 @@ tic;
 toc;
 ```
 
-###Chapter 4 - Algorithm
+### Chapter 4 - Algorithm
 
 LSHBOX is based on many approximate nearest neighbor schemes, and the following is a brief description of each algorithm and its parameters.
 
 
-####4.1 - Locality-Sensitive Hashing Scheme Based on Random Bits Sampling
+#### 4.1 - Locality-Sensitive Hashing Scheme Based on Random Bits Sampling
 
-#####Reference
+##### Reference
 
 ```
 P. Indyk and R. Motwani. Approximate Nearest Neighbor - Towards Removing the Curse of Dimensionality. In Proceedings of the 30th Symposium on Theory of Computing, 1998, pp. 604-613.
@@ -381,7 +381,7 @@ P. Indyk and R. Motwani. Approximate Nearest Neighbor - Towards Removing the Cur
 A. Gionis, P. Indyk, and R. Motwani. Similarity search in high dimensions via hashing. Proceedings of the 25th International Conference on Very Large Data Bases (VLDB), 1999.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -399,7 +399,7 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/rbslsh.h>
@@ -408,15 +408,15 @@ struct Parameter
 According to the second assumption in the paper, all coordinates of points in P are positive integer. Although we can convert all coordinates to integers by multiplying them by a suitably large number and rounding to the nearest integer, but I think it is very fussy, What's more, it often gets criticized for using too much memory when in a larger range of data. Therefore, it is recommended to use other algorithm.
 
 
-####4.2 - Locality-Sensitive Hashing Scheme Based on Random Hyperplane
+#### 4.2 - Locality-Sensitive Hashing Scheme Based on Random Hyperplane
 
-#####Reference
+##### Reference
 
 ```
 Charikar, M. S. 2002. Similarity estimation techniques from rounding algorithms. In Proceedings of the Thiry-Fourth Annual ACM Symposium on theory of Computing (Montreal, Quebec, Canada, May 19 - 21, 2002). STOC '02. ACM, New York, NY, 380-388. DOI= http://doi.acm.org/10.1145/509907.509965
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -432,15 +432,15 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/rhplsh.h>
 ```
 
-####4.3 - Locality-Sensitive Hashing Scheme Based on Thresholding
+#### 4.3 - Locality-Sensitive Hashing Scheme Based on Thresholding
 
-#####Reference
+##### Reference
 
 ```
 Zhe Wang, Wei Dong, William Josephson, Qin Lv, Moses Charikar, Kai Li. Sizing Sketches: A Rank-Based Analysis for Similarity Search. In Proceedings of the 2007 ACM SIGMETRICS International Conference on Measurement and Modeling of Computer Systems . San Diego, CA, USA. June 2007.
@@ -448,7 +448,7 @@ Zhe Wang, Wei Dong, William Josephson, Qin Lv, Moses Charikar, Kai Li. Sizing Sk
 Qin Lv, Moses Charikar, Kai Li. Image Similarity Search with Compact Data Structures. In Proceedings of ACM 13th Conference on Information and Knowledge Management (CIKM), Washington D.C., USA. November 2004.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -468,21 +468,21 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/thlsh.h>
 ```
 
-####4.4 - Locality-Sensitive Hashing Scheme Based on p-Stable Distributions
+#### 4.4 - Locality-Sensitive Hashing Scheme Based on p-Stable Distributions
 
-#####Reference
+##### Reference
 
 ```
 Mayur Datar , Nicole Immorlica , Piotr Indyk , Vahab S. Mirrokni, Locality-sensitive hashing scheme based on p-stable distributions, Proceedings of the twentieth annual symposium on Computational geometry, June 08-11, 2004, Brooklyn, New York, USA.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -500,21 +500,21 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/psdlsh.h>
 ```
 
-####4.5 - Spectral Hashing
+#### 4.5 - Spectral Hashing
 
-#####Reference
+##### Reference
 
 ```
 Y. Weiss, A. Torralba, R. Fergus. Spectral Hashing. Advances in Neural Information Processing Systems, 2008.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -532,21 +532,21 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/shlsh.h>
 ```
 
-####4.6 - Iterative Quantization
+#### 4.6 - Iterative Quantization
 
-#####Reference
+##### Reference
 
 ```
 Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -566,15 +566,15 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/itqlsh.h>
 ```
 
-####4.7 - Double-Bit Quantization Hashing
+#### 4.7 - Double-Bit Quantization Hashing
 
-#####Reference
+##### Reference
 
 ```
 Kong W, Li W. Double-Bit Quantization for Hashing. In AAAI, 2012.
@@ -582,7 +582,7 @@ Kong W, Li W. Double-Bit Quantization for Hashing. In AAAI, 2012.
 Gong Y, Lazebnik S, Gordo A, et al. Iterative quantization: A procrustean approach to learning binary codes for large-scale image retrieval[J]. Pattern Analysis and Machine Intelligence, IEEE Transactions on, 2013, 35(12): 2916-2929.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -600,21 +600,21 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/dbqlsh.h>
 ```
 
-####4.8 - K-means Based Double-Bit Quantization Hashing
+#### 4.8 - K-means Based Double-Bit Quantization Hashing
 
-#####Reference
+##### Reference
 
 ```
 Zhu, H. K-means based double-bit quantization for hashing.Computational Intelligence for Multimedia, Signal and Vision Processing (CIMSIVP),2014 IEEE Symposium on (pp.1-5). IEEE.
 ```
 
-#####Parameters
+##### Parameters
 
 ```cpp
 struct Parameter
@@ -632,7 +632,7 @@ struct Parameter
 };
 ```
 
-#####Implementation
+##### Implementation
 
 ```cpp
 #include <lshbox/lsh/kdbqlsh.h>
